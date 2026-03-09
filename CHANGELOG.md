@@ -11,6 +11,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.5.0] — 2026-03-09
+
+### Added
+- `docs/10-government-observer-node.md` — Government Observer Node full specification: Option A
+  (Metadata-only) and Option B (Targeted Tax Manifest), JSONata extraction map, Observer ACK
+  format, re-encryption flow, and cryptographic requirements table.
+- `docs/11-dlt-merkle-anchoring.md` — DLT / Merkle Root Anchoring Protocol: Two-stage J-MDN
+  state machine (NETWORK_DELIVERED → FISCAL_CLEARED), L2-style hourly rollup batching (99.8%
+  gas reduction), `IFideXAnchor` Solidity interface, catalog `sync_state` receiver state
+  machine, and latency targets table.
+- `docs/12-jsonata-maps.md` — JSONata Transformation Maps Reference: `maps/` directory
+  convention, file header standard, full Odoo→FideX example, Hub→ERP routing diagram, `$env`
+  runtime context, error handling, and map testing conventions.
+- `examples/_invalid/` — Negative test suite (3 fixtures testing `if/then` enforcement and
+  `pattern` validation); `make validate-negative` and `make validate-all` Makefile targets.
+
+### Changed
+- `gs1-order.schema.json` — Added `if/then` enforcement: `QUOTE` requires `related_order`;
+  `ORDER_CONFIRMED` requires both `related_order` and `related_quote`. Mirrors the invoice
+  if/then pattern added in v1.1.
+- `gs1-catalog.schema.json`, `gs1-customer-master.schema.json`,
+  `gs1-despatch-advice.schema.json`, `product-identity.schema.json` — Added `minLength: 1`
+  to all required string fields that were missing it.
+- `Makefile` — New targets: `validate-negative` (inverted exit-code logic), `validate-all`.
+- `package.json` — Version bumped `1.4.0` → `1.5.0`.
+
 ## [1.4.0] — 2026-03-09
 
 ### Added
