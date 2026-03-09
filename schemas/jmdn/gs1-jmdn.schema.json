@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fidex.io/v1/jmdn/schema",
+  "title": "FideX J-MDN — JSON Message Disposition Notification",
+  "description": "Cryptographically-signed receipt issued by the Hub after successful message delivery. Two stages: Technical (NETWORK_DELIVERED, < 2 s) and Fiscal (FISCAL_CLEARED, < 61 min after DLT anchoring). / Recibo firmado criptográficamente emitido por el Hub tras la entrega del mensaje. Dos etapas: Técnica (NETWORK_DELIVERED, < 2 s) y Fiscal (FISCAL_CLEARED, < 61 min tras el anclaje DLT).",
+  "type": "object",
+  "required": [
+    "jmdn_version",
+    "status",
+    "message_id",
+    "document_ref",
+    "payload_hash_sha256",
+    "receiver_gln",
+    "jws_signature"
+  ],
+  "properties": {
+    "jmdn_version": {
+      "type": "string",
+      "const": "1.0",
+      "description": "J-MDN format version. Fixed at '1.0' for this specification release. / Versión del formato J-MDN. Fijo en '1.0' para esta versión de la especificación."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["NETWORK_DELIVERED", "FISCAL_CLEARED"],
+      "description": "Receipt stage. NETWORK_DELIVERED = payload received, decrypted, and schema-validated (< 2 s). FISCAL_CLEARED = Merkle Proof anchored on DLT (< 61 min). / Etapa del recibo. NETWORK_DELIVERED = payload recibido, descifrado y validado contra esquema (< 2 s). FISCAL_CLEARED = Merkle Proof anclado en DLT (< 61 min)."
+    },
+    "message_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The message_id from the kontext_routing envelope of the original document being acknowledged. / El message_id del sobre kontext_routing del documento original que se acusa recibo."
+    },
+    "document_ref": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable reference of the original document (e.g. invoice number, order number). / Referencia legible del documento original (ej. número de factura, número de orden)."
+    },
+    "payload_hash_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "SHA-256 hex digest of the raw payload bytes received. Used as the Merkle leaf hash in the hourly rollup. / Resumen SHA-256 en hex de los bytes del payload recibido. Se usa como hash hoja en el rollup horario Merkle."
+    },
+    "receiver_gln": {
+      "type": "string",
+      "pattern": "^\\d{13}$",
+      "description": "GLN (13 digits) of the receiving party issuing this J-MDN. / GLN (13 dígitos) de la parte receptora que emite este J-MDN."
+    },
+    "jws_signature": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Compact JWS serialization (RFC 7515) of this entire receipt, signed with the Hub's ES256 signing key. This field is excluded from the signed payload (computed after serialization). / Serialización JWS compacta (RFC 7515) de este recibo completo, firmado con la clave ES256 del Hub. Este campo se excluye del payload firmado (calculado tras la serialización)."
+    },
+    "received_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 UTC timestamp when the payload was received and validated. Present only on NETWORK_DELIVERED receipts. / Timestamp UTC ISO 8601 de recepción y validación del payload. Presente solo en recibos NETWORK_DELIVERED."
+    },
+    "cleared_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 UTC timestamp when the Merkle Proof was anchored on the DLT. Present only on FISCAL_CLEARED receipts. / Timestamp UTC ISO 8601 del anclaje del Merkle Proof en el DLT. Presente solo en recibos FISCAL_CLEARED."
+    },
+    "merkle_proof": {
+      "type": "object",
+      "description": "Merkle inclusion proof enabling the sender to independently verify on-chain anchoring. Required on FISCAL_CLEARED receipts. / Prueba de inclusión Merkle que permite al emisor verificar el anclaje on-chain de forma independiente. Requerida en recibos FISCAL_CLEARED.",
+      "required": [
+        "leaf_hash",
+        "tree_root",
+        "proof_path",
+        "anchored_at_block",
+        "anchor_tx_hash",
+        "anchor_timestamp"
+      ],
+      "properties": {
+        "leaf_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "description": "SHA-256 hex of the document payload bytes — the leaf node in the Merkle tree. Must equal payload_hash_sha256. / SHA-256 hex de los bytes del payload del documento — nodo hoja en el árbol Merkle. Debe ser igual a payload_hash_sha256."
+        },
+        "tree_root": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Merkle tree root hash that was anchored on-chain. Verifier recomputes this from proof_path + leaf_hash. / Hash raíz del árbol Merkle anclado on-chain. El verificador lo recalcula con proof_path + leaf_hash."
+        },
+        "proof_path": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Ordered sibling hashes from leaf to root. Apply each in sequence to recompute tree_root. / Hashes hermanos ordenados de hoja a raíz. Aplicarlos en secuencia permite recalcular tree_root.",
+          "items": {
+            "type": "object",
+            "required": ["position", "hash"],
+            "properties": {
+              "position": {
+                "type": "string",
+                "enum": ["left", "right"],
+                "description": "Whether this sibling hash is concatenated on the left or right when hashing upward. / Si este hash hermano se concatena a la izquierda o la derecha al calcular el hash hacia arriba."
+              },
+              "hash": {
+                "type": "string",
+                "minLength": 1,
+                "description": "SHA-256 hex of the sibling Merkle node. / SHA-256 hex del nodo hermano en el árbol Merkle."
+              }
+            },
+            "unevaluatedProperties": false
+          }
+        },
+        "anchored_at_block": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Block number on the FideX DLT where the Merkle root was anchored via anchorHourlyRollup(). / Número de bloque en el DLT de FideX donde la raíz Merkle fue anclada via anchorHourlyRollup()."
+        },
+        "anchor_tx_hash": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Transaction hash of the anchorHourlyRollup() call on the IFideXAnchor smart contract. / Hash de la transacción de la llamada anchorHourlyRollup() en el smart contract IFideXAnchor."
+        },
+        "anchor_timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "UTC timestamp of the on-chain anchoring transaction, as recorded by the DLT node. / Timestamp UTC de la transacción de anclaje on-chain, registrado por el nodo DLT."
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "observer_registration_id": {
+      "type": "string",
+      "description": "SENIAT registration ID assigned by the Government Observer Node after successful Targeted Tax Manifest delivery. Only present when the Observer ACK has been received. / ID de registro SENIAT asignado por el Nodo Observador Gubernamental tras la entrega exitosa del Tax Manifest. Solo presente si se recibió el ACK del Observador."
+    }
+  },
+  "if": {
+    "properties": {
+      "status": { "const": "NETWORK_DELIVERED" }
+    }
+  },
+  "then": {
+    "required": ["received_at"]
+  },
+  "else": {
+    "required": ["cleared_at", "merkle_proof"]
+  },
+  "unevaluatedProperties": false
+}

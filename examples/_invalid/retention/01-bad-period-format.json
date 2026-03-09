@@ -36,17 +36,17 @@
         "line_id": 1,
         "invoice_ref": "FAC-2026-000123",
         "invoice_date": "2026-03-05",
-        "tax_base_usd": 1000.00,
-        "iva_on_invoice_usd": 160.00,
+        "tax_base_usd": 1000.0,
+        "iva_on_invoice_usd": 160.0,
         "retention_percentage": 75,
-        "retained_amount_usd": 120.00
+        "retained_amount_usd": 120.0
       }
     ],
     "totals": {
-      "total_tax_base_usd": 1000.00,
-      "total_iva_invoiced_usd": 160.00,
-      "total_retained_usd": 120.00,
-      "total_paid_to_supplier_usd": 40.00
+      "total_tax_base_usd": 1000.0,
+      "total_iva_invoiced_usd": 160.0,
+      "total_retained_usd": 120.0,
+      "total_paid_to_supplier_usd": 40.0
     }
   }
 }

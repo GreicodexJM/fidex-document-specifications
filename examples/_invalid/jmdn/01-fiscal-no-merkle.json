@@ -1,0 +1,11 @@
+{
+  "_comment": "MUST FAIL: status=FISCAL_CLEARED but merkle_proof is absent. The if/then/else constraint in gs1-jmdn.schema.json requires merkle_proof when status is FISCAL_CLEARED.",
+  "jmdn_version": "1.0",
+  "status": "FISCAL_CLEARED",
+  "message_id": "MSG-20260309-009999",
+  "document_ref": "FAC-2026-000999",
+  "cleared_at": "2026-03-09T15:00:03Z",
+  "payload_hash_sha256": "a3f1b9c8d2e4f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1",
+  "receiver_gln": "7599876500001",
+  "jws_signature": "eyJhbGciOiJFUzI1NiJ9.dGVzdA.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+}

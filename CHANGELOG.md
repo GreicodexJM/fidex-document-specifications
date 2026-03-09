@@ -11,6 +11,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.6.0] — 2026-03-09
+
+### Added
+- `schemas/jmdn/gs1-jmdn.schema.json` — J-MDN (JSON Message Disposition Notification) schema.
+  Two-stage receipt format: `NETWORK_DELIVERED` (Technical, < 2 s) and `FISCAL_CLEARED`
+  (Fiscal, < 61 min). Enforces stage-specific required fields via `if/then/else`. Closes the
+  most significant spec gap: Hub implementors now have a machine-readable receipt contract.
+- `examples/jmdn/01-technical-receipt.json` — Technical J-MDN example.
+- `examples/jmdn/02-fiscal-receipt.json` — Fiscal J-MDN with full `merkle_proof` block.
+- `docs/es/10-nodo-observador-gubernamental.md` — Spanish translation of Government Observer
+  Node spec: Paradoja de Privacidad, Opción A/B, mapa JSONata, flujo de reencriptación,
+  formato ACK del Observador, requisitos criptográficos, tabla de garantías de privacidad.
+- `docs/es/11-anclaje-dlt-merkle.md` — Spanish translation of DLT/Merkle anchoring protocol:
+  máquina de estados J-MDN, rollup horario, interfaz Solidity IFideXAnchor, estados del
+  catálogo (sync_state), tabla de latencias objetivo.
+- `docs/es/12-mapas-jsonata.md` — Spanish translation of JSONata maps reference: convención
+  maps/, encabezado estándar, ejemplo completo Odoo→FideX, contexto `$env`, manejo de errores,
+  testing de mapas, diagrama Hub→ERP.
+- `examples/_invalid/invoice/02-empty-document-number.json` — Negative fixture: `document_number`
+  set to `""` — validates `minLength: 1` enforcement in invoice schema.
+- `examples/_invalid/despatch-advice/01-bad-sscc.json` — Negative fixture: SSCC `"1234567890"`
+  (10 digits) — validates `pattern: ^[0-9]{18}$` enforcement in despatch-advice schema.
+- `examples/_invalid/jmdn/01-fiscal-no-merkle.json` — Negative fixture: `FISCAL_CLEARED`
+  receipt without `merkle_proof` — validates `if/then/else` enforcement in J-MDN schema.
+
+### Changed
+- `Makefile` — Added `SCHEMA_JMDN` variable, `validate-jmdn` target, extended `validate` chain
+  to include J-MDN; extended `validate-negative` domain loop to include `jmdn`.
+- `package.json` — Version bumped `1.5.0` → `1.6.0`.
+- `README.md` — Schema version badge updated to `v1.6.0`.
+
 ## [1.5.0] — 2026-03-09
 
 ### Added

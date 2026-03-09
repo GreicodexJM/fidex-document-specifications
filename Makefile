@@ -12,6 +12,7 @@ SCHEMA_ORDER      := schemas/order/gs1-order.schema.json
 SCHEMA_DESPATCH   := schemas/despatch-advice/gs1-despatch-advice.schema.json
 SCHEMA_INVOICE    := schemas/invoice/gs1-invoice.schema.json
 SCHEMA_RETENTION  := schemas/retention/gs1-retention.schema.json
+SCHEMA_JMDN       := schemas/jmdn/gs1-jmdn.schema.json
 
 AJV := node_modules/.bin/ajv
 PRETTIER := node_modules/.bin/prettier
@@ -30,7 +31,7 @@ install: ## Install npm dependencies (ajv-cli, prettier)
 
 ##@ Validation
 
-validate: validate-customer validate-catalog validate-order validate-despatch validate-invoice validate-retention ## Validate ALL examples against their schemas
+validate: validate-customer validate-catalog validate-order validate-despatch validate-invoice validate-retention validate-jmdn ## Validate ALL examples against their schemas
 	@echo ""
 	@echo "✅  All examples validated successfully."
 
@@ -70,10 +71,14 @@ validate-retention: ## Validate retention examples (IVA and ISLR)
 	@$(AJV) validate -s $(SCHEMA_RETENTION) -d "examples/retention/*.json" \
 		-r "$(SCHEMAS_COMMON_GLOB)" $(AJV_FLAGS)
 
+validate-jmdn: ## Validate J-MDN receipt examples (Technical and Fiscal)
+	@echo "→ Validating J-MDN receipts..."
+	@$(AJV) validate -s $(SCHEMA_JMDN) -d "examples/jmdn/*.json" $(AJV_FLAGS)
+
 validate-negative: ## Negative tests — each _invalid example MUST fail validation (exit 1)
 	@echo "→ Running negative validation tests..."
 	@FAILED=0; \
-	for domain in invoice order retention customer-master catalog despatch-advice; do \
+	for domain in invoice order retention customer-master catalog despatch-advice jmdn; do \
 		dir=examples/_invalid/$$domain; \
 		[ -d "$$dir" ] || continue; \
 		schema=schemas/$$domain/gs1-$$domain.schema.json; \
@@ -128,4 +133,4 @@ check-deps: ## Check that required tools are installed
 	@$(AJV) --version || echo "❌ ajv-cli not found. Run: make install"
 	@$(PRETTIER) --version || echo "❌ prettier not found. Run: make install"
 
-.PHONY: help install validate validate-customer validate-catalog validate-order validate-despatch validate-invoice validate-retention validate-one validate-negative validate-all lint format list-schemas list-examples check-deps
+.PHONY: help install validate validate-customer validate-catalog validate-order validate-despatch validate-invoice validate-retention validate-jmdn validate-one validate-negative validate-all lint format list-schemas list-examples check-deps

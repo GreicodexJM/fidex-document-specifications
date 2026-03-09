@@ -1,0 +1,88 @@
+{
+  "kontext_routing": {
+    "tenant_id": "tenant-leti-01",
+    "receiver_id": "partner-drogueria-x",
+    "document_type": "GS1_DESPATCH_ADVICE_JSON",
+    "correlation_id": "ORD-2026-9921"
+  },
+  "payload": {
+    "document_info": {
+      "version": "1.2",
+      "doc_type": "DESPATCH_ADVICE",
+      "document_number": "ASN-88421",
+      "related_order": "ORD-2026-9921",
+      "status": "SHIPPED",
+      "dates": {
+        "issued_at": "2026-03-11T09:00:00Z",
+        "estimated_delivery": "2026-03-11T14:30:00Z"
+      }
+    },
+    "parties": {
+      "shipper": {
+        "name": "Laboratorios Leti - Almacen Central",
+        "rif": "J-00000000-1",
+        "gln": "7590000000001"
+      },
+      "ship_to": {
+        "name": "Farmacia El Pueblo, C.A.",
+        "rif": "J-22222222-3",
+        "sicm": "S-98765"
+      }
+    },
+    "logistics": {
+      "carrier": {
+        "name": "Logistica Yummy Fleet",
+        "tracking_reference": "YUM-8821-XX"
+      },
+      "driver": {
+        "name": "Pedro Perez",
+        "national_id": "V-12345678",
+        "vehicle_plate": "A12-BCD"
+      },
+      "packaging": {
+        "total_packages": 3,
+        "sscc": "1234567890"
+      }
+    },
+    "lines": [
+      {
+        "line_id": 1,
+        "related_order_line": 1,
+        "product": {
+          "gtin": "7591234567890",
+          "vendor_part": "LETI-AMOX-500",
+          "description": "Amoxicilina 500mg x 21 capsulas"
+        },
+        "pharma_tracking": {
+          "lot_number": "L-202509A",
+          "expiry_date": "2028-09-01",
+          "manufacture_date": "2025-09-15"
+        },
+        "qty": {
+          "uom": "Caja",
+          "shipped": 50,
+          "ordered": 50
+        }
+      },
+      {
+        "line_id": 2,
+        "related_order_line": 2,
+        "product": {
+          "gtin": "7591234567904",
+          "vendor_part": "LETI-METF-850",
+          "description": "Metformina 850mg x 30 comprimidos"
+        },
+        "pharma_tracking": {
+          "lot_number": "L-202508B",
+          "expiry_date": "2028-08-15",
+          "manufacture_date": "2025-08-20"
+        },
+        "qty": {
+          "uom": "Caja",
+          "shipped": 25,
+          "ordered": 25
+        }
+      }
+    ]
+  }
+}

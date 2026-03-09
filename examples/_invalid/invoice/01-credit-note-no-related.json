@@ -43,7 +43,7 @@
           "invoiced": 10
         },
         "pricing": {
-          "unit_price": 5.00,
+          "unit_price": 5.0,
           "currency": "USD"
         }
       }
