@@ -6,6 +6,8 @@
 [![JSON Schema](https://img.shields.io/badge/JSON%20Schema-2020--12-green)](https://json-schema.org/draft/2020-12/schema)
 [![GS1 Compliant](https://img.shields.io/badge/GS1-LATAM%20Compliant-orange)](docs/04-gs1-identifiers.md)
 
+> 🇪🇸 [Versión en español](README.es.md)
+
 ---
 
 ## What is this repository?

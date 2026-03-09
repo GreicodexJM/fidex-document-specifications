@@ -11,6 +11,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.0] — 2026-03-09
+
+### Added
+
+#### Documentación en Español — Spanish Documentation Layer (`docs/es/`)
+
+Complete Spanish translation of all FideX documentation. All files include a cross-link to the English counterpart.
+
+**Fiscal guides (translated):**
+- `docs/es/05-fiscal-venezolano.md` — IVA (16%), IGTF (3%), tasa BCV, RIF format, Número de Control SENIAT, ISLR overview, SICM permit mechanics
+- `docs/es/06-ciclo-de-documentos.md` — Full order-to-cash flow diagrams in Spanish, document state machines (Orden/ASN/Factura), `related_documents` chaining, retention direction rules, `correlation_id` grouping
+- `docs/es/07-notas-credito-debito.md` — Credit/Debit Note fiscal math (NC/ND), JSON Schema `if/then` enforcement explanation, ERP mapping table (all 5 ERPs), SENIAT Número de Control on NC/ND
+- `docs/es/08-retenciones-fiscales.md` — IVA retention mechanics (Prov. 049/056, 75% default), ISLR mechanics (Decreto 1808 Tabla 26), payload examples, filing deadlines (Días 3 y 10), comprobante as crédito fiscal, ERP mapping table
+
+**ERP integration index (translated):**
+- `docs/es/09-integracion-erp/00-indice.md` — ERP × document-type matrix (Spanish), integration architecture diagram, Venezuelan fiscal field reference table
+
+**ERP field mapping guides (translated):**
+- `docs/es/09-integracion-erp/01-odoo-17-18.md` — Odoo 17/18 JSON-RPC + REST; all 6 document types; `l10n_ve` module notes; custom `x_*` field guidance; multi-currency and SICM blocking
+- `docs/es/09-integracion-erp/02-profit.md` — Profit Plus v12 SQL Server / `ProfitSDK.dll` COM; Spanish column names (`cod_cli`, `nro_control`, `comp_ret_iva`); SQL MERGE pattern; fiscal sequence warning
+- `docs/es/09-integracion-erp/03-saint.md` — Saint Enterprise v6+ REST API v1; `CampoLibre1–5` / `CampoFecha1–3` strategy; all 6 doc types; IGTF v6.2+ note
+- `docs/es/09-integracion-erp/04-galac.md` — Galac Software v5+ fiscal-only scope; XML import format example; Bs-centric field mapping; ISLR `CodigoConcepto` / Decreto 1808 Tabla 26; automatic SENIAT sequence numbering
+- `docs/es/09-integracion-erp/05-sap-business-one.md` — SAP B1 10.0 Service Layer REST; UDF (`U_*`) creation guide; batch number flow (ODLN before OINV); retention Option A (OWHT codes) and Option B (UDO `U_RETENCION`)
+
+**Root README (updated):**
+- `README.es.md` — Full Spanish README with document types table, repo structure, quick-start commands, order-to-cash diagram, ERP integration table, and design principles
+- `README.md` — Added `🇪🇸 [Versión en español](README.es.md)` badge link
+
+### Design Decisions
+- All Spanish docs use a `> 🇬🇧 [English version](...)` link at the top for discoverability
+- All machine-readable enums remain in English across both language editions
+- Galac documented as fiscal-only in Spanish edition (consistent with English v1.2 design decision)
+- SAP B1 UDF names (`U_*`) are language-neutral by convention; Spanish docs use the same UDF names as English docs
+
+---
+
 ## [1.2.0] — 2026-03-09
 
 ### Added
