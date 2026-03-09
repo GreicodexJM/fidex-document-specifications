@@ -1,10 +1,23 @@
-# Especificaciones de Documentos FideX (`fidex-document-specs`)
+<div align="center">
 
-> **Estándar AS5/FideX para Intercambio B2B Farmacéutico — Edición Venezolana y LATAM**
+<a href="https://github.com/GreicodexJM/fidex-protocol">
+  <img src="docs/assets/fidex-as5-logo.png" alt="FideX AS5 — Estándar B2B Farmacéutico" width="480"/>
+</a>
+
+<br/>
+
+<a href="https://github.com/GreicodexJM">
+  <img src="https://avatars.githubusercontent.com/GreicodexJM?v=4" width="28" style="border-radius:6px;vertical-align:middle" alt="Greicodex"/>
+</a>
+&nbsp;<sub>Desarrollado por <strong><a href="https://github.com/GreicodexJM">Greicodex</a></strong></sub>
+
+<br/><br/>
 
 [![Versión del Esquema](https://img.shields.io/badge/versión--esquema-v1.6.0-blue)](CHANGELOG.md)
 [![JSON Schema](https://img.shields.io/badge/JSON%20Schema-2020--12-green)](https://json-schema.org/draft/2020-12/schema)
 [![Cumplimiento GS1](https://img.shields.io/badge/GS1-LATAM%20Compliant-orange)](docs/es/05-fiscal-venezolano.md)
+
+</div>
 
 > 🇬🇧 [English version](README.md)
 

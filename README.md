@@ -1,11 +1,24 @@
-# FideX Document Specifications (`fidex-document-specs`)
+<div align="center">
 
-> **AS5/FideX Pharmaceutical B2B Payload Standard — Venezuelan & LATAM Edition**
+<a href="https://github.com/GreicodexJM/fidex-protocol">
+  <img src="docs/assets/fidex-as5-logo.png" alt="FideX AS5 — Pharmaceutical B2B Standard" width="480"/>
+</a>
+
+<br/>
+
+<a href="https://github.com/GreicodexJM">
+  <img src="https://avatars.githubusercontent.com/GreicodexJM?v=4" width="28" style="border-radius:6px;vertical-align:middle" alt="Greicodex"/>
+</a>
+&nbsp;<sub>Built by <strong><a href="https://github.com/GreicodexJM">Greicodex</a></strong></sub>
+
+<br/><br/>
 
 [![Schema Version](https://img.shields.io/badge/schema--version-v1.6.0-blue)](CHANGELOG.md)
 [![CI](https://github.com/GreicodexJM/fidex-document-specifications/actions/workflows/validate.yml/badge.svg)](https://github.com/GreicodexJM/fidex-document-specifications/actions/workflows/validate.yml)
 [![JSON Schema](https://img.shields.io/badge/JSON%20Schema-2020--12-green)](https://json-schema.org/draft/2020-12/schema)
 [![GS1 Compliant](https://img.shields.io/badge/GS1-LATAM%20Compliant-orange)](docs/04-gs1-identifiers.md)
+
+</div>
 
 > 🇪🇸 [Versión en español](README.es.md)
 
