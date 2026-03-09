@@ -1,12 +1,12 @@
 # Agentic Workflow — FideX Document Specifications
 
-## Current Status: v1.5.0 — COMPLETE
+## Current Status: v1.6.0 — COMPLETE
 
 ---
 
 ## Active Context
 
-**Last Action**: v1.5.0 implemented — Government Observer Node spec (`docs/10`), DLT/Merkle anchoring protocol (`docs/11`), JSONata transformation maps reference (`docs/12`), negative test suite (`examples/_invalid/`), `if/then` enforcement on order schema for QUOTE/ORDER_CONFIRMED, `minLength: 1` on 4 more schemas, `make validate-negative` + `make validate-all`.
+**Last Action**: v1.6.0 implemented — Government Observer Node spec (`docs/10`), DLT/Merkle anchoring protocol (`docs/11`), JSONata transformation maps reference (`docs/12`), negative test suite (`examples/_invalid/`), `if/then` enforcement on order schema for QUOTE/ORDER_CONFIRMED, `minLength: 1` on 4 more schemas, `make validate-negative` + `make validate-all`.
 
 **Current Focus**: Specification stable. EN docs 01–12 complete. ES docs 01–09 complete (10–12 pending). All 13 positive + 3 negative examples pass `make validate-all`.
 
@@ -68,7 +68,7 @@ Open a Pull Request with all four artifacts (doc, schema, example, registry upda
 
 ## Known Issues / Technical Debt
 
-Two open items as of v1.5.0:
+Two open items as of v1.6.0:
 
 | Issue | Status | Target |
 |---|---|---|

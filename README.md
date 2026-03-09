@@ -106,8 +106,10 @@ fidex-document-specs/
 │   │   └── gs1-despatch-advice.schema.json
 │   ├── invoice/
 │   │   └── gs1-invoice.schema.json        # v1.1 — added CREDIT_NOTE/DEBIT_NOTE if/then
-│   └── retention/                         # v1.1 NEW
-│       └── gs1-retention.schema.json
+│   ├── retention/                         # v1.1 NEW
+│   │   └── gs1-retention.schema.json
+│   └── jmdn/                              # v1.6 NEW — J-MDN receipt schema
+│       └── gs1-jmdn.schema.json
 │
 └── examples/                          # Valid, runnable payload examples
     ├── customer-master/
@@ -129,10 +131,16 @@ fidex-document-specs/
     ├── retention/                          # v1.1 NEW
     │   ├── 01-retention-iva.json
     │   └── 02-retention-islr.json
-    └── _invalid/                           # v1.5 — Negative test fixtures (must FAIL)
+    ├── jmdn/                               # v1.6 NEW — J-MDN receipt examples
+    │   ├── 01-technical-receipt.json
+    │   └── 02-fiscal-receipt.json
+    └── _invalid/                           # Negative test fixtures (must FAIL)
         ├── invoice/01-credit-note-no-related.json
+        ├── invoice/02-empty-document-number.json   # v1.6 NEW
         ├── order/01-order-confirmed-no-quote.json
-        └── retention/01-bad-period-format.json
+        ├── retention/01-bad-period-format.json
+        ├── despatch-advice/01-bad-sscc.json        # v1.6 NEW
+        └── jmdn/01-fiscal-no-merkle.json           # v1.6 NEW
 ```
 
 ---

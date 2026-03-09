@@ -2,7 +2,7 @@
 
 > **Estándar AS5/FideX para Intercambio B2B Farmacéutico — Edición Venezolana y LATAM**
 
-[![Versión del Esquema](https://img.shields.io/badge/versión--esquema-v1.5.0-blue)](CHANGELOG.md)
+[![Versión del Esquema](https://img.shields.io/badge/versión--esquema-v1.6.0-blue)](CHANGELOG.md)
 [![JSON Schema](https://img.shields.io/badge/JSON%20Schema-2020--12-green)](https://json-schema.org/draft/2020-12/schema)
 [![Cumplimiento GS1](https://img.shields.io/badge/GS1-LATAM%20Compliant-orange)](docs/es/05-fiscal-venezolano.md)
 
@@ -59,7 +59,7 @@ fidex-document-specs/
 │   ├── 08-tax-retention.md
 │   └── 09-erp-mapping/               # Guías de integración ERP (inglés)
 │
-├── docs/es/                           # Documentación en español (v1.3–1.4)
+├── docs/es/                           # Documentación en español (v1.3–1.6, completa)
 │   ├── 01-descripcion-general.md      # Arquitectura de dos capas, tipos de documento
 │   ├── 02-sobre-de-enrutamiento.md    # kontext_routing campo por campo
 │   ├── 03-seguridad-jose.md           # JWS/JWE, JWKS, J-MDN, Manifiesto Fiscal
@@ -75,8 +75,13 @@ fidex-document-specs/
 │       ├── 03-saint.md                # Saint Enterprise v6+ — API REST
 │       ├── 04-galac.md                # Galac Software v5+ — capa fiscal
 │       └── 05-sap-business-one.md     # SAP B1 10.0 — Service Layer REST
+│   ├── 10-nodo-observador-gubernamental.md  # v1.6 — Privacy Gateway SENIAT
+│   ├── 11-anclaje-dlt-merkle.md             # v1.6 — DLT/Merkle, IFideXAnchor
+│   └── 12-mapas-jsonata.md                  # v1.6 — Referencia de mapas JSONata
 │
 ├── schemas/                           # Esquemas JSON Schema 2020-12
+│   └── jmdn/                              # v1.6 NUEVO — Esquema recibos J-MDN
+│       └── gs1-jmdn.schema.json
 └── examples/                          # Payloads de ejemplo válidos
 ```
 
