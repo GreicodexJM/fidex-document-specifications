@@ -44,7 +44,7 @@
           {
             "tier_code": "WHOLESALE_STD",
             "currency": "USD",
-            "unit_price_net": 2.50
+            "unit_price_net": 2.5
           }
         ],
         "inventory": {
@@ -65,7 +65,7 @@
           {
             "tier_code": "WHOLESALE_STD",
             "currency": "USD",
-            "unit_price_net": 1.20
+            "unit_price_net": 1.2
           }
         ],
         "inventory": {

@@ -66,15 +66,15 @@
         "tax_profile": {
           "is_exempt": true,
           "tax_type": "IVA",
-          "percentage": 0.00
+          "percentage": 0.0
         },
         "pricing_tiers": [
           {
             "tier_code": "WHOLESALE_VIP",
             "description": "Distribuidor Exclusivo (>100 unidades)",
             "currency": "USD",
-            "unit_price_net": 2.10,
-            "msrp_usd": 4.00,
+            "unit_price_net": 2.1,
+            "msrp_usd": 4.0,
             "conditions": {
               "minimum_order_qty": 100,
               "valid_from": "2026-03-01T00:00:00Z",
@@ -85,8 +85,8 @@
             "tier_code": "WHOLESALE_STD",
             "description": "Distribuidor Estandar",
             "currency": "USD",
-            "unit_price_net": 2.50,
-            "msrp_usd": 4.00,
+            "unit_price_net": 2.5,
+            "msrp_usd": 4.0,
             "conditions": {
               "minimum_order_qty": 1
             }
@@ -122,15 +122,15 @@
         "tax_profile": {
           "is_exempt": true,
           "tax_type": "IVA",
-          "percentage": 0.00
+          "percentage": 0.0
         },
         "pricing_tiers": [
           {
             "tier_code": "WHOLESALE_STD",
             "description": "Distribuidor Estandar",
             "currency": "USD",
-            "unit_price_net": 1.80,
-            "msrp_usd": 3.20,
+            "unit_price_net": 1.8,
+            "msrp_usd": 3.2,
             "conditions": {
               "minimum_order_qty": 1
             }

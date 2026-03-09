@@ -53,7 +53,7 @@
       "term_type": "CONTADO",
       "net_days": 0,
       "currency": "USD",
-      "exchange_rate_pegged": 45.00
+      "exchange_rate_pegged": 45.0
     },
     "applied_payments": [
       {
@@ -62,9 +62,9 @@
         "status": "COMPLETED",
         "amounts": {
           "paid_currency": "VES",
-          "amount_paid": 5062.50,
-          "exchange_rate_usd": 45.00,
-          "amount_usd_equivalent": 112.50
+          "amount_paid": 5062.5,
+          "exchange_rate_usd": 45.0,
+          "amount_usd_equivalent": 112.5
         },
         "reference_data": {
           "confirmation_number": "1928374652",
@@ -79,9 +79,9 @@
         "status": "COMPLETED",
         "amounts": {
           "paid_currency": "VES",
-          "amount_paid": 2025.00,
-          "exchange_rate_usd": 45.00,
-          "amount_usd_equivalent": 45.00
+          "amount_paid": 2025.0,
+          "exchange_rate_usd": 45.0,
+          "amount_usd_equivalent": 45.0
         },
         "reference_data": {
           "confirmation_number": "1928374699",
@@ -110,7 +110,7 @@
           "confirmed": 50
         },
         "pricing": {
-          "unit_price": 2.50,
+          "unit_price": 2.5,
           "currency": "USD"
         },
         "discounts_charges": [
@@ -118,14 +118,12 @@
             "type": "DISCOUNT",
             "description": "Descuento Comercial Leti",
             "applied_by": "LABORATORIO",
-            "percentage": 10.00,
-            "amount": 12.50
+            "percentage": 10.0,
+            "amount": 12.5
           }
         ],
-        "taxes": [
-          { "type": "IVA", "percentage": 0.00, "is_exempt": true }
-        ],
-        "line_total_net": 112.50
+        "taxes": [{ "type": "IVA", "percentage": 0.0, "is_exempt": true }],
+        "line_total_net": 112.5
       },
       {
         "line_id": 2,
@@ -145,22 +143,20 @@
           "confirmed": 25
         },
         "pricing": {
-          "unit_price": 1.80,
+          "unit_price": 1.8,
           "currency": "USD"
         },
-        "taxes": [
-          { "type": "IVA", "percentage": 0.00, "is_exempt": true }
-        ],
-        "line_total_net": 45.00
+        "taxes": [{ "type": "IVA", "percentage": 0.0, "is_exempt": true }],
+        "line_total_net": 45.0
       }
     ],
     "summary": {
       "total_lines": 2,
-      "total_net_usd": 157.50,
-      "total_discounts_usd": 12.50,
-      "total_taxes_usd": 0.00,
-      "total_gross_usd": 157.50,
-      "total_paid_usd": 157.50
+      "total_net_usd": 157.5,
+      "total_discounts_usd": 12.5,
+      "total_taxes_usd": 0.0,
+      "total_gross_usd": 157.5,
+      "total_paid_usd": 157.5
     }
   }
 }

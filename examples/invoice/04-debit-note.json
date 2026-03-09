@@ -23,7 +23,7 @@
           "fiscal_series": "A",
           "emission_date": "2026-03-11T11:00:00Z",
           "currency_base": "USD",
-          "total_amount": 178.50
+          "total_amount": 178.5
         }
       ]
     },
@@ -42,7 +42,7 @@
       "method": "Transferencia",
       "term_type": "NET_15",
       "net_days": 15,
-      "exchange_rate_pegged": 45.00
+      "exchange_rate_pegged": 45.0
     },
     "lines": [
       {
@@ -58,40 +58,40 @@
           "invoiced": 10
         },
         "pricing": {
-          "unit_price": 1.50,
+          "unit_price": 1.5,
           "currency": "USD"
         },
         "taxes": [
           {
             "type": "IVA",
-            "percentage": 16.00,
+            "percentage": 16.0,
             "is_exempt": false,
-            "amount_usd": 2.40,
-            "amount_ves": 108.00
+            "amount_usd": 2.4,
+            "amount_ves": 108.0
           },
           {
             "type": "IGTF",
-            "percentage": 3.00,
+            "percentage": 3.0,
             "is_exempt": false,
             "amount_usd": 0.45,
             "amount_ves": 20.25
           }
         ],
-        "line_total_net": 15.00
+        "line_total_net": 15.0
       }
     ],
     "summary": {
       "total_lines": 1,
-      "total_net_usd": 15.00,
-      "total_discounts_usd": 0.00,
+      "total_net_usd": 15.0,
+      "total_discounts_usd": 0.0,
       "total_taxes_usd": 2.85,
       "total_gross_usd": 17.85,
       "fiscal_totals_ves": {
-        "exchange_rate_applied": 45.00,
-        "base_imponible_ves": 675.00,
-        "total_iva_ves": 108.00,
+        "exchange_rate_applied": 45.0,
+        "base_imponible_ves": 675.0,
+        "total_iva_ves": 108.0,
         "total_igtf_ves": 20.25,
-        "total_exempt_ves": 0.00,
+        "total_exempt_ves": 0.0,
         "total_gross_ves": 803.25
       }
     }

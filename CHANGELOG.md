@@ -11,6 +11,67 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.4.0] — 2026-03-09
+
+### Added
+
+#### Spanish Documentation — Foundational Docs 01–04 (`docs/es/`)
+Complete Spanish translation of the four foundational architecture documents, closing the gap left in v1.3.0:
+- `docs/es/01-descripcion-general.md` — Two-layer architecture, document type registry, payload structure, FideX protocol integration
+- `docs/es/02-sobre-de-enrutamiento.md` — `kontext_routing` field-by-field guide, hub routing flow diagram, Separation of Concerns principle
+- `docs/es/03-seguridad-jose.md` — JOSE Sign-then-Encrypt pattern, JWKS key management, J-MDN two-stage acknowledgment, Targeted Tax Manifest privacy model, QR onboarding handshake
+- `docs/es/04-identificadores-gs1.md` — GTIN/GLN/SSCC/SICM/RIF identifiers with Venezuelan-specific context, SSCC warehouse receiving workflow, SICM hard-block mechanics
+
+#### GitHub Actions CI/CD Pipeline (`.github/workflows/validate.yml`)
+- Automated validation on every push to `main`/`develop` and all pull requests to `main`
+- Runs `npm ci`, `make validate` (schema + example validation), and `make lint` (prettier format check)
+- CI status badge added to `README.md`
+
+#### Memory Bank Completion (GOS Standard)
+Three missing Memory Bank files added to complete the GOS project documentation standard:
+- `memory-bank/activeContext.md` — Current version, active focus, recent changes, active decisions, key patterns, learnings
+- `memory-bank/progress.md` — What works, what's left to build, current status, known issues, decision evolution
+- `memory-bank/techContext.md` — Technology stack, development setup, `$id` namespace, technical constraints, file naming conventions, CI/CD details
+
+### Changed
+
+#### `ajv-formats` — Real `date-time` Format Validation Enabled
+- Added `ajv-formats: ^3.0.1` to `devDependencies`
+- Removed `--validate-formats=false` from Makefile `AJV_FLAGS`
+- Added `-c ajv-formats` plugin flag to all validation commands
+- All 13 existing examples confirmed passing with format validation active
+- `date-time`, `email`, and `uri` fields in all schemas are now actively validated
+
+#### Makefile — `validate-one` Path Normalization
+- Added `patsubst ./%,%` to strip `./` prefix before domain extraction
+- Resolves failure when shell tab-completion produces `./examples/order/01.json` style paths
+
+#### Schema Hardening — `minLength: 1` on Required Strings
+Added `"minLength": 1` to all required `string` fields that could silently accept empty string `""`:
+- `schemas/_common/kontext-routing.schema.json` — `tenant_id`, `receiver_id`, `correlation_id`
+- `schemas/_common/party.schema.json` — `name`
+- `schemas/_common/related-documents.schema.json` — `document_number`, `currency_base`
+- `schemas/_common/retention-detail.schema.json` — `related_invoice.document_number`
+- `schemas/invoice/gs1-invoice.schema.json` — `document_number`, `related_order`, `currency_base`
+- `schemas/retention/gs1-retention.schema.json` — `document_number`
+
+#### Schema Hardening — ISLR Rounding Rule
+- `schemas/_common/retention-detail.schema.json` — `amount_retained_usd` description now explicitly specifies **half-up rounding to 2 decimal places** (e.g. `$157.50 × 1% = $1.575 → $1.58`). All parties and ERP implementations must apply the same rule to avoid SENIAT fiscal book reconciliation mismatches.
+
+#### Version Synchronization
+- `package.json` version updated from `1.0.0` → `1.3.0` (was never updated from initial value)
+- `README.md` schema-version badge updated from `v1.2.0` → `v1.3.0`
+
+### Fixed
+- Memory Bank `03_AGENTIC_WORKFLOW.md`: removed stale `_comment` known issue (file never had `_comment`; entry was erroneous)
+- Memory Bank `03_AGENTIC_WORKFLOW.md`: marked `docs/erp-mapping/` as resolved (completed in v1.2.0)
+
+### Design Decisions
+- `$defs/NonNegativeNumber` pattern considered but deferred: URI-based cross-file `$ref` architecture makes shared `$defs` impractical without adding a new common schema file; the DRY benefit doesn't justify the added schema complexity at this stage
+- `ajv-formats` plugin loaded via `-c ajv-formats` flag in ajv-cli v5, which calls `require('ajv-formats')(ajv)` — the correct initialization pattern for the plugin system
+
+---
+
 ## [1.3.0] — 2026-03-09
 
 ### Added

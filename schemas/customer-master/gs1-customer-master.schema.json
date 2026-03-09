@@ -182,7 +182,7 @@
                   "minimum": 0,
                   "maximum": 100,
                   "description": "IVA retention percentage applied by this Special Taxpayer (typically 75%). / Porcentaje de retención de IVA aplicado por este Agente de Retención (típicamente 75%).",
-                  "examples": [75.00]
+                  "examples": [75.0]
                 }
               }
             }

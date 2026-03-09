@@ -38,7 +38,14 @@
             },
             "status": {
               "type": "string",
-              "enum": ["PREPARED", "SHIPPED", "IN_TRANSIT", "DELIVERED", "PARTIALLY_DELIVERED", "RETURNED"],
+              "enum": [
+                "PREPARED",
+                "SHIPPED",
+                "IN_TRANSIT",
+                "DELIVERED",
+                "PARTIALLY_DELIVERED",
+                "RETURNED"
+              ],
               "description": "Shipment status. SHIPPED is the initial status when ASN is issued. / Estado del despacho. SHIPPED es el estado inicial al emitir el ASN."
             },
             "dates": {

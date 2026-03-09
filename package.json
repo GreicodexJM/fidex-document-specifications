@@ -1,6 +1,6 @@
 {
   "name": "fidex-document-specs",
-  "version": "1.0.0",
+  "version": "1.3.0",
   "description": "FideX AS5 Pharmaceutical B2B Document Payload Specifications — Venezuelan & LATAM Edition",
   "keywords": [
     "fidex",
@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "ajv-cli": "^5.0.0",
+    "ajv-formats": "^3.0.1",
     "prettier": "^3.3.0"
   },
   "engines": {

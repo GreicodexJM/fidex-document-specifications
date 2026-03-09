@@ -70,11 +70,16 @@ Open a Pull Request with all four artifacts (doc, schema, example, registry upda
 
 | Issue | Priority | Notes |
 |---|---|---|
-| `validate-one` Makefile target uses string split heuristic | Low | Works for standard path format `examples/{domain}/file.json` |
-| No CI/CD pipeline yet | Medium | Add GitHub Actions workflow in v1.2 |
-| `docs/erp-mapping/` placeholder not yet written | Low | Odoo field mapping guide needed for `res.partner` and retention journal entries |
-| `examples/invoice/02-invoice-with-fiscal-control.json` has `_comment` at root | Low | Root `unevaluatedProperties: false` may reject this — investigate ajv behavior |
-| ISLR retention rate rounding | Low | $157.50 × 1% = $1.575 rounded to $1.58 USD — consider specifying rounding rule in schema description |
+| `validate-one` Makefile target `./`-prefix path bug | Low | Fixed in v1.4: `patsubst ./%,%` normalization added before domain extraction |
+| No CI/CD pipeline yet | Medium | Add GitHub Actions workflow — `.github/workflows/validate.yml` |
+| ISLR retention rate rounding | Low | $157.50 × 1% = $1.575 rounded to $1.58 USD — specify rounding rule in `retention-detail.schema.json` |
+| Spanish docs 01–04 missing | Low | `docs/es/01-04` not yet translated (docs 05–09 done in v1.3) |
+
+**Resolved:**
+| Issue | Resolution |
+|---|---|
+| `examples/invoice/02-invoice-with-fiscal-control.json` has `_comment` at root | File never had `_comment` — stale entry, removed |
+| `docs/erp-mapping/` placeholder not yet written | Completed in v1.2 — all 5 ERP guides written |
 
 ---
 

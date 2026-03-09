@@ -4,7 +4,13 @@
   "title": "Retention Detail Line",
   "description": "A single retention calculation line referencing one affected invoice. For IVA retention (RETENTION_IVA), captures the 75% withholding of the invoice IVA amount as mandated for SENIAT Contribuyentes Especiales. For ISLR retention (RETENTION_ISLR), captures the concept code, applicable rate from Decreto 1808 Tabla 26, and amounts withheld from the gross payment. Multiple lines allow settling several invoices in one comprobante within the same fiscal period. / Línea de cálculo de retención que referencia una factura afectada. Para IVA, captura el 75% retenido del monto IVA según SENIAT. Para ISLR, captura el código de concepto del Decreto 1808 y los montos retenidos.",
   "type": "object",
-  "required": ["line_id", "related_invoice", "taxable_base_usd", "retention_rate", "amount_retained_usd"],
+  "required": [
+    "line_id",
+    "related_invoice",
+    "taxable_base_usd",
+    "retention_rate",
+    "amount_retained_usd"
+  ],
   "properties": {
     "line_id": {
       "type": "integer",
@@ -19,6 +25,7 @@
       "properties": {
         "document_number": {
           "type": "string",
+          "minLength": 1,
           "description": "Invoice document number as it appears on the original fiscal document. / Número de factura tal como aparece en el documento fiscal original.",
           "examples": ["INV-2026-00145", "INV-2026-00146"]
         },
@@ -32,7 +39,7 @@
           "type": "number",
           "minimum": 0,
           "description": "Total gross amount of the original invoice in USD. Used for cross-validation by the Government Observer Node. / Monto bruto total de la factura original en USD. Utilizado para validación cruzada por el Nodo Observador Gubernamental.",
-          "examples": [157.50, 178.50, 2500.00]
+          "examples": [157.5, 178.5, 2500.0]
         },
         "fiscal_series": {
           "type": "string",
@@ -56,38 +63,41 @@
     "islr_concept_description": {
       "type": "string",
       "description": "Human-readable ISLR concept description matching the Decreto 1808 Tabla 26 entry. Included for auditability and ERP display. / Descripción legible del concepto ISLR según la Tabla 26 del Decreto 1808. Incluida para auditabilidad y visualización en ERPs.",
-      "examples": ["Compra de bienes muebles y prestación de servicios en el país", "Honorarios Profesionales y Asimilados"]
+      "examples": [
+        "Compra de bienes muebles y prestación de servicios en el país",
+        "Honorarios Profesionales y Asimilados"
+      ]
     },
     "taxable_base_usd": {
       "type": "number",
       "minimum": 0,
       "description": "Base amount subject to retention in USD. For RETENTION_IVA: the total IVA amount of the invoice (not the net amount). For RETENTION_ISLR: the gross payment amount subject to withholding per the applicable concept code. / Base imponible sujeta a retención en USD. Para IVA: el monto total de IVA de la factura. Para ISLR: el monto bruto del pago sujeto a retención según el concepto aplicable.",
-      "examples": [24.00, 157.50, 2500.00]
+      "examples": [24.0, 157.5, 2500.0]
     },
     "retention_rate": {
       "type": "number",
       "minimum": 0,
       "maximum": 100,
       "description": "Retention percentage applied to the taxable_base_usd. IVA retention is 75% for Contribuyentes Especiales, 100% for government entities (entes públicos). ISLR rates vary by concept code and taxpayer category per Decreto 1808. / Porcentaje de retención aplicado sobre la base. IVA: 75% para Contribuyentes Especiales, 100% para entes públicos. ISLR: varía según el código de concepto y categoría del contribuyente.",
-      "examples": [75.00, 100.00, 1.00, 3.00]
+      "examples": [75.0, 100.0, 1.0, 3.0]
     },
     "amount_retained_usd": {
       "type": "number",
       "minimum": 0,
-      "description": "Amount retained (withheld) in USD. Calculated as: taxable_base_usd × (retention_rate / 100). This amount is deducted from the payment remitted to the withholdee. / Monto retenido en USD. Calculado como: base_imponible_usd × (tasa_retención / 100). Este monto se deduce del pago remitido al proveedor retenido.",
-      "examples": [18.00, 25.00, 4.73]
+      "description": "Amount retained (withheld) in USD. Calculated as: taxable_base_usd × (retention_rate / 100). Rounding rule: half-up to 2 decimal places (e.g. $157.50 × 1% = $1.575 → $1.58). All parties (withholder, withholdee, ERP) must apply the same rounding rule to avoid reconciliation mismatches in SENIAT fiscal books. / Monto retenido en USD. Calculado como: base_imponible_usd × (tasa_retención / 100). Regla de redondeo: redondeo hacia arriba (half-up) a 2 decimales (ej. $157.50 × 1% = $1.575 → $1.58). Todas las partes deben aplicar la misma regla para evitar inconsistencias en los libros fiscales del SENIAT.",
+      "examples": [18.0, 25.0, 4.73]
     },
     "exchange_rate_applied": {
       "type": "number",
       "minimum": 0,
       "description": "BCV official exchange rate used to convert USD amounts to VES for this specific retention line. Should match the rate at the time the payment was processed. / Tasa de cambio oficial BCV usada para convertir montos USD a VES en esta línea de retención. Debe coincidir con la tasa vigente al momento del pago.",
-      "examples": [45.00]
+      "examples": [45.0]
     },
     "amount_retained_ves": {
       "type": "number",
       "minimum": 0,
       "description": "Amount retained in Venezuelan Bolívares. Calculated as: amount_retained_usd × exchange_rate_applied. Required for SENIAT fiscal reporting and the Government Observer Node SENIAT Targeted Tax Manifest. / Monto retenido en Bolívares Venezolanos. Calculado como: monto_retenido_usd × tasa_cambio_aplicada. Requerido para el reporte fiscal al SENIAT.",
-      "examples": [810.00, 1125.00, 212.85]
+      "examples": [810.0, 1125.0, 212.85]
     }
   },
   "unevaluatedProperties": false

@@ -8,6 +8,7 @@
   "properties": {
     "name": {
       "type": "string",
+      "minLength": 1,
       "description": "Legal or commercial name of the trading party. / Nombre legal o comercial del participante.",
       "examples": ["Laboratorios Leti", "Drogueria Distribuidora X", "Farmacia El Pueblo, C.A."]
     },

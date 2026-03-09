@@ -22,7 +22,14 @@
       "properties": {
         "document_info": {
           "type": "object",
-          "required": ["version", "doc_type", "document_number", "related_order", "status", "currency_base"],
+          "required": [
+            "version",
+            "doc_type",
+            "document_number",
+            "related_order",
+            "status",
+            "currency_base"
+          ],
           "properties": {
             "version": { "type": "string", "examples": ["1.2"] },
             "doc_type": {
@@ -32,11 +39,13 @@
             },
             "document_number": {
               "type": "string",
+              "minLength": 1,
               "description": "Unique document number. Use prefix 'INV-' for invoices, 'CN-' for credit notes, 'DN-' for debit notes. / Número de documento único. Use prefijo 'INV-' para facturas, 'CN-' para notas de crédito, 'DN-' para notas de débito.",
               "examples": ["INV-2026-00145", "CN-2026-00023", "DN-2026-00005"]
             },
             "related_order": {
               "type": "string",
+              "minLength": 1,
               "description": "References the ORDER_CONFIRMED document_number. Part of Three-Way Match triangle: Order = Receipt = Invoice. For Credit/Debit Notes, this references the same order as the original invoice. / Referencia al document_number de la ORDER_CONFIRMED. Parte del triángulo Three-Way Match. Para Notas de Crédito/Débito, referencia la misma orden que la factura original.",
               "examples": ["ORD-2026-9921"]
             },
@@ -53,11 +62,21 @@
             },
             "status": {
               "type": "string",
-              "enum": ["DRAFT", "ISSUED", "DELIVERED", "PAID", "PARTIALLY_PAID", "OVERDUE", "CANCELLED", "VOIDED"],
+              "enum": [
+                "DRAFT",
+                "ISSUED",
+                "DELIVERED",
+                "PAID",
+                "PARTIALLY_PAID",
+                "OVERDUE",
+                "CANCELLED",
+                "VOIDED"
+              ],
               "description": "Invoice status. ISSUED is the initial status when invoice is emitted. VOIDED is used for Credit/Debit Notes that are themselves subsequently corrected. / Estado de la factura. ISSUED es el estado inicial al emitir. VOIDED se usa para Notas que a su vez son corregidas."
             },
             "currency_base": {
               "type": "string",
+              "minLength": 1,
               "description": "Base currency for all commercial line items. / Moneda base para todas las líneas comerciales.",
               "examples": ["USD"]
             },
@@ -110,7 +129,7 @@
             "exchange_rate_pegged": {
               "type": "number",
               "description": "BCV exchange rate at time of invoicing. Used as the denominator for all VES conversions in fiscal_totals_ves. / Tasa BCV al momento de facturar. Usada como denominador para todas las conversiones VES.",
-              "examples": [45.00]
+              "examples": [45.0]
             }
           }
         },
@@ -210,9 +229,13 @@
               "method": {
                 "type": "string",
                 "enum": [
-                  "PAGO_MOVIL", "ZELLE", "TRANSFERENCIA",
-                  "TARJETA_DEBITO", "TARJETA_CREDITO",
-                  "EFECTIVO_USD", "EFECTIVO_VES"
+                  "PAGO_MOVIL",
+                  "ZELLE",
+                  "TRANSFERENCIA",
+                  "TARJETA_DEBITO",
+                  "TARJETA_CREDITO",
+                  "EFECTIVO_USD",
+                  "EFECTIVO_VES"
                 ]
               },
               "status": {

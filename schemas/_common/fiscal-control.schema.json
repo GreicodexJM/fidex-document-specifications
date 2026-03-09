@@ -26,7 +26,10 @@
     "amount_in_letters_ves": {
       "type": "string",
       "description": "Total amount written out in Spanish words as required on Venezuelan fiscal receipts (e.g., 'Ciento sesenta y cuatro con 00/100'). / Monto total escrito en palabras en español, requerido en recibos fiscales venezolanos.",
-      "examples": ["Ciento sesenta y cuatro con 00/100", "Cinco mil ochocientos setenta y dos con 50/100"]
+      "examples": [
+        "Ciento sesenta y cuatro con 00/100",
+        "Cinco mil ochocientos setenta y dos con 50/100"
+      ]
     },
     "bcv_message": {
       "type": "string",
@@ -41,7 +44,10 @@
       "maxItems": 4,
       "description": "Array of up to 4 custom notes printed on the fiscal receipt (Notas 1–4 in Unidigital). Used for legal disclaimers, delivery conditions, etc. / Arreglo de hasta 4 notas personalizadas impresas en el recibo fiscal (Notas 1–4 en Unidigital).",
       "examples": [
-        ["Mercancía revisada al momento de la entrega.", "Sin derecho a devolución sin factura original."]
+        [
+          "Mercancía revisada al momento de la entrega.",
+          "Sin derecho a devolución sin factura original."
+        ]
       ]
     }
   },

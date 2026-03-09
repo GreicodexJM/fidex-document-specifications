@@ -59,7 +59,11 @@ fidex-document-specs/
 │   ├── 08-tax-retention.md
 │   └── 09-erp-mapping/               # Guías de integración ERP (inglés)
 │
-├── docs/es/                           # Documentación en español (v1.3)
+├── docs/es/                           # Documentación en español (v1.3–1.4)
+│   ├── 01-descripcion-general.md      # Arquitectura de dos capas, tipos de documento
+│   ├── 02-sobre-de-enrutamiento.md    # kontext_routing campo por campo
+│   ├── 03-seguridad-jose.md           # JWS/JWE, JWKS, J-MDN, Manifiesto Fiscal
+│   ├── 04-identificadores-gs1.md      # GTIN, GLN, SSCC, SICM, RIF
 │   ├── 05-fiscal-venezolano.md        # IVA, IGTF, SENIAT, tasas BCV
 │   ├── 06-ciclo-de-documentos.md      # Flujo Orden→Factura→Retención
 │   ├── 07-notas-credito-debito.md     # Mecánica fiscal de NC/ND

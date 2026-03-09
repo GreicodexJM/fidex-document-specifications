@@ -22,7 +22,14 @@
       "properties": {
         "document_info": {
           "type": "object",
-          "required": ["version", "retention_type", "document_number", "retention_period", "status", "dates"],
+          "required": [
+            "version",
+            "retention_type",
+            "document_number",
+            "retention_period",
+            "status",
+            "dates"
+          ],
           "description": "Core metadata for the retention document. Identifies the retention type, fiscal period, and current status. / Metadatos principales del comprobante de retención. Identifica el tipo de retención, el período fiscal y el estado actual.",
           "properties": {
             "version": {
@@ -37,6 +44,7 @@
             },
             "document_number": {
               "type": "string",
+              "minLength": 1,
               "description": "Unique identifier for this comprobante de retención. Recommended format: RET-{TYPE}-{YEAR}-{SEQUENCE}. / Identificador único para este comprobante de retención. Formato recomendado: RET-{TIPO}-{AÑO}-{SECUENCIA}.",
               "examples": ["RET-IVA-2026-00012", "RET-ISLR-2026-00003"]
             },
@@ -108,32 +116,37 @@
         },
         "summary": {
           "type": "object",
-          "required": ["total_taxable_base_usd", "total_retained_usd", "exchange_rate_applied", "total_retained_ves"],
+          "required": [
+            "total_taxable_base_usd",
+            "total_retained_usd",
+            "exchange_rate_applied",
+            "total_retained_ves"
+          ],
           "description": "Aggregate totals for the entire comprobante de retención. Used by the SENIAT Government Observer Node for the Targeted Tax Manifest. / Totales agregados de todo el comprobante de retención. Utilizados por el Nodo Observador Gubernamental del SENIAT para el Manifiesto Fiscal Objetivo.",
           "properties": {
             "total_taxable_base_usd": {
               "type": "number",
               "minimum": 0,
               "description": "Sum of all retention_lines.taxable_base_usd across the comprobante. / Suma de todos los taxable_base_usd de las líneas de retención del comprobante.",
-              "examples": [24.00, 2500.00]
+              "examples": [24.0, 2500.0]
             },
             "total_retained_usd": {
               "type": "number",
               "minimum": 0,
               "description": "Sum of all retention_lines.amount_retained_usd. This is the total amount withheld from the payments covered by this comprobante. / Suma de todos los amount_retained_usd de las líneas. Es el monto total retenido de los pagos cubiertos por este comprobante.",
-              "examples": [18.00, 25.00]
+              "examples": [18.0, 25.0]
             },
             "exchange_rate_applied": {
               "type": "number",
               "minimum": 0,
               "description": "BCV official exchange rate applied to convert the summary totals to VES. Should match the rate used across all retention_lines. / Tasa de cambio oficial BCV aplicada para convertir los totales del resumen a VES. Debe coincidir con la tasa usada en todas las líneas.",
-              "examples": [45.00]
+              "examples": [45.0]
             },
             "total_retained_ves": {
               "type": "number",
               "minimum": 0,
               "description": "Total retained amount in Venezuelan Bolívares. Calculated as: total_retained_usd × exchange_rate_applied. This is the amount enterado (remitted) to SENIAT. / Monto total retenido en Bolívares Venezolanos. Calculado como: total_retenido_usd × tasa_cambio_aplicada. Es el monto enterado al SENIAT.",
-              "examples": [810.00, 1125.00]
+              "examples": [810.0, 1125.0]
             }
           }
         }

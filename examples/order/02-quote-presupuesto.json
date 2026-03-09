@@ -41,7 +41,7 @@
       "term_type": "CONTADO",
       "net_days": 0,
       "currency": "USD",
-      "exchange_rate_pegged": 45.00
+      "exchange_rate_pegged": 45.0
     },
     "lines": [
       {
@@ -62,7 +62,7 @@
           "confirmed": 50
         },
         "pricing": {
-          "unit_price": 2.50,
+          "unit_price": 2.5,
           "currency": "USD"
         },
         "discounts_charges": [
@@ -70,18 +70,18 @@
             "type": "DISCOUNT",
             "description": "Descuento Comercial Leti",
             "applied_by": "LABORATORIO",
-            "percentage": 10.00,
-            "amount": 12.50
+            "percentage": 10.0,
+            "amount": 12.5
           }
         ],
         "taxes": [
           {
             "type": "IVA",
-            "percentage": 0.00,
+            "percentage": 0.0,
             "is_exempt": true
           }
         ],
-        "line_total_net": 112.50
+        "line_total_net": 112.5
       },
       {
         "line_id": 2,
@@ -101,25 +101,25 @@
           "confirmed": 25
         },
         "pricing": {
-          "unit_price": 1.80,
+          "unit_price": 1.8,
           "currency": "USD"
         },
         "taxes": [
           {
             "type": "IVA",
-            "percentage": 0.00,
+            "percentage": 0.0,
             "is_exempt": true
           }
         ],
-        "line_total_net": 45.00
+        "line_total_net": 45.0
       }
     ],
     "summary": {
       "total_lines": 2,
-      "total_net_usd": 157.50,
-      "total_discounts_usd": 12.50,
-      "total_taxes_usd": 0.00,
-      "total_gross_usd": 157.50
+      "total_net_usd": 157.5,
+      "total_discounts_usd": 12.5,
+      "total_taxes_usd": 0.0,
+      "total_gross_usd": 157.5
     }
   }
 }

@@ -22,7 +22,7 @@
           "document_number": "INV-2026-00145",
           "emission_date": "2026-03-11T10:00:00Z",
           "currency_base": "USD",
-          "total_amount": 157.50
+          "total_amount": 157.5
         }
       ]
     },
@@ -40,7 +40,7 @@
     "payment_terms": {
       "term_type": "CONTADO",
       "net_days": 0,
-      "exchange_rate_pegged": 45.00
+      "exchange_rate_pegged": 45.0
     },
     "lines": [
       {
@@ -55,7 +55,7 @@
           "invoiced": 5
         },
         "pricing": {
-          "unit_price": 2.50,
+          "unit_price": 2.5,
           "currency": "USD"
         },
         "discounts_charges": [
@@ -63,17 +63,17 @@
             "type": "DISCOUNT",
             "description": "Descuento Comercial Leti (igual que en factura original INV-2026-00145)",
             "applied_by": "LABORATORIO",
-            "percentage": 10.00,
+            "percentage": 10.0,
             "amount": 1.25
           }
         ],
         "taxes": [
           {
             "type": "IVA",
-            "percentage": 0.00,
+            "percentage": 0.0,
             "is_exempt": true,
-            "amount_usd": 0.00,
-            "amount_ves": 0.00
+            "amount_usd": 0.0,
+            "amount_ves": 0.0
           }
         ],
         "line_total_net": 11.25
@@ -83,13 +83,13 @@
       "total_lines": 1,
       "total_net_usd": 11.25,
       "total_discounts_usd": 1.25,
-      "total_taxes_usd": 0.00,
+      "total_taxes_usd": 0.0,
       "total_gross_usd": 11.25,
       "fiscal_totals_ves": {
-        "exchange_rate_applied": 45.00,
+        "exchange_rate_applied": 45.0,
         "base_imponible_ves": 506.25,
-        "total_iva_ves": 0.00,
-        "total_igtf_ves": 0.00,
+        "total_iva_ves": 0.0,
+        "total_igtf_ves": 0.0,
         "total_exempt_ves": 506.25,
         "total_gross_ves": 506.25
       }

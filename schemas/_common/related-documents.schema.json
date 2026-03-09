@@ -13,6 +13,7 @@
     },
     "document_number": {
       "type": "string",
+      "minLength": 1,
       "description": "Document number of the referenced document. / Número del documento referenciado.",
       "examples": ["INV-2026-00145", "ORD-2026-9921"]
     },
@@ -23,6 +24,7 @@
     },
     "currency_base": {
       "type": "string",
+      "minLength": 1,
       "description": "Base currency of the referenced document. / Moneda base del documento referenciado.",
       "examples": ["USD", "VES"]
     },
@@ -36,7 +38,7 @@
       "type": "number",
       "minimum": 0,
       "description": "Total amount of the referenced document in its base currency (AffectedDocumentAmount). / Monto total del documento referenciado en su moneda base.",
-      "examples": [130.50, 100.00]
+      "examples": [130.5, 100.0]
     }
   },
   "unevaluatedProperties": false

@@ -37,22 +37,22 @@
         "related_invoice": {
           "document_number": "INV-2026-00145",
           "emission_date": "2026-03-11T10:00:00Z",
-          "invoice_total_usd": 157.50
+          "invoice_total_usd": 157.5
         },
         "islr_concept_code": "1",
         "islr_concept_description": "Compra de bienes muebles y prestacion de servicios en el pais",
-        "taxable_base_usd": 157.50,
-        "retention_rate": 1.00,
+        "taxable_base_usd": 157.5,
+        "retention_rate": 1.0,
         "amount_retained_usd": 1.58,
-        "exchange_rate_applied": 45.00,
-        "amount_retained_ves": 71.10
+        "exchange_rate_applied": 45.0,
+        "amount_retained_ves": 71.1
       }
     ],
     "summary": {
-      "total_taxable_base_usd": 157.50,
+      "total_taxable_base_usd": 157.5,
       "total_retained_usd": 1.58,
-      "exchange_rate_applied": 45.00,
-      "total_retained_ves": 71.10
+      "exchange_rate_applied": 45.0,
+      "total_retained_ves": 71.1
     }
   }
 }

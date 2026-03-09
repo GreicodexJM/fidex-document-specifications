@@ -37,8 +37,8 @@ validate: validate-customer validate-catalog validate-order validate-despatch va
 # Common ajv flags used by all validate targets:
 #   --spec draft2020     JSON Schema 2020-12 (supported by ajv-cli v5 / ajv v8.x)
 #   --strict=false       allow properties without explicit type in allOf sub-schemas
-#   --validate-formats=false  skip format assertions (date-time) — no ajv-formats installed
-AJV_FLAGS := --spec draft2020 --strict=false --validate-formats=false --errors=text
+#   -c ajv-formats       load ajv-formats plugin — enables date-time, email, uri format validation
+AJV_FLAGS := --spec draft2020 --strict=false --errors=text -c ajv-formats
 
 validate-customer: ## Validate customer master examples
 	@echo "→ Validating customer master..."
@@ -75,9 +75,10 @@ ifndef FILE
 	$(error FILE is required. Usage: make validate-one FILE=examples/order/01-purchase-order.json)
 endif
 	@echo "→ Detecting schema for $(FILE)..."
-	$(eval DOMAIN := $(word 2, $(subst /, ,$(FILE))))
-	@echo "→ Validating $(FILE) against schemas/$(DOMAIN)/gs1-$(DOMAIN).schema.json..."
-	@$(AJV) validate -s schemas/$(DOMAIN)/gs1-$(DOMAIN).schema.json -d $(FILE) \
+	$(eval _FILE_NORM := $(patsubst ./%,%,$(FILE)))
+	$(eval DOMAIN := $(word 2, $(subst /, ,$(_FILE_NORM))))
+	@echo "→ Validating $(_FILE_NORM) against schemas/$(DOMAIN)/gs1-$(DOMAIN).schema.json..."
+	@$(AJV) validate -s schemas/$(DOMAIN)/gs1-$(DOMAIN).schema.json -d $(_FILE_NORM) \
 		-r "$(SCHEMAS_COMMON_GLOB)" $(AJV_FLAGS)
 
 ##@ Code Quality

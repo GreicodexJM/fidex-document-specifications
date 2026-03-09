@@ -81,8 +81,8 @@
     ],
     "summary": {
       "total_lines": 2,
-      "total_net_usd": 0.00,
-      "total_gross_usd": 0.00
+      "total_net_usd": 0.0,
+      "total_gross_usd": 0.0
     }
   }
 }

@@ -16,7 +16,7 @@
       "minimum": 0,
       "maximum": 100,
       "description": "Tax rate as a percentage. IVA standard = 16.00, IVA reduced = 8.00, IVA exempt = 0.00, IGTF = 3.00. / Tasa impositiva como porcentaje.",
-      "examples": [16.00, 8.00, 3.00, 0.00]
+      "examples": [16.0, 8.0, 3.0, 0.0]
     },
     "is_exempt": {
       "type": "boolean",
@@ -27,13 +27,13 @@
       "type": "number",
       "minimum": 0,
       "description": "Tax amount in USD (commercial base currency). / Monto del impuesto en USD (moneda base comercial).",
-      "examples": [18.00, 3.37]
+      "examples": [18.0, 3.37]
     },
     "amount_ves": {
       "type": "number",
       "minimum": 0,
       "description": "Tax amount in Venezuelan Bolívares (VES). Computed as: amount_usd × exchange_rate_applied. Transmitted explicitly to ensure identical fiscal records across both ERPs. / Monto del impuesto en Bolívares. Calculado como: monto_usd × tasa_cambio_aplicada.",
-      "examples": [810.00, 135.00]
+      "examples": [810.0, 135.0]
     }
   },
   "unevaluatedProperties": false

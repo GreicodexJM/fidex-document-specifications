@@ -8,11 +8,13 @@
   "properties": {
     "tenant_id": {
       "type": "string",
+      "minLength": 1,
       "description": "Sender's tenant identifier registered in the FideX AS5 Hub. Assigned during 4-phase partner onboarding. / Identificador del tenant emisor registrado en el Hub FideX AS5.",
       "examples": ["tenant-leti-01", "tenant-belo-01"]
     },
     "receiver_id": {
       "type": "string",
+      "minLength": 1,
       "description": "Receiver's partner identifier in the Trading Partner Directory (TPD). Used to look up the receiver's message_endpoint and JWKS keys. / Identificador del socio receptor en el Directorio de Socios Comerciales.",
       "examples": ["partner-drogueria-x", "partner-belo-distribuciones"]
     },
@@ -30,6 +32,7 @@
     },
     "correlation_id": {
       "type": "string",
+      "minLength": 1,
       "description": "Business correlation key linking all documents in a transaction chain (PURCHASE_ORDER → QUOTE → ORDER_CONFIRMED → ASN → INVOICE). Use the originating order number as the anchor. / Clave de correlación de negocio que enlaza todos los documentos de una cadena transaccional.",
       "examples": ["ORD-2026-9921", "CAT-2026-03-VE", "CUST-J222222223"]
     }

@@ -37,22 +37,22 @@
         "related_invoice": {
           "document_number": "INV-2026-00146",
           "emission_date": "2026-03-11T11:00:00Z",
-          "invoice_total_usd": 178.50,
+          "invoice_total_usd": 178.5,
           "fiscal_series": "A",
           "control_number": "00000146"
         },
-        "taxable_base_usd": 24.00,
-        "retention_rate": 75.00,
-        "amount_retained_usd": 18.00,
-        "exchange_rate_applied": 45.00,
-        "amount_retained_ves": 810.00
+        "taxable_base_usd": 24.0,
+        "retention_rate": 75.0,
+        "amount_retained_usd": 18.0,
+        "exchange_rate_applied": 45.0,
+        "amount_retained_ves": 810.0
       }
     ],
     "summary": {
-      "total_taxable_base_usd": 24.00,
-      "total_retained_usd": 18.00,
-      "exchange_rate_applied": 45.00,
-      "total_retained_ves": 810.00
+      "total_taxable_base_usd": 24.0,
+      "total_retained_usd": 18.0,
+      "exchange_rate_applied": 45.0,
+      "total_retained_ves": 810.0
     }
   }
 }

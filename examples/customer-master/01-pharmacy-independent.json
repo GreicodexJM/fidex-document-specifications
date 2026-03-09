@@ -37,7 +37,7 @@
     "financial_profile": {
       "credit_status": "APPROVED",
       "credit_limit": {
-        "amount": 5000.00,
+        "amount": 5000.0,
         "currency": "USD"
       },
       "payment_terms": {
@@ -47,7 +47,7 @@
       },
       "tax_profile": {
         "is_retention_agent_iva": true,
-        "retention_percentage": 75.00
+        "retention_percentage": 75.0
       }
     },
     "sales_routing": {

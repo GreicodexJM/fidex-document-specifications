@@ -124,7 +124,10 @@
           "type": "object",
           "description": "Agreed payment conditions. Set by vendor in QUOTE; confirmed by buyer in ORDER_CONFIRMED. / Condiciones de pago acordadas.",
           "properties": {
-            "method": { "type": "string", "examples": ["Multi-Pago", "Transferencia", "PagoMovil"] },
+            "method": {
+              "type": "string",
+              "examples": ["Multi-Pago", "Transferencia", "PagoMovil"]
+            },
             "term_type": {
               "type": "string",
               "enum": ["CONTADO", "NET_15", "NET_30", "NET_60"]
@@ -134,7 +137,7 @@
             "exchange_rate_pegged": {
               "type": "number",
               "description": "BCV exchange rate locked at time of agreement. / Tasa BCV bloqueada en el momento del acuerdo.",
-              "examples": [45.00]
+              "examples": [45.0]
             }
           }
         },

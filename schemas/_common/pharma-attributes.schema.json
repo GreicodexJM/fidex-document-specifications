@@ -19,11 +19,7 @@
     "presentation": {
       "type": "string",
       "description": "Commercial packaging presentation (units, container type). / Presentación comercial (unidades, tipo de envase).",
-      "examples": [
-        "Caja x 21 Capsulas",
-        "Caja x 10 Tabletas",
-        "Frasco x 120 mL Jarabe"
-      ]
+      "examples": ["Caja x 21 Capsulas", "Caja x 10 Tabletas", "Frasco x 120 mL Jarabe"]
     },
     "requires_prescription": {
       "type": "boolean",
@@ -31,12 +27,7 @@
     },
     "storage_conditions": {
       "type": "string",
-      "enum": [
-        "ROOM_TEMPERATURE",
-        "REFRIGERATED",
-        "FROZEN",
-        "CONTROLLED_SUBSTANCE"
-      ],
+      "enum": ["ROOM_TEMPERATURE", "REFRIGERATED", "FROZEN", "CONTROLLED_SUBSTANCE"],
       "description": "Storage temperature requirement. Drives cold-chain logistics decisions. REFRIGERATED = 2–8°C, FROZEN = -20°C or below. / Requisito de temperatura de almacenamiento. Determina decisiones de cadena de frío.",
       "examples": ["ROOM_TEMPERATURE", "REFRIGERATED"]
     },
