@@ -32,33 +32,46 @@
 - [x] `docs/es/09-integracion-erp/` (all 5 ERPs)
 - [x] `README.es.md`
 
-### Toolchain
-- [x] `Makefile` with `validate`, `validate-one`, `lint`, `format`, `check-deps`
-- [x] `package.json` with `ajv-cli` + `prettier`
-- [x] `.prettierrc` formatting rules
-- [x] `make validate` passes all 13 examples
-
----
-
 ### Infrastructure & Hardening (v1.4.0)
 - [x] GitHub Actions CI/CD pipeline (`.github/workflows/validate.yml`)
 - [x] `ajv-formats` — `date-time`, `email` format validation active
 - [x] ISLR rounding rule (half-up, 2 decimals) in `retention-detail.schema.json`
-- [x] `minLength: 1` on all required string fields (6 schemas updated)
+- [x] `minLength: 1` on all required string fields (6 schemas in v1.4; 4 more in v1.5)
 - [x] Spanish translations `docs/es/01–04` (overview, routing, security, GS1)
 - [x] Memory Bank files (`activeContext.md`, `progress.md`, `techContext.md`)
 - [x] `validate-one` `./` prefix path normalization
 - [x] `package.json` version sync + README badge sync
-- [x] Stale known-issue entries cleared from `03_AGENTIC_WORKFLOW.md`
-- [x] All 29 JSON files formatted with prettier
+
+### Protocol Integration Specs & Test Hardening (v1.5.0)
+- [x] `docs/10-government-observer-node.md` — Observer Node spec, re-encryption flow, Tax Manifest
+- [x] `docs/11-dlt-merkle-anchoring.md` — Two-stage J-MDN, hourly Merkle rollup, Solidity interface
+- [x] `docs/12-jsonata-maps.md` — JSONata maps reference, Hub→ERP routing, `$env` context
+- [x] `gs1-order.schema.json` — `if/then` enforcement for QUOTE/ORDER_CONFIRMED back-references
+- [x] `minLength: 1` added to catalog, customer-master, despatch-advice, product-identity
+- [x] `examples/_invalid/` — negative test suite (3 fixtures)
+- [x] `make validate-negative` — inverted exit-code validation target
+- [x] `make validate-all` — full suite (positive + negative)
+- [x] GitHub Actions CI — added separate `validate-negative` step
+
+### Toolchain
+- [x] `Makefile` with `validate`, `validate-one`, `validate-negative`, `validate-all`, `lint`, `format`, `check-deps`
+- [x] `package.json` with `ajv-cli` + `prettier` + `ajv-formats`
+- [x] `.prettierrc` formatting rules
+- [x] `make validate-all` passes: 13 positive ✅ + 3 negative ✅
+
+---
 
 ## What's Left to Build ❌
 
-### v1.5.0 (Protocol Integration)
-- [ ] Government Observer Node integration spec
-- [ ] JSONata transformation map reference for Hub → ERP routing
-- [ ] DLT / Merkle Root anchoring protocol specification
-- [ ] `greicodex/fidex-hub` schema integration tests
+### v1.6.0 (Spec Gap Closure)
+- [ ] `schemas/jmdn/gs1-jmdn.schema.json` — J-MDN schema (Technical + Fiscal receipts)
+- [ ] `examples/jmdn/01-technical-receipt.json` and `02-fiscal-receipt.json`
+- [ ] `make validate-jmdn` Makefile target
+- [ ] `docs/es/10-nodo-observador-gubernamental.md` — Spanish translation of doc 10
+- [ ] `docs/es/11-anclaje-dlt-merkle.md` — Spanish translation of doc 11
+- [ ] `docs/es/12-mapas-jsonata.md` — Spanish translation of doc 12
+- [ ] README.md structure tree sync (docs 10–12, `_invalid/`, `docs/es/01–04`, memory-bank files)
+- [ ] Expand negative test suite (4 more fixtures: RIF pattern, SSCC, minLength, conditional catalog)
 
 ### v2.0.0 (Future Scope — Out of Current Spec)
 - [ ] Transport Protocol (see `greicodex/fidex-protocol`)
@@ -70,23 +83,27 @@
 
 ## Current Status
 
-**Repository**: Stable — all 13 examples passing `make validate` + `make lint`
-**Documentation**: Complete for EN docs 01–09; ES docs 01–09 now fully translated
-**CI/CD**: GitHub Actions pipeline active (`.github/workflows/validate.yml`)
+**Repository**: Stable — 13 positive examples + 3 negative examples all pass `make validate-all`
+**Documentation**: Complete for EN docs 01–12; ES docs 01–09 (10–12 pending)
+**CI/CD**: GitHub Actions runs `validate` + `validate-negative` + `lint` on every push to main/develop
 **Format validation**: ENABLED — `ajv-formats` installed, `-c ajv-formats` in Makefile
 
 ---
 
 ## Known Issues
 
-No open issues as of v1.4.0. All previous items resolved:
+No open issues as of v1.5.0.
 
 | Issue | Status |
 |---|---|
 | `date-time` format not validated | ✅ Fixed — `ajv-formats` enabled in v1.4 |
-| ISLR rounding rule unspecified | ✅ Fixed — half-up rule documented in `retention-detail.schema.json` |
+| ISLR rounding rule unspecified | ✅ Fixed — half-up rule in `retention-detail.schema.json` v1.4 |
 | Spanish docs 01–04 missing | ✅ Fixed — all 4 translated in v1.4 |
-| `validate-one` `./` prefix path | ✅ Fixed — `patsubst ./%,%` normalization in Makefile |
+| `validate-one` `./` prefix path | ✅ Fixed — `patsubst ./%,%` normalization in v1.4 |
+| Order schema no `if/then` | ✅ Fixed — QUOTE/ORDER_CONFIRMED enforcement added in v1.5 |
+| CI only ran positive tests | ✅ Fixed — `validate-negative` step added to GitHub Actions in v1.5 |
+| Spanish docs 10–12 missing | 🔴 Open — added in v1.5, Spanish translation pending v1.6 |
+| J-MDN has no JSON Schema | 🔴 Open — referenced in docs/03 + docs/11, schema pending v1.6 |
 
 ---
 
@@ -98,3 +115,5 @@ No open issues as of v1.4.0. All previous items resolved:
 | Credit/Debit Note routing | Considered separate `document_type` | Kept under `GS1_INVOICE_JSON` — AS5 routing identical; `doc_type` differentiates |
 | Venezuelan fiscal fields | Initially required on all invoices | Made optional — keeps format internationally viable |
 | ISLR retention scope | One retention per invoice | Allows multi-invoice consolidation within same fiscal period |
+| Negative tests location | Could have been inline `not:` in schemas | Separate `examples/_invalid/` is more readable and discoverable |
+| CI validation | Only positive tests | v1.5: split into `validate` + `validate-negative` steps for clearer failure diagnosis |

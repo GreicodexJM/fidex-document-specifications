@@ -49,7 +49,10 @@ fidex-document-specs/
 ├── memory-bank/                       # Project context (GOS standard)
 │   ├── 01_PROJECT_CHARTER.md
 │   ├── 02_ARCHITECTURE_PRINCIPLES.md
-│   └── 03_AGENTIC_WORKFLOW.md
+│   ├── 03_AGENTIC_WORKFLOW.md
+│   ├── activeContext.md               # Current version, focus, patterns  (v1.4)
+│   ├── progress.md                    # What works, what's left, known issues (v1.4)
+│   └── techContext.md                 # Tech stack, constraints, CI/CD  (v1.4)
 │
 ├── docs/                              # Narrative & conceptual documentation
 │   ├── 01-overview.md                 # Architecture & design philosophy
@@ -60,13 +63,26 @@ fidex-document-specs/
 │   ├── 06-document-lifecycle.md       # Order→Quote→Confirm→Invoice flow
 │   ├── 07-credit-debit-notes.md       # v1.1 — CN/DN fiscal mechanics
 │   ├── 08-tax-retention.md            # v1.1 — IVA & ISLR retention
-│   └── 09-erp-mapping/               # v1.2 — ERP integration mapping
-│       ├── 00-index.md               # ERP comparison matrix & architecture
-│       ├── 01-odoo-17-18.md          # Odoo 17/18 JSON-RPC + REST mapping
-│       ├── 02-profit.md              # Profit Plus v12 SQL/COM SDK mapping
-│       ├── 03-saint.md               # Saint Enterprise v6+ REST mapping
-│       ├── 04-galac.md               # Galac Software v5+ fiscal mapping
-│       └── 05-sap-business-one.md    # SAP B1 Service Layer mapping
+│   ├── 09-erp-mapping/               # v1.2 — ERP integration mapping
+│   │   ├── 00-index.md               # ERP comparison matrix & architecture
+│   │   ├── 01-odoo-17-18.md          # Odoo 17/18 JSON-RPC + REST mapping
+│   │   ├── 02-profit.md              # Profit Plus v12 SQL/COM SDK mapping
+│   │   ├── 03-saint.md               # Saint Enterprise v6+ REST mapping
+│   │   ├── 04-galac.md               # Galac Software v5+ fiscal mapping
+│   │   └── 05-sap-business-one.md    # SAP B1 Service Layer mapping
+│   ├── 10-government-observer-node.md # v1.5 — Privacy-preserving SENIAT bridge
+│   ├── 11-dlt-merkle-anchoring.md     # v1.5 — Two-stage J-MDN + hourly Merkle rollup
+│   ├── 12-jsonata-maps.md             # v1.5 — JSONata transformation maps reference
+│   └── es/                            # 🇪🇸 Spanish documentation (v1.3/v1.4)
+│       ├── 01-descripcion-general.md
+│       ├── 02-sobre-de-enrutamiento.md
+│       ├── 03-seguridad-jose.md
+│       ├── 04-identificadores-gs1.md
+│       ├── 05-fiscal-venezolano.md
+│       ├── 06-ciclo-de-documentos.md
+│       ├── 07-notas-credito-debito.md
+│       ├── 08-retenciones-fiscales.md
+│       └── 09-integracion-erp/        # All 5 ERPs translated
 │
 ├── schemas/                           # JSON Schema 2020-12 definitions
 │   ├── _common/                       # Reusable $ref components
@@ -110,9 +126,13 @@ fidex-document-specs/
     │   ├── 02-invoice-with-fiscal-control.json
     │   ├── 03-credit-note.json             # v1.1 NEW
     │   └── 04-debit-note.json              # v1.1 NEW
-    └── retention/                          # v1.1 NEW
-        ├── 01-retention-iva.json
-        └── 02-retention-islr.json
+    ├── retention/                          # v1.1 NEW
+    │   ├── 01-retention-iva.json
+    │   └── 02-retention-islr.json
+    └── _invalid/                           # v1.5 — Negative test fixtures (must FAIL)
+        ├── invoice/01-credit-note-no-related.json
+        ├── order/01-order-confirmed-no-quote.json
+        └── retention/01-bad-period-format.json
 ```
 
 ---
@@ -125,7 +145,10 @@ fidex-document-specs/
 # Install dependencies
 npm install
 
-# Validate everything
+# Validate everything (positive + negative tests)
+make validate-all
+
+# Validate only positive examples
 make validate
 
 # Validate a single example
