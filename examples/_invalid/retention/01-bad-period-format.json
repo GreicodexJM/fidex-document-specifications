@@ -1,0 +1,52 @@
+{
+  "kontext_routing": {
+    "tenant_id": "test-negative",
+    "sender_gln": "7599876500001",
+    "receiver_gln": "7591234500001",
+    "document_type": "GS1_RETENTION_JSON",
+    "correlation_id": "RET-INVALID-001",
+    "priority": "NORMAL",
+    "trace_flags": []
+  },
+  "payload": {
+    "document_info": {
+      "version": "1.1",
+      "retention_type": "RETENTION_IVA",
+      "document_number": "RET-INVALID-001",
+      "status": "ISSUED",
+      "retention_period": "2026-3",
+      "dates": {
+        "issued_at": "2026-03-09T14:30:00Z"
+      }
+    },
+    "parties": {
+      "retention_agent": {
+        "name": "Drogueria BLV C.A.",
+        "gln": "7599876500001",
+        "tax_id": "J-22222222-3"
+      },
+      "supplier": {
+        "name": "Laboratorios LETI S.A.C.A.",
+        "gln": "7591234500001",
+        "tax_id": "J-30000000-1"
+      }
+    },
+    "retention_lines": [
+      {
+        "line_id": 1,
+        "invoice_ref": "FAC-2026-000123",
+        "invoice_date": "2026-03-05",
+        "tax_base_usd": 1000.00,
+        "iva_on_invoice_usd": 160.00,
+        "retention_percentage": 75,
+        "retained_amount_usd": 120.00
+      }
+    ],
+    "totals": {
+      "total_tax_base_usd": 1000.00,
+      "total_iva_invoiced_usd": 160.00,
+      "total_retained_usd": 120.00,
+      "total_paid_to_supplier_usd": 40.00
+    }
+  }
+}

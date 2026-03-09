@@ -70,6 +70,29 @@ validate-retention: ## Validate retention examples (IVA and ISLR)
 	@$(AJV) validate -s $(SCHEMA_RETENTION) -d "examples/retention/*.json" \
 		-r "$(SCHEMAS_COMMON_GLOB)" $(AJV_FLAGS)
 
+validate-negative: ## Negative tests — each _invalid example MUST fail validation (exit 1)
+	@echo "→ Running negative validation tests..."
+	@FAILED=0; \
+	for domain in invoice order retention customer-master catalog despatch-advice; do \
+		dir=examples/_invalid/$$domain; \
+		[ -d "$$dir" ] || continue; \
+		schema=schemas/$$domain/gs1-$$domain.schema.json; \
+		for f in $$dir/*.json; do \
+			[ -f "$$f" ] || continue; \
+			if $(AJV) validate -s $$schema -d $$f -r "$(SCHEMAS_COMMON_GLOB)" $(AJV_FLAGS) > /dev/null 2>&1; then \
+				echo "❌  $$f should have FAILED but passed validation"; \
+				FAILED=1; \
+			else \
+				echo "✅  $$f correctly rejected by schema"; \
+			fi; \
+		done; \
+	done; \
+	if [ "$$FAILED" -eq 1 ]; then exit 1; fi
+	@echo ""
+	@echo "✅  All negative examples correctly rejected by schemas."
+
+validate-all: validate validate-negative ## Run ALL tests: positive examples (must pass) + negative examples (must fail)
+
 validate-one: ## Validate a single file. Usage: make validate-one FILE=examples/order/01-purchase-order.json
 ifndef FILE
 	$(error FILE is required. Usage: make validate-one FILE=examples/order/01-purchase-order.json)
@@ -105,4 +128,4 @@ check-deps: ## Check that required tools are installed
 	@$(AJV) --version || echo "❌ ajv-cli not found. Run: make install"
 	@$(PRETTIER) --version || echo "❌ prettier not found. Run: make install"
 
-.PHONY: help install validate validate-customer validate-catalog validate-order validate-despatch validate-invoice validate-retention validate-one lint format list-schemas list-examples check-deps
+.PHONY: help install validate validate-customer validate-catalog validate-order validate-despatch validate-invoice validate-retention validate-one validate-negative validate-all lint format list-schemas list-examples check-deps

@@ -1,0 +1,52 @@
+{
+  "kontext_routing": {
+    "tenant_id": "test-negative",
+    "sender_gln": "7591234500001",
+    "receiver_gln": "7599876500001",
+    "document_type": "GS1_INVOICE_JSON",
+    "correlation_id": "NC-INVALID-001",
+    "priority": "NORMAL",
+    "trace_flags": []
+  },
+  "payload": {
+    "document_info": {
+      "version": "1.1",
+      "doc_type": "CREDIT_NOTE",
+      "document_number": "NC-INVALID-001",
+      "status": "ISSUED",
+      "currency_base": "USD",
+      "dates": {
+        "issued_at": "2026-03-09T14:30:00Z"
+      }
+    },
+    "parties": {
+      "seller": {
+        "name": "Laboratorios LETI S.A.C.A.",
+        "gln": "7591234500001",
+        "tax_id": "J-30000000-1"
+      },
+      "buyer": {
+        "name": "Drogueria BLV C.A.",
+        "gln": "7599876500001",
+        "tax_id": "J-22222222-3"
+      }
+    },
+    "lines": [
+      {
+        "line_id": 1,
+        "product": {
+          "gtin": "7591234567890",
+          "description": "Amoxicilina 500mg x 21 capsulas"
+        },
+        "qty": {
+          "uom": "Caja",
+          "invoiced": 10
+        },
+        "pricing": {
+          "unit_price": 5.00,
+          "currency": "USD"
+        }
+      }
+    ]
+  }
+}
