@@ -28,11 +28,13 @@
             "doc_type": { "type": "string", "const": "DESPATCH_ADVICE" },
             "document_number": {
               "type": "string",
+              "minLength": 1,
               "description": "ASN document number. / Número del ASN.",
               "examples": ["ASN-88421"]
             },
             "related_order": {
               "type": "string",
+              "minLength": 1,
               "description": "References the ORDER_CONFIRMED document_number that triggered this shipment. Part of the Three-Way Match correlation triangle. / Referencia al document_number de la ORDER_CONFIRMED que disparó este despacho.",
               "examples": ["ORD-2026-9921"]
             },

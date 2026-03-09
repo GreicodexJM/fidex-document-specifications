@@ -36,7 +36,7 @@
 - [x] `Makefile` with `validate`, `validate-one`, `lint`, `format`, `check-deps`
 - [x] `package.json` with `ajv-cli` + `prettier`
 - [x] `.prettierrc` formatting rules
-- [x] `make validate` passes all 16 examples
+- [x] `make validate` passes all 13 examples
 
 ---
 

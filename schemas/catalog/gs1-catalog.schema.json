@@ -28,6 +28,7 @@
             "doc_type": { "type": "string", "const": "CATALOG" },
             "document_number": {
               "type": "string",
+              "minLength": 1,
               "examples": ["CAT-2026-03-VE", "SYNC-FULL-1043"]
             },
             "status": {
@@ -37,6 +38,7 @@
             },
             "currency_base": {
               "type": "string",
+              "minLength": 1,
               "description": "Base currency for all pricing in this catalog. / Moneda base para todos los precios en este catálogo.",
               "examples": ["USD"]
             },

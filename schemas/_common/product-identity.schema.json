@@ -24,6 +24,7 @@
     },
     "description": {
       "type": "string",
+      "minLength": 1,
       "description": "Human-readable product description including active ingredient, concentration, and presentation. / Descripción legible del producto incluyendo ingrediente activo, concentración y presentación.",
       "examples": [
         "Amoxicilina 500mg x 21 capsulas",

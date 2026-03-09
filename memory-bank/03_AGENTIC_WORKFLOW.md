@@ -1,16 +1,16 @@
 # Agentic Workflow — FideX Document Specifications
 
-## Current Status: v1.1.0 — COMPLETE
+## Current Status: v1.4.0 — COMPLETE
 
 ---
 
 ## Active Context
 
-**Last Action**: v1.1.0 implemented — Credit/Debit Notes and Tax Retention documents added.
+**Last Action**: v1.4.0 implemented — Infrastructure hardening, full Spanish documentation (docs 01–09), schema `minLength` enforcement, `ajv-formats` enabled, GitHub Actions CI/CD.
 
-**Current Focus**: Full fiscal correction cycle is now covered. Repository includes all post-invoice adjustment documents and Venezuelan tax withholding comprobantes.
+**Current Focus**: Specification is stable and fully documented in EN + ES. All 13 examples pass validation.
 
-**Next Milestone**: v1.2.0 — CI/CD (GitHub Actions), ERP mapping guide (`docs/erp-mapping/`), and Government Observer Node integration spec.
+**Next Milestone**: v1.5.0 — Government Observer Node spec (`docs/10-government-observer-node.md`), DLT/Merkle anchoring spec, JSONata transformation map reference, negative test suite.
 
 ---
 
@@ -68,18 +68,17 @@ Open a Pull Request with all four artifacts (doc, schema, example, registry upda
 
 ## Known Issues / Technical Debt
 
-| Issue | Priority | Notes |
-|---|---|---|
-| `validate-one` Makefile target `./`-prefix path bug | Low | Fixed in v1.4: `patsubst ./%,%` normalization added before domain extraction |
-| No CI/CD pipeline yet | Medium | Add GitHub Actions workflow — `.github/workflows/validate.yml` |
-| ISLR retention rate rounding | Low | $157.50 × 1% = $1.575 rounded to $1.58 USD — specify rounding rule in `retention-detail.schema.json` |
-| Spanish docs 01–04 missing | Low | `docs/es/01-04` not yet translated (docs 05–09 done in v1.3) |
+No open issues as of v1.4.0.
 
-**Resolved:**
+**All Resolved:**
 | Issue | Resolution |
 |---|---|
-| `examples/invoice/02-invoice-with-fiscal-control.json` has `_comment` at root | File never had `_comment` — stale entry, removed |
-| `docs/erp-mapping/` placeholder not yet written | Completed in v1.2 — all 5 ERP guides written |
+| `validate-one` Makefile `./`-prefix path bug | ✅ Fixed v1.4 — `patsubst ./%,%` normalization |
+| No CI/CD pipeline | ✅ Fixed v1.4 — GitHub Actions `.github/workflows/validate.yml` |
+| ISLR rounding rule unspecified | ✅ Fixed v1.4 — half-up 2 decimals in `retention-detail.schema.json` |
+| Spanish docs 01–04 missing | ✅ Fixed v1.4 — all 4 docs created in `docs/es/` |
+| `_comment` root key known issue | ✅ Removed v1.4 — was a stale erroneous entry |
+| `docs/erp-mapping/` placeholder not written | ✅ Fixed v1.2 — all 5 ERP guides written |
 
 ---
 

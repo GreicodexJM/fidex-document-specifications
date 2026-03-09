@@ -13,11 +13,6 @@
 - JSONata transformation map reference (Hub → ERP)
 - DLT / Merkle anchoring protocol spec
 
-**Next planned milestone (v1.5.0)**:
-- Government Observer Node integration specification
-- JSONata transformation map reference (Hub → ERP)
-- DLT / Merkle anchoring protocol spec
-
 ---
 
 ## Recent Changes

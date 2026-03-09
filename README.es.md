@@ -2,7 +2,7 @@
 
 > **Estándar AS5/FideX para Intercambio B2B Farmacéutico — Edición Venezolana y LATAM**
 
-[![Versión del Esquema](https://img.shields.io/badge/versión--esquema-v1.3.0-blue)](CHANGELOG.md)
+[![Versión del Esquema](https://img.shields.io/badge/versión--esquema-v1.4.0-blue)](CHANGELOG.md)
 [![JSON Schema](https://img.shields.io/badge/JSON%20Schema-2020--12-green)](https://json-schema.org/draft/2020-12/schema)
 [![Cumplimiento GS1](https://img.shields.io/badge/GS1-LATAM%20Compliant-orange)](docs/es/05-fiscal-venezolano.md)
 

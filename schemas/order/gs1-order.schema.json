@@ -32,6 +32,7 @@
             },
             "document_number": {
               "type": "string",
+              "minLength": 1,
               "description": "Unique document number. Anchor of the correlation_id chain. / Número único del documento. Ancla de la cadena correlation_id.",
               "examples": ["ORD-2026-9921", "QUO-2026-0155", "CONF-2026-0089"]
             },
@@ -64,6 +65,7 @@
             },
             "currency_base": {
               "type": "string",
+              "minLength": 1,
               "description": "Base currency for all commercial amounts. / Moneda base para todos los montos comerciales.",
               "examples": ["USD"]
             },
@@ -324,7 +326,39 @@
             }
           }
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "document_info": {
+                "properties": { "doc_type": { "const": "QUOTE" } },
+                "required": ["doc_type"]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "document_info": { "required": ["related_order"] }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "document_info": {
+                "properties": { "doc_type": { "const": "ORDER_CONFIRMED" } },
+                "required": ["doc_type"]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "document_info": { "required": ["related_order", "related_quote"] }
+            }
+          }
+        }
+      ]
     }
   },
   "unevaluatedProperties": false

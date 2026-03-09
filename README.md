@@ -2,7 +2,7 @@
 
 > **AS5/FideX Pharmaceutical B2B Payload Standard — Venezuelan & LATAM Edition**
 
-[![Schema Version](https://img.shields.io/badge/schema--version-v1.3.0-blue)](CHANGELOG.md)
+[![Schema Version](https://img.shields.io/badge/schema--version-v1.4.0-blue)](CHANGELOG.md)
 [![CI](https://github.com/GreicodexJM/fidex-document-specifications/actions/workflows/validate.yml/badge.svg)](https://github.com/GreicodexJM/fidex-document-specifications/actions/workflows/validate.yml)
 [![JSON Schema](https://img.shields.io/badge/JSON%20Schema-2020--12-green)](https://json-schema.org/draft/2020-12/schema)
 [![GS1 Compliant](https://img.shields.io/badge/GS1-LATAM%20Compliant-orange)](docs/04-gs1-identifiers.md)

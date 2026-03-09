@@ -36,6 +36,7 @@
             },
             "document_number": {
               "type": "string",
+              "minLength": 1,
               "description": "Internal customer record identifier. / Identificador interno del registro de cliente.",
               "examples": ["C-10045"]
             },
@@ -70,6 +71,7 @@
             },
             "name": {
               "type": "string",
+              "minLength": 1,
               "description": "Full legal name. / Nombre legal completo.",
               "examples": ["Farmacia El Pueblo, C.A."]
             },
