@@ -2,7 +2,7 @@
 
 > **AS5/FideX Pharmaceutical B2B Payload Standard — Venezuelan & LATAM Edition**
 
-[![Schema Version](https://img.shields.io/badge/schema--version-v1.1.0-blue)](CHANGELOG.md)
+[![Schema Version](https://img.shields.io/badge/schema--version-v1.2.0-blue)](CHANGELOG.md)
 [![JSON Schema](https://img.shields.io/badge/JSON%20Schema-2020--12-green)](https://json-schema.org/draft/2020-12/schema)
 [![GS1 Compliant](https://img.shields.io/badge/GS1-LATAM%20Compliant-orange)](docs/04-gs1-identifiers.md)
 
@@ -54,7 +54,16 @@ fidex-document-specs/
 │   ├── 03-security-jose.md            # JWS/JWE Sign-then-Encrypt
 │   ├── 04-gs1-identifiers.md          # GTIN, GLN, SSCC, SICM explained
 │   ├── 05-venezuelan-fiscal.md        # IVA, IGTF, SENIAT, BCV rates
-│   └── 06-document-lifecycle.md       # Order→Quote→Confirm→Invoice flow
+│   ├── 06-document-lifecycle.md       # Order→Quote→Confirm→Invoice flow
+│   ├── 07-credit-debit-notes.md       # v1.1 — CN/DN fiscal mechanics
+│   ├── 08-tax-retention.md            # v1.1 — IVA & ISLR retention
+│   └── 09-erp-mapping/               # v1.2 — ERP integration mapping
+│       ├── 00-index.md               # ERP comparison matrix & architecture
+│       ├── 01-odoo-17-18.md          # Odoo 17/18 JSON-RPC + REST mapping
+│       ├── 02-profit.md              # Profit Plus v12 SQL/COM SDK mapping
+│       ├── 03-saint.md               # Saint Enterprise v6+ REST mapping
+│       ├── 04-galac.md               # Galac Software v5+ fiscal mapping
+│       └── 05-sap-business-one.md    # SAP B1 Service Layer mapping
 │
 ├── schemas/                           # JSON Schema 2020-12 definitions
 │   ├── _common/                       # Reusable $ref components
@@ -156,6 +165,22 @@ Buyer                         Vendor (Laboratorio)
 4. **Venezuelan Fiscal Isolation** — SENIAT-specific data (`fiscal_totals_ves`, `fiscal_control`) is isolated in dedicated nested objects, keeping the core format internationally viable.
 
 5. **Merkle Root State Sync** — Catalog/inventory documents use `sync_state` with `previous_merkle_root` / `current_merkle_root` for self-healing "Rsync-style" synchronization.
+
+---
+
+## 🔌 ERP Integration (v1.2)
+
+The `docs/09-erp-mapping/` directory provides **field-level mapping tables and API endpoint references** for integrating all 6 FideX document types into each supported ERP:
+
+| ERP | Vendor | Integration Layer | Guide |
+|---|---|---|---|
+| **Odoo 17 / 18** | Odoo S.A. | JSON-RPC + REST (`/web/dataset/call_kw`, `/api/`) | [01-odoo-17-18.md](docs/09-erp-mapping/01-odoo-17-18.md) |
+| **Profit Plus v12** | Softech C.A. (miprofit.com) | SQL Server direct + `ProfitSDK.dll` COM | [02-profit.md](docs/09-erp-mapping/02-profit.md) |
+| **Saint Enterprise v6+** | Business Technology (saintve.com) | REST API `/api/v1/` | [03-saint.md](docs/09-erp-mapping/03-saint.md) |
+| **Galac Software v5+** | Galac Software C.A. | XML import + REST `/api/v1/` *(fiscal only)* | [04-galac.md](docs/09-erp-mapping/04-galac.md) |
+| **SAP Business One 10.0** | SAP SE | Service Layer REST (`https://{server}:50000/b1s/v1/`) | [05-sap-business-one.md](docs/09-erp-mapping/05-sap-business-one.md) |
+
+Start with the [index guide](docs/09-erp-mapping/00-index.md) for an ERP comparison matrix, integration architecture, and the Venezuelan fiscal field reference (RIF, SICM, BCV rate, IGTF, IVA/ISLR retention).
 
 ---
 

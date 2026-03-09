@@ -11,6 +11,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.2.0] — 2026-03-09
+
+### Added
+
+#### ERP Integration Mapping Guides (`docs/09-erp-mapping/`)
+New documentation directory with field-level mapping tables and API endpoint references for all 5 target ERPs used in the Venezuelan pharmaceutical supply chain:
+
+- `docs/09-erp-mapping/00-index.md` — Master index: ERP comparison matrix, document family matrix (all 6 FideX types × 5 ERPs), integration architecture diagram, Venezuelan fiscal field reference (RIF, SICM, BCV rate, IGTF, IVA/ISLR retention, comprobante)
+- `docs/09-erp-mapping/01-odoo-17-18.md` — **Odoo 17/18** (Odoo S.A.): JSON-RPC + REST API (`/web/dataset/call_kw`, `/api/`), full mapping for all 6 document types to `res.partner`, `product.template`, `sale.order`, `stock.picking`, `account.move` (incl. `l10n_ve` localization fields and `x_*` custom field guidance)
+- `docs/09-erp-mapping/02-profit.md` — **Profit Plus v12** (Softech C.A., miprofit.com): SQL Server direct + COM SDK (`ProfitSDK.dll`) mapping to `clientes`, `articulos`, `ped_venta`, `guia_despacho`, `factura`, `comp_ret`; includes SQL MERGE upsert patterns
+- `docs/09-erp-mapping/03-saint.md` — **Saint Enterprise v6+** (Business Technology C.A., saintve.com): REST API v1 (`/api/v1/`) mapping to `ClCliente`, `InArticulo`, `VePedido`, `VeDespacho`, `VeFactura`, `VeRetencion`; includes `CampoLibre` field strategy for SICM/GLN/SSCC
+- `docs/09-erp-mapping/04-galac.md` — **Galac Software v5+** (Galac Software C.A.): fiscal-only scope (invoices + retentions); XML import format + REST API (`/api/v1/`); Bs-centric field mapping for `FacturasVentas`, `NotasCredito`, `ComprobantesRetencion`; ISLR `CodigoConcepto` / Decreto 1808 Tabla 26 fields
+- `docs/09-erp-mapping/05-sap-business-one.md` — **SAP Business One 10.0** (SAP SE): Service Layer REST (`https://{server}:50000/b1s/v1/`) mapping to `OCRD`, `OITM`, `ORDR`, `ODLN`, `OINV`/`ORIN`; UDF creation guide; withholding tax codes (Option A) and User-Defined Object `U_RETENCION` (Option B) for Venezuelan retention compliance
+
+### Design Decisions
+- Galac is documented as a **fiscal-only adapter** (no catalog, orders, or despatch); its scope deliberately excludes operational ERP functions
+- SAP B1 retention uses **two implementation options** (withholding tax codes vs. UDO) to accommodate different partner localization levels
+- Saint `CampoLibre1–5` / `CampoFecha1–3` are the recommended extension points for SICM, GLN, Merkle Root, and SSCC (avoids schema changes in older Saint versions)
+- Profit integrations must use `ProfitSDK.dll` for transactional documents (`factura`, `ped_venta`) to preserve legal fiscal sequence; SQL Server direct is safe only for master data
+
+---
+
+
 ## [1.1.0] — 2026-03-09
 
 ### Added
