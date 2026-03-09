@@ -1,0 +1,122 @@
+# .clinerules — FideX Document Specifications
+# Project-level rules for Cline (and any agent respecting .clinerules).
+# These rules override and extend the global agent-instructions when working in this repository.
+
+---
+
+## Project Identity
+
+This is a **pure specification repository** — JSON Schema 2020-12 definitions, validated example payloads, and narrative documentation for the FideX AS5 pharmaceutical B2B protocol (Venezuela). There is **no application code** to run, no server to start, and no build artifacts to produce.
+
+---
+
+## Mandatory First Steps (Every Session)
+
+Before making any change:
+
+1. Read `memory-bank/activeContext.md` — establishes current version, recent changes, and next steps
+2. Run `make validate-all` — confirm the baseline is green (15 positive ✅ + 8 negative ✅)
+
+```bash
+npm install        # only if node_modules/ is missing
+make validate-all
+```
+
+---
+
+## After Every Change
+
+- Run `make validate-all` — must stay green
+- Run `make lint` — must stay green
+- Update `memory-bank/activeContext.md` under "Recent Changes"
+
+If a schema changed: also update the corresponding example in `examples/{domain}/`.  
+If a new document type was added: update `README.md` table, `CHANGELOG.md`, and `docs/00-quick-reference.md`.
+
+---
+
+## Schema Authoring Rules
+
+### Always DO
+
+- `"unevaluatedProperties": false` on every domain schema root
+- `"minLength": 1` on every `required` string property
+- `"examples": [...]` array on every property (2-3 realistic values)
+- Bilingual `"description"` ending with ` / ` and Spanish translation
+- `$ref` via canonical URI: `"$ref": "https://schemas.fidex.io/v1/common/party"`
+- `$id` following namespace `https://schemas.fidex.io/v1/{domain}/{name}`
+- English-only `enum` values: `PURCHASE_ORDER`, `SHIPPED`, `RETENTION_IVA`
+
+### Never DO
+
+- Spanish enum values (`ORDEN_DE_COMPRA`, `DESPACHADO`, `RETENCION_IVA`)
+- Duplicate structures from `schemas/_common/` — always `$ref`
+- Add fields to examples before declaring them in the schema
+- Remove `unevaluatedProperties: false`
+- Mix USD and VES in the same pricing field — USD base always, VES derived
+
+---
+
+## File Naming Conventions
+
+| Type | Pattern | Example |
+|---|---|---|
+| Domain schemas | `gs1-{domain}.schema.json` | `gs1-invoice.schema.json` |
+| Common schemas | `{name}.schema.json` | `party.schema.json` |
+| Examples | `{nn}-{scenario-slug}.json` | `01-invoice-standard.json` |
+| Docs (EN) | `{nn}-{topic}.md` | `06-document-lifecycle.md` |
+| Docs (ES) | `{nn}-{topic-es}.md` | `06-ciclo-de-documentos.md` |
+
+---
+
+## Domain Knowledge: Key Terms
+
+Unfamiliar with Venezuelan fiscal terms? Read `GLOSSARY.md` before editing.  
+Critical ones: RIF, GTIN, GLN, SSCC, SICM, IVA, IGTF, ISLR, BCV, talonario, presupuesto, droguería.
+
+---
+
+## Architecture Constraints
+
+1. Every document = `kontext_routing` (routing envelope) + `payload` (business data). The hub reads ONLY `kontext_routing`.
+2. Base currency is always USD. VES = USD × `exchange_rate_applied` (BCV rate).
+3. Venezuelan fiscal fields (`fiscal_totals_ves`, `fiscal_control`) are **optional** — their absence is valid.
+4. `CREDIT_NOTE` and `DEBIT_NOTE` require `related_documents` → enforced by `if/then` in schema.
+5. `ORDER_CONFIRMED` requires a back-reference to `QUOTE` → enforced by `if/then` in schema.
+6. `FISCAL_CLEARED` J-MDN requires `merkle_proof` → enforced by `if/then/else` in schema.
+
+---
+
+## How to Add a New Document Type (5 Steps)
+
+1. `docs/{nn}-{topic}.md` — spec doc with business context and field list
+2. `schemas/{domain}/gs1-{domain}.schema.json` — schema using standard envelope template
+3. `examples/{domain}/01-{scenario}.json` → `make validate-one FILE=...`
+4. Update registry: `kontext-routing.schema.json` enum + `README.md` + `CHANGELOG.md`
+5. `examples/_invalid/{domain}/01-bad.json` → verify it fails with `make validate-negative`
+
+Full recipe: see `docs/13-agent-cookbook.md`
+
+---
+
+## Validation Mechanics
+
+```bash
+# Positive examples must PASS
+make validate-all
+
+# Single file
+make validate-one FILE=examples/order/01-purchase-order.json
+
+# Check ajv flags used (draft2020, strict=false, ajv-formats)
+cat Makefile | grep AJV_FLAGS
+```
+
+- ajv resolves `$id` URIs from `-r "schemas/_common/*.schema.json"` — no live HTTP needed
+- Negative test: ajv exit 1 (invalid) = **PASS**; ajv exit 0 (valid) = **FAIL**
+
+---
+
+## Memory Bank Update Policy
+
+Update `memory-bank/activeContext.md` and `memory-bank/progress.md` **concurrently** with changes — not as a final step. When a version is complete, also update `CHANGELOG.md`, `README.md` badges, and `docs/00-quick-reference.md` version number.

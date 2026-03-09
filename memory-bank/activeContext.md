@@ -1,12 +1,12 @@
 # Active Context — FideX Document Specifications
 
-## Current Version: v1.6.0
+## Current Version: v1.6.1
 
 ---
 
 ## Current Focus
 
-**Last completed**: v1.6.0 — J-MDN schema (`gs1-jmdn.schema.json`), Spanish translations docs 10–12, expanded negative test suite (8 fixtures, all 7 domains), `docs/00-quick-reference.md`, FideX + Greicodex logos in READMEs, GLN pattern normalization, `npm test` script.
+**Last completed**: v1.6.1 — AI agent tooling pass: `AGENTS.md` (agent entry point), `llms.txt` (machine-readable index), `GLOSSARY.md` (Venezuelan pharma terms), `.clinerules` (project-level agent rules), `docs/13-agent-cookbook.md` (7 task recipes), `examples` arrays added to all 12 schemas (5 _common + 7 domain) for IDE autocomplete and AI generation. `make validate-all` stays green: 15 positive ✅ + 8 negative ✅.
 
 **Next (v1.7.0 candidates)**:
 - `schemas/_common/patterns.schema.json` — `$defs` for shared patterns (RIF, GLN, SICM, SHA-256, SSCC)
@@ -19,6 +19,7 @@
 
 | Version | Date | Change |
 |---|---|---|
+| v1.6.1 | 2026-03-09 | AI agent tooling: AGENTS.md, llms.txt, GLOSSARY.md, .clinerules, agent cookbook, `examples` on all schemas |
 | v1.6.0 | 2026-03-09 | J-MDN schema, Spanish docs 10–12, 8 negative fixtures, quick-reference, logos |
 | v1.5.0 | 2026-03-09 | Observer Node spec, DLT anchoring, JSONata maps, negative test suite |
 | v1.4.0 | 2026-03-09 | GitHub Actions CI/CD, `ajv-formats`, Spanish docs 01–04, Memory Bank completion |

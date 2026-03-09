@@ -35,7 +35,8 @@
             "doc_type": {
               "type": "string",
               "enum": ["INVOICE", "CREDIT_NOTE", "DEBIT_NOTE"],
-              "description": "INVOICE: standard fiscal invoice ('Factura'). CREDIT_NOTE: reduces a prior invoice amount — issued when goods are returned, price adjustments are granted, or billing errors are corrected. DEBIT_NOTE: increases a prior invoice amount — issued for missed charges, price corrections, or additional quantities. Both CREDIT_NOTE and DEBIT_NOTE require the related_documents array to be present. / INVOICE: factura fiscal estándar. CREDIT_NOTE: reduce una factura previa (devoluciones, ajustes de precio, correcciones). DEBIT_NOTE: aumenta una factura previa (cargos omitidos, correcciones de precio). Ambos requieren el arreglo related_documents."
+              "description": "INVOICE: standard fiscal invoice ('Factura'). CREDIT_NOTE: reduces a prior invoice amount — issued when goods are returned, price adjustments are granted, or billing errors are corrected. DEBIT_NOTE: increases a prior invoice amount — issued for missed charges, price corrections, or additional quantities. Both CREDIT_NOTE and DEBIT_NOTE require the related_documents array to be present. / INVOICE: factura fiscal estándar. CREDIT_NOTE: reduce una factura previa (devoluciones, ajustes de precio, correcciones). DEBIT_NOTE: aumenta una factura previa (cargos omitidos, correcciones de precio). Ambos requieren el arreglo related_documents.",
+              "examples": ["INVOICE", "CREDIT_NOTE", "DEBIT_NOTE"]
             },
             "document_number": {
               "type": "string",
@@ -72,7 +73,8 @@
                 "CANCELLED",
                 "VOIDED"
               ],
-              "description": "Invoice status. ISSUED is the initial status when invoice is emitted. VOIDED is used for Credit/Debit Notes that are themselves subsequently corrected. / Estado de la factura. ISSUED es el estado inicial al emitir. VOIDED se usa para Notas que a su vez son corregidas."
+              "description": "Invoice status. ISSUED is the initial status when invoice is emitted. VOIDED is used for Credit/Debit Notes that are themselves subsequently corrected. / Estado de la factura. ISSUED es el estado inicial al emitir. VOIDED se usa para Notas que a su vez son corregidas.",
+              "examples": ["ISSUED", "PAID", "PARTIALLY_PAID", "OVERDUE"]
             },
             "currency_base": {
               "type": "string",
@@ -123,9 +125,10 @@
             "method": { "type": "string", "examples": ["Transferencia", "PagoMovil"] },
             "term_type": {
               "type": "string",
-              "enum": ["CONTADO", "NET_15", "NET_30", "NET_60"]
+              "enum": ["CONTADO", "NET_15", "NET_30", "NET_60"],
+              "examples": ["CONTADO", "NET_30"]
             },
-            "net_days": { "type": "integer", "minimum": 0 },
+            "net_days": { "type": "integer", "minimum": 0, "examples": [0, 15, 30, 60] },
             "exchange_rate_pegged": {
               "type": "number",
               "description": "BCV exchange rate at time of invoicing. Used as the denominator for all VES conversions in fiscal_totals_ves. / Tasa BCV al momento de facturar. Usada como denominador para todas las conversiones VES.",
@@ -154,7 +157,8 @@
                   "invoiced": {
                     "type": "integer",
                     "minimum": 0,
-                    "description": "Quantity being invoiced or adjusted. For Credit Notes this is the returned/credited quantity. For Debit Notes this is the additional quantity or charge quantity. / Cantidad facturada o ajustada. Para Notas de Crédito es la cantidad devuelta/acreditada. Para Notas de Débito es la cantidad adicional o de cargo."
+                    "description": "Quantity being invoiced or adjusted. For Credit Notes this is the returned/credited quantity. For Debit Notes this is the additional quantity or charge quantity. / Cantidad facturada o ajustada. Para Notas de Crédito es la cantidad devuelta/acreditada. Para Notas de Débito es la cantidad adicional o de cargo.",
+                    "examples": [10, 25, 50, 5]
                   }
                 }
               },
@@ -165,7 +169,8 @@
                   "unit_price": {
                     "type": "number",
                     "minimum": 0,
-                    "description": "Final agreed unit price (from ORDER_CONFIRMED). / Precio unitario final acordado (de la ORDER_CONFIRMED)."
+                    "description": "Final agreed unit price (from ORDER_CONFIRMED). / Precio unitario final acordado (de la ORDER_CONFIRMED).",
+                    "examples": [2.5, 1.8, 45.0, 12.75]
                   },
                   "currency": { "type": "string", "examples": ["USD"] }
                 }
@@ -204,11 +209,11 @@
           "required": ["total_lines", "total_net_usd", "total_gross_usd"],
           "description": "Invoice totals. fiscal_totals_ves is extracted by the Government Observer Node for SENIAT Targeted Tax Manifest. / Totales de la factura. fiscal_totals_ves es extraído por el nodo observador del gobierno para el Manifiesto Fiscal Objetivo del SENIAT.",
           "properties": {
-            "total_lines": { "type": "integer", "minimum": 1 },
-            "total_net_usd": { "type": "number", "minimum": 0 },
-            "total_discounts_usd": { "type": "number", "minimum": 0 },
-            "total_taxes_usd": { "type": "number", "minimum": 0 },
-            "total_gross_usd": { "type": "number", "minimum": 0 },
+            "total_lines": { "type": "integer", "minimum": 1, "examples": [1, 2, 5] },
+            "total_net_usd": { "type": "number", "minimum": 0, "examples": [157.5, 450.0] },
+            "total_discounts_usd": { "type": "number", "minimum": 0, "examples": [12.5, 0.0] },
+            "total_taxes_usd": { "type": "number", "minimum": 0, "examples": [0.0, 25.2] },
+            "total_gross_usd": { "type": "number", "minimum": 0, "examples": [157.5, 475.2] },
             "fiscal_totals_ves": {
               "$ref": "https://schemas.fidex.io/v1/common/fiscal-totals-ves",
               "description": "SENIAT reporting block. ONLY this object is sent to the Government Observer Node — never the line items. / Bloque de reporte SENIAT. SOLO este objeto se envía al nodo observador del gobierno, nunca las líneas de detalle."

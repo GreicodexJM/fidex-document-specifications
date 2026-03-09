@@ -54,6 +54,15 @@
 - [x] GitHub Actions CI — added separate `validate-negative` step
 
 
+### AI Agent Tooling (v1.6.1)
+- [x] `AGENTS.md` — universal agent entry point (what repo is, first steps, DO/DON'T rules, 5-step recipe, validation mechanics)
+- [x] `llms.txt` — machine-readable repo index (schema map, example map, key relationships)
+- [x] `GLOSSARY.md` — Venezuelan pharmaceutical and fiscal term definitions (RIF, GTIN, GLN, IVA, IGTF, ISLR, SICM, BCV, talonario, etc.)
+- [x] `.clinerules` — project-level agent rules (schema authoring rules, file conventions, architecture constraints, validation mechanics)
+- [x] `docs/13-agent-cookbook.md` — 7 task recipes (new document type, new field, negative test, debug failure, ERP mapping, version release, examples audit)
+- [x] `examples` arrays added to all 12 schemas: 5 `_common` (kontext-routing, address, tax-line, related-documents, pharma-attributes) + 7 domain (order, invoice, customer-master, catalog, despatch-advice, retention, jmdn)
+- [x] `make validate-all` stays green: 15 positive ✅ + 8 negative ✅
+
 ### J-MDN, Quick Reference & Hardening (v1.6.0)
 - [x] `schemas/jmdn/gs1-jmdn.schema.json` — J-MDN receipt schema with `if/then/else`
 - [x] `examples/jmdn/01-technical-receipt.json` + `02-fiscal-receipt.json`
@@ -78,15 +87,6 @@
 
 ## What's Left to Build ❌
 
-### v1.6.0 (Spec Gap Closure)
-- [ ] `schemas/jmdn/gs1-jmdn.schema.json` — J-MDN schema (Technical + Fiscal receipts)
-- [ ] `examples/jmdn/01-technical-receipt.json` and `02-fiscal-receipt.json`
-- [ ] `make validate-jmdn` Makefile target
-- [ ] `docs/es/10-nodo-observador-gubernamental.md` — Spanish translation of doc 10
-- [ ] `docs/es/11-anclaje-dlt-merkle.md` — Spanish translation of doc 11
-- [ ] `docs/es/12-mapas-jsonata.md` — Spanish translation of doc 12
-- [ ] README.md structure tree sync (docs 10–12, `_invalid/`, `docs/es/01–04`, memory-bank files)
-- [ ] Expand negative test suite (4 more fixtures: RIF pattern, SSCC, minLength, conditional catalog)
 
 ### v2.0.0 (Future Scope — Out of Current Spec)
 - [ ] Transport Protocol (see `greicodex/fidex-protocol`)
@@ -98,7 +98,7 @@
 
 ## Current Status
 
-**Repository**: Stable — 13 positive examples + 3 negative examples all pass `make validate-all`
+**Repository**: Stable — 15 positive examples + 8 negative examples all pass `make validate-all`. AI agent tooling in place.
 **Documentation**: Complete for EN docs 01–12; ES docs 01–09 (10–12 pending)
 **CI/CD**: GitHub Actions runs `validate` + `validate-negative` + `lint` on every push to main/develop
 **Format validation**: ENABLED — `ajv-formats` installed, `-c ajv-formats` in Makefile

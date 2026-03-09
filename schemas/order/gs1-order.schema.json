@@ -28,7 +28,8 @@
             "doc_type": {
               "type": "string",
               "enum": ["PURCHASE_ORDER", "QUOTE", "ORDER_CONFIRMED"],
-              "description": "PURCHASE_ORDER: buyer's request ('Orden de Compra'). QUOTE: vendor's priced response ('Presupuesto'). ORDER_CONFIRMED: buyer accepts quote, binding commitment ('Orden Confirmada'). / PURCHASE_ORDER: solicitud del comprador. QUOTE: respuesta del vendedor con precios. ORDER_CONFIRMED: aceptación del presupuesto por el comprador."
+              "description": "PURCHASE_ORDER: buyer's request ('Orden de Compra'). QUOTE: vendor's priced response ('Presupuesto'). ORDER_CONFIRMED: buyer accepts quote, binding commitment ('Orden Confirmada'). / PURCHASE_ORDER: solicitud del comprador. QUOTE: respuesta del vendedor con precios. ORDER_CONFIRMED: aceptación del presupuesto por el comprador.",
+              "examples": ["PURCHASE_ORDER", "QUOTE", "ORDER_CONFIRMED"]
             },
             "document_number": {
               "type": "string",
@@ -61,7 +62,8 @@
                 "FULFILLED",
                 "CANCELLED"
               ],
-              "description": "Document status. Status flow: DRAFT→PENDING→ACKNOWLEDGED (PO), PENDING→SENT→ACCEPTED/REJECTED/EXPIRED (QUOTE), CONFIRMED→IN_FULFILLMENT→FULFILLED (ORDER_CONFIRMED). / Estado del documento."
+              "description": "Document status. Status flow: DRAFT→PENDING→ACKNOWLEDGED (PO), PENDING→SENT→ACCEPTED/REJECTED/EXPIRED (QUOTE), CONFIRMED→IN_FULFILLMENT→FULFILLED (ORDER_CONFIRMED). / Estado del documento.",
+              "examples": ["PENDING", "CONFIRMED", "FULFILLED", "CANCELLED"]
             },
             "currency_base": {
               "type": "string",
@@ -132,9 +134,10 @@
             },
             "term_type": {
               "type": "string",
-              "enum": ["CONTADO", "NET_15", "NET_30", "NET_60"]
+              "enum": ["CONTADO", "NET_15", "NET_30", "NET_60"],
+              "examples": ["CONTADO", "NET_30"]
             },
-            "net_days": { "type": "integer", "minimum": 0 },
+            "net_days": { "type": "integer", "minimum": 0, "examples": [0, 15, 30, 60] },
             "currency": { "type": "string", "examples": ["USD"] },
             "exchange_rate_pegged": {
               "type": "number",
@@ -251,7 +254,8 @@
                   "ordered": {
                     "type": "integer",
                     "minimum": 1,
-                    "description": "Requested quantity (in PURCHASE_ORDER) or confirmed quantity (in QUOTE). / Cantidad solicitada (en PURCHASE_ORDER) o confirmada (en QUOTE)."
+                    "description": "Requested quantity (in PURCHASE_ORDER) or confirmed quantity (in QUOTE). / Cantidad solicitada (en PURCHASE_ORDER) o confirmada (en QUOTE).",
+                    "examples": [10, 25, 50, 100]
                   },
                   "confirmed": {
                     "type": ["integer", "null"],
@@ -272,7 +276,8 @@
                   "unit_price": {
                     "type": "number",
                     "minimum": 0,
-                    "description": "Net unit price in base currency (before discounts and taxes). / Precio unitario neto en moneda base (antes de descuentos e impuestos)."
+                    "description": "Net unit price in base currency (before discounts and taxes). / Precio unitario neto en moneda base (antes de descuentos e impuestos).",
+                    "examples": [2.5, 1.8, 45.0, 12.75]
                   },
                   "currency": { "type": "string", "examples": ["USD"] }
                 }
@@ -314,11 +319,11 @@
           "description": "Document totals. Always in USD (base currency). / Totales del documento. Siempre en USD (moneda base).",
           "required": ["total_lines", "total_net_usd", "total_gross_usd"],
           "properties": {
-            "total_lines": { "type": "integer", "minimum": 1 },
-            "total_net_usd": { "type": "number", "minimum": 0 },
-            "total_discounts_usd": { "type": "number", "minimum": 0 },
-            "total_taxes_usd": { "type": "number", "minimum": 0 },
-            "total_gross_usd": { "type": "number", "minimum": 0 },
+            "total_lines": { "type": "integer", "minimum": 1, "examples": [1, 2, 5, 10] },
+            "total_net_usd": { "type": "number", "minimum": 0, "examples": [157.5, 450.0] },
+            "total_discounts_usd": { "type": "number", "minimum": 0, "examples": [12.5, 0.0] },
+            "total_taxes_usd": { "type": "number", "minimum": 0, "examples": [0.0, 25.2] },
+            "total_gross_usd": { "type": "number", "minimum": 0, "examples": [157.5, 475.2] },
             "total_paid_usd": {
               "type": "number",
               "minimum": 0,

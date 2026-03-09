@@ -1,0 +1,160 @@
+# FideX Document Specifications — LLM Index
+
+> This file follows the llms.txt convention (https://llmstxt.org).
+> It is a machine-readable summary of the repository for AI language models.
+> Version: v1.6.0 | Updated: 2026-03-09
+
+---
+
+## Project Summary
+
+FideX Document Specifications is the **canonical JSON payload standard** for B2B document exchange in the Venezuelan pharmaceutical supply chain (Laboratorios → Droguerías → Farmacias). It defines JSON Schema 2020-12 definitions, validated examples, and narrative documentation for all business document types exchanged over the FideX AS5 protocol.
+
+This is a **pure specification/documentation repository** — there is no application code. It bridges GS1 international B2B standards with Venezuelan SENIAT fiscal requirements (IVA, IGTF, ISLR retentions) and pharmaceutical health permit (SICM) traceability.
+
+**Tech stack**: JSON Schema 2020-12 · ajv-cli v5 · Prettier · GNU Make · Node.js ≥18
+
+---
+
+## Quick Start for Agents
+
+```bash
+npm install
+make validate-all    # 15 positive ✅ + 8 negative ✅
+```
+
+Key files to read first:
+1. `AGENTS.md` — rules, commands, DO/DON'T for all coding agents
+2. `memory-bank/activeContext.md` — current version and next steps
+3. `docs/00-quick-reference.md` — one-page cheat sheet
+
+---
+
+## Document Types
+
+| `document_type` | Schema file | `doc_type` variants |
+|---|---|---|
+| `GS1_CUSTOMER_MASTER_JSON` | `schemas/customer-master/gs1-customer-master.schema.json` | — |
+| `GS1_CATALOG_JSON` | `schemas/catalog/gs1-catalog.schema.json` | `DELTA_UPDATE`, `FULL_SYNC`, `MASTER_UPDATE` |
+| `GS1_ORDER_JSON` | `schemas/order/gs1-order.schema.json` | `PURCHASE_ORDER`, `QUOTE`, `ORDER_CONFIRMED` |
+| `GS1_DESPATCH_ADVICE_JSON` | `schemas/despatch-advice/gs1-despatch-advice.schema.json` | `DESPATCH_ADVICE` |
+| `GS1_INVOICE_JSON` | `schemas/invoice/gs1-invoice.schema.json` | `INVOICE`, `CREDIT_NOTE`, `DEBIT_NOTE` |
+| `GS1_RETENTION_JSON` | `schemas/retention/gs1-retention.schema.json` | `RETENTION_IVA`, `RETENTION_ISLR` |
+| J-MDN *(receipt)* | `schemas/jmdn/gs1-jmdn.schema.json` | `NETWORK_DELIVERED`, `FISCAL_CLEARED` |
+
+---
+
+## Repository File Index
+
+### Root
+- `AGENTS.md` — AI coding agent entry point: commands, rules, patterns, workflows
+- `llms.txt` — This file: machine-readable index for LLMs
+- `GLOSSARY.md` — Domain term definitions (Venezuelan fiscal + GS1 + FideX terms)
+- `README.md` — Human-readable overview with badges and document table
+- `README.es.md` — Spanish version of README
+- `CHANGELOG.md` — Version history (v1.0 → v1.6)
+- `Makefile` — All developer commands (`validate-all`, `lint`, `format`, etc.)
+- `package.json` — Dev dependencies: `ajv-cli`, `ajv-formats`, `prettier`
+- `.prettierrc` — JSON formatting config (2-space indent, trailing newlines)
+
+### Memory Bank (`memory-bank/`)
+Authoritative project context — read before making any changes.
+- `memory-bank/01_PROJECT_CHARTER.md` — Project identity, problem statement, scope, stakeholders
+- `memory-bank/02_ARCHITECTURE_PRINCIPLES.md` — Core design rules: envelope separation, English enums, GS1 identifiers, multi-currency, state machines
+- `memory-bank/03_AGENTIC_WORKFLOW.md` — SPARC workflow for adding new document types; decision log
+- `memory-bank/activeContext.md` — **ALWAYS READ FIRST** — current version, recent changes, next steps
+- `memory-bank/progress.md` — What works, what's left, known issues
+- `memory-bank/techContext.md` — Tech stack, ajv flags, file naming conventions, CI/CD
+
+### Documentation (`docs/`)
+All English narrative docs. Each has a Spanish mirror in `docs/es/`.
+- `docs/00-quick-reference.md` — One-page cheat sheet: enums, patterns, commands
+- `docs/01-overview.md` — Architecture & design philosophy
+- `docs/02-routing-envelope.md` — `kontext_routing` deep-dive
+- `docs/03-security-jose.md` — JWS/JWE sign-then-encrypt
+- `docs/04-gs1-identifiers.md` — GTIN, GLN, SSCC, SICM explained
+- `docs/05-venezuelan-fiscal.md` — IVA, IGTF, SENIAT, BCV rates
+- `docs/06-document-lifecycle.md` — Order→Quote→Confirm→ASN→Invoice flow diagram
+- `docs/07-credit-debit-notes.md` — CN/DN fiscal mechanics and `related_documents` requirement
+- `docs/08-tax-retention.md` — IVA & ISLR retention workflow (Prov. 049/056, Decreto 1808)
+- `docs/09-erp-mapping/00-index.md` — ERP comparison matrix for Odoo, Profit, Saint, Galac, SAP B1
+- `docs/09-erp-mapping/01-odoo-17-18.md` — Odoo 17/18 JSON-RPC + REST field mapping
+- `docs/09-erp-mapping/02-profit.md` — Profit Plus v12 SQL/COM SDK mapping
+- `docs/09-erp-mapping/03-saint.md` — Saint Enterprise v6+ REST mapping
+- `docs/09-erp-mapping/04-galac.md` — Galac Software v5+ fiscal mapping
+- `docs/09-erp-mapping/05-sap-business-one.md` — SAP B1 Service Layer mapping
+- `docs/10-government-observer-node.md` — Privacy-preserving SENIAT bridge spec
+- `docs/11-dlt-merkle-anchoring.md` — Two-stage J-MDN + hourly Merkle rollup
+- `docs/12-jsonata-maps.md` — JSONata transformation maps reference
+- `docs/13-agent-cookbook.md` — Task recipes for AI coding agents
+
+### Schemas (`schemas/`)
+JSON Schema 2020-12 definitions. All use `$id` namespace `https://schemas.fidex.io/v1/`.
+
+**Common (reusable `$ref` components):**
+- `schemas/_common/kontext-routing.schema.json` — AS5 routing envelope (required on all domain docs)
+- `schemas/_common/party.schema.json` — Trading party (name, RIF, GLN, SICM)
+- `schemas/_common/address.schema.json` — Physical address
+- `schemas/_common/product-identity.schema.json` — GTIN, lot, expiry, SICM
+- `schemas/_common/pharma-attributes.schema.json` — Pharma-specific product attributes
+- `schemas/_common/tax-line.schema.json` — Tax line item (IVA/IGTF percentage + amounts)
+- `schemas/_common/fiscal-totals-ves.schema.json` — VES currency totals (SENIAT) — optional
+- `schemas/_common/fiscal-control.schema.json` — Talonario digital serial + control number — optional
+- `schemas/_common/related-documents.schema.json` — Back-references array (required on CN/DN)
+- `schemas/_common/retention-detail.schema.json` — ISLR/IVA withholding line item
+
+**Domain schemas:**
+- `schemas/customer-master/gs1-customer-master.schema.json`
+- `schemas/catalog/gs1-catalog.schema.json`
+- `schemas/order/gs1-order.schema.json` — includes `if/then` for QUOTE/ORDER_CONFIRMED
+- `schemas/despatch-advice/gs1-despatch-advice.schema.json`
+- `schemas/invoice/gs1-invoice.schema.json` — includes `if/then` for CREDIT_NOTE/DEBIT_NOTE
+- `schemas/retention/gs1-retention.schema.json`
+- `schemas/jmdn/gs1-jmdn.schema.json` — includes `if/then/else` for FISCAL_CLEARED stage
+
+### Examples (`examples/`)
+Valid JSON payloads that must pass `make validate`.
+- `examples/customer-master/01-pharmacy-independent.json`
+- `examples/catalog/01-delta-update.json`
+- `examples/catalog/02-full-sync-baseline.json`
+- `examples/order/01-purchase-order.json`
+- `examples/order/02-quote-presupuesto.json`
+- `examples/order/03-order-confirmed.json`
+- `examples/despatch-advice/01-asn-standard.json`
+- `examples/invoice/01-invoice-standard.json`
+- `examples/invoice/02-invoice-with-fiscal-control.json`
+- `examples/invoice/03-credit-note.json`
+- `examples/invoice/04-debit-note.json`
+- `examples/retention/01-retention-iva.json`
+- `examples/retention/02-retention-islr.json`
+- `examples/jmdn/01-technical-receipt.json`
+- `examples/jmdn/02-fiscal-receipt.json`
+
+**Negative fixtures (must FAIL validation):**
+- `examples/_invalid/invoice/01-credit-note-no-related.json` — CN without `related_documents`
+- `examples/_invalid/invoice/02-empty-document-number.json` — empty string on required field
+- `examples/_invalid/order/01-order-confirmed-no-quote.json` — ORDER_CONFIRMED missing back-ref
+- `examples/_invalid/retention/01-bad-period-format.json` — retention_period wrong format
+- `examples/_invalid/despatch-advice/01-bad-sscc.json` — SSCC not 18 digits
+- `examples/_invalid/customer-master/01-missing-tax-id.json` — missing required field
+- `examples/_invalid/catalog/01-invalid-sync-type.json` — invalid enum value
+- `examples/_invalid/jmdn/01-fiscal-no-merkle.json` — FISCAL_CLEARED J-MDN missing merkle_proof
+
+---
+
+## Key Technical Facts
+
+- All schemas use `"unevaluatedProperties": false` — undeclared fields are rejected
+- All `required` string fields have `"minLength": 1` — empty strings are rejected
+- `$ref` URIs (`https://schemas.fidex.io/v1/common/...`) are resolved locally by ajv `-r` flag — they don't need to be live HTTP endpoints
+- Base currency is always **USD**; VES amounts are derived: `amount_ves = amount_usd × exchange_rate_applied`
+- Venezuelan fiscal fields (`fiscal_totals_ves`, `fiscal_control`) are **optional** — their absence is valid for international documents
+- The FideX AS5 Hub reads **only** `kontext_routing` for routing — `payload` is opaque to the hub
+- Negative tests use inverted ajv exit-code logic: exit 1 (invalid) = test PASS
+
+---
+
+## Glossary Reference
+
+See `GLOSSARY.md` for definitions of all domain-specific terms:
+RIF, GTIN, GLN, SSCC, SICM, SENIAT, IGTF, IVA, ISLR, BCV, droguería, laboratorio, talonario digital, número de control, presupuesto, J-MDN, Merkle anchoring, kontext_routing.

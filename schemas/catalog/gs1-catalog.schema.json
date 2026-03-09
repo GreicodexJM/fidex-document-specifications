@@ -34,7 +34,8 @@
             "status": {
               "type": "string",
               "enum": ["DRAFT", "PUBLISHED", "SUPERSEDED"],
-              "description": "PUBLISHED catalogs are active. SUPERSEDED means a newer catalog has replaced this one. / Catálogos PUBLISHED están activos. SUPERSEDED indica que un catálogo más reciente lo ha reemplazado."
+              "description": "PUBLISHED catalogs are active. SUPERSEDED means a newer catalog has replaced this one. / Catálogos PUBLISHED están activos. SUPERSEDED indica que un catálogo más reciente lo ha reemplazado.",
+              "examples": ["PUBLISHED", "DRAFT"]
             },
             "currency_base": {
               "type": "string",
@@ -72,11 +73,13 @@
             "catalog_type": {
               "type": "string",
               "enum": ["DELTA_UPDATE", "FULL_SYNC", "MASTER_UPDATE"],
-              "description": "DELTA_UPDATE: only changed SKUs sent (efficient). FULL_SYNC: complete baseline reset, triggered automatically when receiver Merkle Root mismatches. MASTER_UPDATE: full product data without inventory. / DELTA_UPDATE: solo SKUs modificados. FULL_SYNC: restablecimiento completo del baseline."
+              "description": "DELTA_UPDATE: only changed SKUs sent (efficient). FULL_SYNC: complete baseline reset, triggered automatically when receiver Merkle Root mismatches. MASTER_UPDATE: full product data without inventory. / DELTA_UPDATE: solo SKUs modificados. FULL_SYNC: restablecimiento completo del baseline.",
+              "examples": ["DELTA_UPDATE", "FULL_SYNC", "MASTER_UPDATE"]
             },
             "includes_inventory": {
               "type": "boolean",
-              "description": "Whether this catalog includes real-time inventory quantities. Required for offline sales app (Kontext Pedidos). / Indica si el catálogo incluye cantidades de inventario en tiempo real."
+              "description": "Whether this catalog includes real-time inventory quantities. Required for offline sales app (Kontext Pedidos). / Indica si el catálogo incluye cantidades de inventario en tiempo real.",
+              "examples": [true, false]
             },
             "sync_state": {
               "type": "object",
@@ -118,7 +121,8 @@
               "action": {
                 "type": "string",
                 "enum": ["INSERT", "UPDATE", "DELETE", "UPSERT"],
-                "description": "INSERT: new SKU. UPDATE: changed price/inventory. DELETE: discontinued. UPSERT: used in FULL_SYNC (insert if not exists, update if exists). / INSERT: nuevo SKU. UPDATE: precio/inventario modificado. DELETE: descontinuado. UPSERT: usado en FULL_SYNC."
+                "description": "INSERT: new SKU. UPDATE: changed price/inventory. DELETE: discontinued. UPSERT: used in FULL_SYNC (insert if not exists, update if exists). / INSERT: nuevo SKU. UPDATE: precio/inventario modificado. DELETE: descontinuado. UPSERT: usado en FULL_SYNC.",
+                "examples": ["UPSERT", "UPDATE", "DELETE", "INSERT"]
               },
               "product": {
                 "$ref": "https://schemas.fidex.io/v1/common/product-identity"
@@ -205,10 +209,19 @@
                   "status": {
                     "type": "string",
                     "enum": ["IN_STOCK", "LOW_STOCK", "OUT_OF_STOCK", "DISCONTINUED"],
-                    "description": "Inventory availability status. Offline apps use this to prevent stockout orders. / Estado de disponibilidad de inventario."
+                    "description": "Inventory availability status. Offline apps use this to prevent stockout orders. / Estado de disponibilidad de inventario.",
+                    "examples": ["IN_STOCK", "LOW_STOCK", "OUT_OF_STOCK"]
                   },
-                  "available_qty": { "type": "integer", "minimum": 0 },
-                  "last_updated": { "type": "string", "format": "date-time" }
+                  "available_qty": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "examples": [150, 25, 0, 500]
+                  },
+                  "last_updated": {
+                    "type": "string",
+                    "format": "date-time",
+                    "examples": ["2026-03-09T14:00:00Z"]
+                  }
                 }
               }
             }

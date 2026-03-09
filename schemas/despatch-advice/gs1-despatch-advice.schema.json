@@ -48,7 +48,8 @@
                 "PARTIALLY_DELIVERED",
                 "RETURNED"
               ],
-              "description": "Shipment status. SHIPPED is the initial status when ASN is issued. / Estado del despacho. SHIPPED es el estado inicial al emitir el ASN."
+              "description": "Shipment status. SHIPPED is the initial status when ASN is issued. / Estado del despacho. SHIPPED es el estado inicial al emitir el ASN.",
+              "examples": ["SHIPPED", "IN_TRANSIT", "DELIVERED"]
             },
             "dates": {
               "type": "object",
@@ -125,7 +126,8 @@
                 "total_packages": {
                   "type": "integer",
                   "minimum": 1,
-                  "description": "Total number of physical packages in this shipment. / Número total de paquetes físicos en este despacho."
+                  "description": "Total number of physical packages in this shipment. / Número total de paquetes físicos en este despacho.",
+                  "examples": [1, 3, 5, 12]
                 },
                 "sscc": {
                   "type": "string",
@@ -184,12 +186,14 @@
                   "shipped": {
                     "type": "integer",
                     "minimum": 0,
-                    "description": "Quantity actually shipped in this delivery. / Cantidad efectivamente despachada."
+                    "description": "Quantity actually shipped in this delivery. / Cantidad efectivamente despachada.",
+                    "examples": [50, 25, 10, 100]
                   },
                   "ordered": {
                     "type": "integer",
                     "minimum": 1,
-                    "description": "Quantity originally ordered (for variance comparison). / Cantidad originalmente pedida (para comparación de varianza)."
+                    "description": "Quantity originally ordered (for variance comparison). / Cantidad originalmente pedida (para comparación de varianza).",
+                    "examples": [50, 25, 10, 100]
                   }
                 }
               }

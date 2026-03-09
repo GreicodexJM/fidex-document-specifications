@@ -23,7 +23,8 @@
     },
     "requires_prescription": {
       "type": "boolean",
-      "description": "Whether this product requires a physician's prescription for dispensing. Propagates to POS systems to enforce prescription capture. / Indica si el producto requiere receta médica para dispensar. Se propaga a sistemas POS."
+      "description": "Whether this product requires a physician's prescription for dispensing. Propagates to POS systems to enforce prescription capture. / Indica si el producto requiere receta médica para dispensar. Se propaga a sistemas POS.",
+      "examples": [true, false]
     },
     "storage_conditions": {
       "type": "string",

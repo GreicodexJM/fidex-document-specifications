@@ -9,7 +9,8 @@
     "address_type": {
       "type": "string",
       "enum": ["BILLING", "SHIPPING"],
-      "description": "Address role. A single party can have one BILLING and multiple SHIPPING addresses. / Tipo de dirección. Un participante puede tener una dirección de facturación y múltiples de envío."
+      "description": "Address role. A single party can have one BILLING and multiple SHIPPING addresses. / Tipo de dirección. Un participante puede tener una dirección de facturación y múltiples de envío.",
+      "examples": ["BILLING", "SHIPPING"]
     },
     "location_id": {
       "type": "string",

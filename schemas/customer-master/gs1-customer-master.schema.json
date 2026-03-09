@@ -43,7 +43,8 @@
             "status": {
               "type": "string",
               "enum": ["ACTIVE", "INACTIVE", "SUSPENDED", "BLOCKED"],
-              "description": "Current account status. BLOCKED means SICM permit has been revoked. / Estado actual de la cuenta."
+              "description": "Current account status. BLOCKED means SICM permit has been revoked. / Estado actual de la cuenta.",
+              "examples": ["ACTIVE", "INACTIVE", "BLOCKED"]
             },
             "dates": {
               "type": "object",
@@ -101,7 +102,8 @@
                 "CLINIC",
                 "GOVERNMENT"
               ],
-              "description": "Classification of the customer entity. Drives pricing tier selection and compliance rules. / Clasificación del cliente. Determina la selección de niveles de precio y reglas de cumplimiento."
+              "description": "Classification of the customer entity. Drives pricing tier selection and compliance rules. / Clasificación del cliente. Determina la selección de niveles de precio y reglas de cumplimiento.",
+              "examples": ["PHARMACY_INDEPENDENT", "DISTRIBUTOR", "PHARMACY_CHAIN"]
             },
             "health_permit": {
               "type": "object",
@@ -110,12 +112,14 @@
                 "sicm": {
                   "type": "string",
                   "pattern": "^S-[0-9]+$",
-                  "description": "SICM permit number from MPPS. / Número de permiso SICM del MPPS."
+                  "description": "SICM permit number from MPPS. / Número de permiso SICM del MPPS.",
+                  "examples": ["S-98765", "S-12345"]
                 },
                 "permit_status": {
                   "type": "string",
                   "enum": ["VALID", "EXPIRED", "SUSPENDED", "PENDING_RENEWAL"],
-                  "description": "Current SICM permit status. Only VALID permits allow order processing. / Estado actual del permiso SICM. Solo permisos VALID permiten el procesamiento de pedidos."
+                  "description": "Current SICM permit status. Only VALID permits allow order processing. / Estado actual del permiso SICM. Solo permisos VALID permiten el procesamiento de pedidos.",
+                  "examples": ["VALID", "EXPIRED", "PENDING_RENEWAL"]
                 },
                 "expiration_date": {
                   "type": "string",
@@ -145,12 +149,13 @@
             "credit_status": {
               "type": "string",
               "enum": ["APPROVED", "ON_HOLD", "BLOCKED", "CASH_ONLY"],
-              "description": "Credit account status. / Estado de la cuenta de crédito."
+              "description": "Credit account status. / Estado de la cuenta de crédito.",
+              "examples": ["APPROVED", "ON_HOLD", "CASH_ONLY"]
             },
             "credit_limit": {
               "type": "object",
               "properties": {
-                "amount": { "type": "number", "minimum": 0 },
+                "amount": { "type": "number", "minimum": 0, "examples": [5000.0, 10000.0, 2500.0] },
                 "currency": {
                   "type": "string",
                   "description": "Currency of the credit limit. Use USD for multi-currency environments. / Moneda del límite de crédito. Usar USD en entornos multi-moneda.",
@@ -167,9 +172,10 @@
                 },
                 "term_type": {
                   "type": "string",
-                  "enum": ["CONTADO", "NET_15", "NET_30", "NET_60"]
+                  "enum": ["CONTADO", "NET_15", "NET_30", "NET_60"],
+                  "examples": ["CONTADO", "NET_30"]
                 },
-                "net_days": { "type": "integer", "minimum": 0 }
+                "net_days": { "type": "integer", "minimum": 0, "examples": [0, 15, 30] }
               }
             },
             "tax_profile": {

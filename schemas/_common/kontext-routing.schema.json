@@ -28,7 +28,8 @@
         "GS1_INVOICE_JSON",
         "GS1_RETENTION_JSON"
       ],
-      "description": "Machine-readable document type enum. Used by the AS5 Hub to select routing rules, JSONata translation maps, and compliance hooks (e.g., SENIAT observer for GS1_INVOICE_JSON). / Enum de tipo de documento legible por máquina. Usado por el Hub para seleccionar reglas de enrutamiento y mapas de traducción JSONata."
+      "description": "Machine-readable document type enum. Used by the AS5 Hub to select routing rules, JSONata translation maps, and compliance hooks (e.g., SENIAT observer for GS1_INVOICE_JSON). / Enum de tipo de documento legible por máquina. Usado por el Hub para seleccionar reglas de enrutamiento y mapas de traducción JSONata.",
+      "examples": ["GS1_INVOICE_JSON", "GS1_ORDER_JSON", "GS1_RETENTION_JSON", "GS1_CATALOG_JSON"]
     },
     "correlation_id": {
       "type": "string",

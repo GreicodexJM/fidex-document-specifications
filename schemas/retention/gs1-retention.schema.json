@@ -40,7 +40,8 @@
             "retention_type": {
               "type": "string",
               "enum": ["RETENTION_IVA", "RETENTION_ISLR"],
-              "description": "RETENTION_IVA: VAT withholding (Retención de IVA). The buyer withholds 75% of the IVA amount on behalf of SENIAT (SENIAT Form AR-C). RETENTION_ISLR: Income tax withholding (Retención de ISLR). The buyer withholds a percentage of the gross payment per Decreto 1808 Tabla 26. / RETENTION_IVA: retención de IVA. El comprador retiene el 75% del IVA en nombre del SENIAT (Forma AR-C). RETENTION_ISLR: retención de ISLR. El comprador retiene un porcentaje del pago según la Tabla 26 del Decreto 1808."
+              "description": "RETENTION_IVA: VAT withholding (Retención de IVA). The buyer withholds 75% of the IVA amount on behalf of SENIAT (SENIAT Form AR-C). RETENTION_ISLR: Income tax withholding (Retención de ISLR). The buyer withholds a percentage of the gross payment per Decreto 1808 Tabla 26. / RETENTION_IVA: retención de IVA. El comprador retiene el 75% del IVA en nombre del SENIAT (Forma AR-C). RETENTION_ISLR: retención de ISLR. El comprador retiene un porcentaje del pago según la Tabla 26 del Decreto 1808.",
+              "examples": ["RETENTION_IVA", "RETENTION_ISLR"]
             },
             "document_number": {
               "type": "string",
@@ -57,7 +58,8 @@
             "status": {
               "type": "string",
               "enum": ["DRAFT", "ISSUED", "DELIVERED", "CANCELLED"],
-              "description": "DRAFT: retention calculated but not yet issued. ISSUED: comprobante generated, awaiting delivery to supplier. DELIVERED: supplier received the comprobante and can apply the credit to SENIAT portal (ISENIAT). CANCELLED: annulled due to error (requires justification). / DRAFT: calculado pero no emitido. ISSUED: comprobante generado. DELIVERED: proveedor recibido, puede aplicar el crédito en el portal ISENIAT. CANCELLED: anulado por error."
+              "description": "DRAFT: retention calculated but not yet issued. ISSUED: comprobante generated, awaiting delivery to supplier. DELIVERED: supplier received the comprobante and can apply the credit to SENIAT portal (ISENIAT). CANCELLED: annulled due to error (requires justification). / DRAFT: calculado pero no emitido. ISSUED: comprobante generado. DELIVERED: proveedor recibido, puede aplicar el crédito en el portal ISENIAT. CANCELLED: anulado por error.",
+              "examples": ["ISSUED", "DELIVERED", "DRAFT"]
             },
             "certificate_number": {
               "type": "string",

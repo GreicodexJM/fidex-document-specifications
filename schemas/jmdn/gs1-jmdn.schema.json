@@ -22,42 +22,50 @@
     "status": {
       "type": "string",
       "enum": ["NETWORK_DELIVERED", "FISCAL_CLEARED"],
-      "description": "Receipt stage. NETWORK_DELIVERED = payload received, decrypted, and schema-validated (< 2 s). FISCAL_CLEARED = Merkle Proof anchored on DLT (< 61 min). / Etapa del recibo. NETWORK_DELIVERED = payload recibido, descifrado y validado contra esquema (< 2 s). FISCAL_CLEARED = Merkle Proof anclado en DLT (< 61 min)."
+      "description": "Receipt stage. NETWORK_DELIVERED = payload received, decrypted, and schema-validated (< 2 s). FISCAL_CLEARED = Merkle Proof anchored on DLT (< 61 min). / Etapa del recibo. NETWORK_DELIVERED = payload recibido, descifrado y validado contra esquema (< 2 s). FISCAL_CLEARED = Merkle Proof anclado en DLT (< 61 min).",
+      "examples": ["NETWORK_DELIVERED", "FISCAL_CLEARED"]
     },
     "message_id": {
       "type": "string",
       "minLength": 1,
-      "description": "The message_id from the kontext_routing envelope of the original document being acknowledged. / El message_id del sobre kontext_routing del documento original que se acusa recibo."
+      "description": "The message_id from the kontext_routing envelope of the original document being acknowledged. / El message_id del sobre kontext_routing del documento original que se acusa recibo.",
+      "examples": ["MSG-20260309-001", "MSG-20260309-002"]
     },
     "document_ref": {
       "type": "string",
       "minLength": 1,
-      "description": "Human-readable reference of the original document (e.g. invoice number, order number). / Referencia legible del documento original (ej. número de factura, número de orden)."
+      "description": "Human-readable reference of the original document (e.g. invoice number, order number). / Referencia legible del documento original (ej. número de factura, número de orden).",
+      "examples": ["INV-2026-00145", "ORD-2026-9921"]
     },
     "payload_hash_sha256": {
       "type": "string",
       "pattern": "^[0-9a-f]{64}$",
-      "description": "SHA-256 hex digest of the raw payload bytes received. Used as the Merkle leaf hash in the hourly rollup. / Resumen SHA-256 en hex de los bytes del payload recibido. Se usa como hash hoja en el rollup horario Merkle."
+      "description": "SHA-256 hex digest of the raw payload bytes received. Used as the Merkle leaf hash in the hourly rollup. / Resumen SHA-256 en hex de los bytes del payload recibido. Se usa como hash hoja en el rollup horario Merkle.",
+      "examples": ["a3f1b9c8d2e4f6a1b3c5d7e9f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8"]
     },
     "receiver_gln": {
       "type": "string",
       "pattern": "^[0-9]{13}$",
-      "description": "GLN (13 digits) of the receiving party issuing this J-MDN. / GLN (13 dígitos) de la parte receptora que emite este J-MDN."
+      "description": "GLN (13 digits) of the receiving party issuing this J-MDN. / GLN (13 dígitos) de la parte receptora que emite este J-MDN.",
+      "examples": ["7590000000001", "7590000000002"]
     },
     "jws_signature": {
       "type": "string",
       "minLength": 1,
-      "description": "Compact JWS serialization (RFC 7515) of this entire receipt, signed with the Hub's ES256 signing key. This field is excluded from the signed payload (computed after serialization). / Serialización JWS compacta (RFC 7515) de este recibo completo, firmado con la clave ES256 del Hub. Este campo se excluye del payload firmado (calculado tras la serialización)."
+      "description": "Compact JWS serialization (RFC 7515) of this entire receipt, signed with the Hub's ES256 signing key. This field is excluded from the signed payload (computed after serialization). / Serialización JWS compacta (RFC 7515) de este recibo completo, firmado con la clave ES256 del Hub. Este campo se excluye del payload firmado (calculado tras la serialización).",
+      "examples": ["eyJhbGciOiJFUzI1NiJ9.eyJzdGF0dXMiOiJORVRXT1JLX0RFTElWRVJFRCJ9.abc123"]
     },
     "received_at": {
       "type": "string",
       "format": "date-time",
-      "description": "ISO 8601 UTC timestamp when the payload was received and validated. Present only on NETWORK_DELIVERED receipts. / Timestamp UTC ISO 8601 de recepción y validación del payload. Presente solo en recibos NETWORK_DELIVERED."
+      "description": "ISO 8601 UTC timestamp when the payload was received and validated. Present only on NETWORK_DELIVERED receipts. / Timestamp UTC ISO 8601 de recepción y validación del payload. Presente solo en recibos NETWORK_DELIVERED.",
+      "examples": ["2026-03-09T14:30:01Z"]
     },
     "cleared_at": {
       "type": "string",
       "format": "date-time",
-      "description": "ISO 8601 UTC timestamp when the Merkle Proof was anchored on the DLT. Present only on FISCAL_CLEARED receipts. / Timestamp UTC ISO 8601 del anclaje del Merkle Proof en el DLT. Presente solo en recibos FISCAL_CLEARED."
+      "description": "ISO 8601 UTC timestamp when the Merkle Proof was anchored on the DLT. Present only on FISCAL_CLEARED receipts. / Timestamp UTC ISO 8601 del anclaje del Merkle Proof en el DLT. Presente solo en recibos FISCAL_CLEARED.",
+      "examples": ["2026-03-09T15:00:00Z"]
     },
     "merkle_proof": {
       "type": "object",
@@ -74,12 +82,14 @@
         "leaf_hash": {
           "type": "string",
           "pattern": "^[0-9a-f]{64}$",
-          "description": "SHA-256 hex of the document payload bytes — the leaf node in the Merkle tree. Must equal payload_hash_sha256. / SHA-256 hex de los bytes del payload del documento — nodo hoja en el árbol Merkle. Debe ser igual a payload_hash_sha256."
+          "description": "SHA-256 hex of the document payload bytes — the leaf node in the Merkle tree. Must equal payload_hash_sha256. / SHA-256 hex de los bytes del payload del documento — nodo hoja en el árbol Merkle. Debe ser igual a payload_hash_sha256.",
+          "examples": ["a3f1b9c8d2e4f6a1b3c5d7e9f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8"]
         },
         "tree_root": {
           "type": "string",
           "minLength": 1,
-          "description": "Merkle tree root hash that was anchored on-chain. Verifier recomputes this from proof_path + leaf_hash. / Hash raíz del árbol Merkle anclado on-chain. El verificador lo recalcula con proof_path + leaf_hash."
+          "description": "Merkle tree root hash that was anchored on-chain. Verifier recomputes this from proof_path + leaf_hash. / Hash raíz del árbol Merkle anclado on-chain. El verificador lo recalcula con proof_path + leaf_hash.",
+          "examples": ["f8e7d6c5b4a392817060504030201f0e9d8c7b6a5948372615043"]
         },
         "proof_path": {
           "type": "array",
@@ -106,24 +116,28 @@
         "anchored_at_block": {
           "type": "integer",
           "minimum": 0,
-          "description": "Block number on the FideX DLT where the Merkle root was anchored via anchorHourlyRollup(). / Número de bloque en el DLT de FideX donde la raíz Merkle fue anclada via anchorHourlyRollup()."
+          "description": "Block number on the FideX DLT where the Merkle root was anchored via anchorHourlyRollup(). / Número de bloque en el DLT de FideX donde la raíz Merkle fue anclada via anchorHourlyRollup().",
+          "examples": [4821903, 4821904]
         },
         "anchor_tx_hash": {
           "type": "string",
           "minLength": 1,
-          "description": "Transaction hash of the anchorHourlyRollup() call on the IFideXAnchor smart contract. / Hash de la transacción de la llamada anchorHourlyRollup() en el smart contract IFideXAnchor."
+          "description": "Transaction hash of the anchorHourlyRollup() call on the IFideXAnchor smart contract. / Hash de la transacción de la llamada anchorHourlyRollup() en el smart contract IFideXAnchor.",
+          "examples": ["0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890ab"]
         },
         "anchor_timestamp": {
           "type": "string",
           "format": "date-time",
-          "description": "UTC timestamp of the on-chain anchoring transaction, as recorded by the DLT node. / Timestamp UTC de la transacción de anclaje on-chain, registrado por el nodo DLT."
+          "description": "UTC timestamp of the on-chain anchoring transaction, as recorded by the DLT node. / Timestamp UTC de la transacción de anclaje on-chain, registrado por el nodo DLT.",
+          "examples": ["2026-03-09T15:00:00Z"]
         }
       },
       "unevaluatedProperties": false
     },
     "observer_registration_id": {
       "type": "string",
-      "description": "SENIAT registration ID assigned by the Government Observer Node after successful Targeted Tax Manifest delivery. Only present when the Observer ACK has been received. / ID de registro SENIAT asignado por el Nodo Observador Gubernamental tras la entrega exitosa del Tax Manifest. Solo presente si se recibió el ACK del Observador."
+      "description": "SENIAT registration ID assigned by the Government Observer Node after successful Targeted Tax Manifest delivery. Only present when the Observer ACK has been received. / ID de registro SENIAT asignado por el Nodo Observador Gubernamental tras la entrega exitosa del Tax Manifest. Solo presente si se recibió el ACK del Observador.",
+      "examples": ["OBS-2026-VE-0088421", "OBS-2026-VE-0088422"]
     }
   },
   "if": {

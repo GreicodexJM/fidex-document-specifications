@@ -9,7 +9,8 @@
     "doc_type": {
       "type": "string",
       "enum": ["INVOICE", "CREDIT_NOTE", "DEBIT_NOTE", "PURCHASE_ORDER"],
-      "description": "Type of the referenced document. / Tipo del documento referenciado."
+      "description": "Type of the referenced document. / Tipo del documento referenciado.",
+      "examples": ["INVOICE", "PURCHASE_ORDER"]
     },
     "document_number": {
       "type": "string",

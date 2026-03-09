@@ -9,7 +9,8 @@
     "type": {
       "type": "string",
       "enum": ["IVA", "IGTF", "ISLR"],
-      "description": "Venezuelan tax type. IVA = Impuesto al Valor Agregado (16% standard, 0% exempt). IGTF = Impuesto a las Grandes Transacciones Financieras (3%, applies to USD/foreign currency payments). ISLR = Impuesto Sobre la Renta (income tax withholding, see v1.1). / Tipo de impuesto venezolano."
+      "description": "Venezuelan tax type. IVA = Impuesto al Valor Agregado (16% standard, 0% exempt). IGTF = Impuesto a las Grandes Transacciones Financieras (3%, applies to USD/foreign currency payments). ISLR = Impuesto Sobre la Renta (income tax withholding, see v1.1). / Tipo de impuesto venezolano.",
+      "examples": ["IVA", "IGTF", "ISLR"]
     },
     "percentage": {
       "type": "number",
@@ -21,7 +22,8 @@
     "is_exempt": {
       "type": "boolean",
       "description": "Explicit exemption flag. When true, percentage must be 0.00. Many essential medicines are IVA-exempt under Decreto 3.111. / Flag explícito de exención. Cuando es true, el porcentaje debe ser 0.00.",
-      "default": false
+      "default": false,
+      "examples": [true, false]
     },
     "amount_usd": {
       "type": "number",
