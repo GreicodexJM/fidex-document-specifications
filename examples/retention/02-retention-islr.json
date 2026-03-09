@@ -1,0 +1,58 @@
+{
+  "kontext_routing": {
+    "tenant_id": "tenant-drogueria-x-01",
+    "receiver_id": "partner-leti",
+    "document_type": "GS1_RETENTION_JSON",
+    "correlation_id": "ORD-2026-9921"
+  },
+  "payload": {
+    "document_info": {
+      "version": "1.0",
+      "retention_type": "RETENTION_ISLR",
+      "document_number": "RET-ISLR-2026-00003",
+      "retention_period": "2026-03",
+      "status": "DELIVERED",
+      "certificate_number": "20260300005678",
+      "dates": {
+        "issued_at": "2026-03-15T09:30:00Z",
+        "payment_date": "2026-03-15T11:00:00Z",
+        "seniat_submission_date": "2026-04-10T08:00:00Z"
+      }
+    },
+    "parties": {
+      "withholder": {
+        "name": "Drogueria Distribuidora X",
+        "rif": "J-11111111-2",
+        "gln": "7590000000002"
+      },
+      "withholdee": {
+        "name": "Laboratorios Leti",
+        "rif": "J-00000000-1",
+        "gln": "7590000000001"
+      }
+    },
+    "retention_lines": [
+      {
+        "line_id": 1,
+        "related_invoice": {
+          "document_number": "INV-2026-00145",
+          "emission_date": "2026-03-11T10:00:00Z",
+          "invoice_total_usd": 157.50
+        },
+        "islr_concept_code": "1",
+        "islr_concept_description": "Compra de bienes muebles y prestacion de servicios en el pais",
+        "taxable_base_usd": 157.50,
+        "retention_rate": 1.00,
+        "amount_retained_usd": 1.58,
+        "exchange_rate_applied": 45.00,
+        "amount_retained_ves": 71.10
+      }
+    ],
+    "summary": {
+      "total_taxable_base_usd": 157.50,
+      "total_retained_usd": 1.58,
+      "exchange_rate_applied": 45.00,
+      "total_retained_ves": 71.10
+    }
+  }
+}

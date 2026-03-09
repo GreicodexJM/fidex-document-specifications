@@ -2,7 +2,7 @@
 
 > **AS5/FideX Pharmaceutical B2B Payload Standard — Venezuelan & LATAM Edition**
 
-[![Schema Version](https://img.shields.io/badge/schema--version-v1.0.0-blue)](CHANGELOG.md)
+[![Schema Version](https://img.shields.io/badge/schema--version-v1.1.0-blue)](CHANGELOG.md)
 [![JSON Schema](https://img.shields.io/badge/JSON%20Schema-2020--12-green)](https://json-schema.org/draft/2020-12/schema)
 [![GS1 Compliant](https://img.shields.io/badge/GS1-LATAM%20Compliant-orange)](docs/04-gs1-identifiers.md)
 
@@ -16,22 +16,21 @@ The FideX standard bridges enterprise B2B EDI (GS1/AS5) with Venezuelan fiscal r
 
 ---
 
-## 📋 Document Types (v1.0 — Core Cycle)
+## 📋 Document Types (v1.1 — Full Fiscal Cycle)
 
-| Document | `document_type` enum | Venezuelan Name | Description |
-|---|---|---|---|
-| Customer Master | `GS1_CUSTOMER_MASTER_JSON` | Ficha de Cliente | Pharmacy/distributor master data with SICM health permits |
-| Product Catalog | `GS1_CATALOG_JSON` | Catálogo / Lista de Precios | SKUs, multi-tier pricing, real-time inventory |
-| Purchase Order | `GS1_ORDER_JSON` | Orden de Compra | Buyer-initiated order request |
-| Quote / Proposal | `GS1_ORDER_JSON` | Presupuesto | Vendor's priced response to a purchase order |
-| Confirmed Order | `GS1_ORDER_JSON` | Orden Confirmada | Buyer confirms the vendor's presupuesto |
-| Despatch Advice | `GS1_DESPATCH_ADVICE_JSON` | Nota de Entrega / ASN | Advance Ship Notice with SSCC lot tracking |
-| Invoice | `GS1_INVOICE_JSON` | Factura | Fiscal document with SENIAT multi-currency compliance |
-
-### Planned (v1.1)
-- Credit Note (`CREDIT_NOTE`) / Debit Note (`DEBIT_NOTE`)
-- Tax Retention IVA (`GS1_RETENTION_JSON` / `RETENTION_IVA`)
-- Tax Retention ISLR (`GS1_RETENTION_JSON` / `RETENTION_ISLR`)
+| Document | `document_type` enum | `doc_type` / `retention_type` | Venezuelan Name | Description |
+|---|---|---|---|---|
+| Customer Master | `GS1_CUSTOMER_MASTER_JSON` | — | Ficha de Cliente | Pharmacy/distributor master data with SICM health permits |
+| Product Catalog | `GS1_CATALOG_JSON` | `DELTA_UPDATE` / `FULL_SYNC` | Catálogo / Lista de Precios | SKUs, multi-tier pricing, real-time inventory |
+| Purchase Order | `GS1_ORDER_JSON` | `PURCHASE_ORDER` | Orden de Compra | Buyer-initiated order request |
+| Quote / Proposal | `GS1_ORDER_JSON` | `QUOTE` | Presupuesto | Vendor's priced response to a purchase order |
+| Confirmed Order | `GS1_ORDER_JSON` | `ORDER_CONFIRMED` | Orden Confirmada | Buyer confirms the vendor's presupuesto |
+| Despatch Advice | `GS1_DESPATCH_ADVICE_JSON` | `DESPATCH_ADVICE` | Nota de Entrega / ASN | Advance Ship Notice with SSCC lot tracking |
+| Invoice | `GS1_INVOICE_JSON` | `INVOICE` | Factura | Fiscal document with SENIAT multi-currency compliance |
+| **Credit Note** | `GS1_INVOICE_JSON` | **`CREDIT_NOTE`** | **Nota de Crédito** | **Reduces a prior invoice (returns, price adjustments)** |
+| **Debit Note** | `GS1_INVOICE_JSON` | **`DEBIT_NOTE`** | **Nota de Débito** | **Increases a prior invoice (missed charges, corrections)** |
+| **IVA Retention** | `GS1_RETENTION_JSON` | **`RETENTION_IVA`** | **Comp. Retención IVA** | **75% VAT withholding by Contribuyentes Especiales (Prov. 049/056)** |
+| **ISLR Retention** | `GS1_RETENTION_JSON` | **`RETENTION_ISLR`** | **Comp. Retención ISLR** | **Income tax withholding per Decreto 1808 Tabla 26** |
 
 ---
 
@@ -67,7 +66,8 @@ fidex-document-specs/
 │   │   ├── tax-line.schema.json
 │   │   ├── fiscal-totals-ves.schema.json
 │   │   ├── fiscal-control.schema.json
-│   │   └── related-documents.schema.json
+│   │   ├── related-documents.schema.json
+│   │   └── retention-detail.schema.json   # v1.1 — retention line item
 │   ├── customer-master/
 │   │   └── gs1-customer-master.schema.json
 │   ├── catalog/
@@ -76,8 +76,10 @@ fidex-document-specs/
 │   │   └── gs1-order.schema.json
 │   ├── despatch-advice/
 │   │   └── gs1-despatch-advice.schema.json
-│   └── invoice/
-│       └── gs1-invoice.schema.json
+│   ├── invoice/
+│   │   └── gs1-invoice.schema.json        # v1.1 — added CREDIT_NOTE/DEBIT_NOTE if/then
+│   └── retention/                         # v1.1 NEW
+│       └── gs1-retention.schema.json
 │
 └── examples/                          # Valid, runnable payload examples
     ├── customer-master/
@@ -91,9 +93,14 @@ fidex-document-specs/
     │   └── 03-order-confirmed.json
     ├── despatch-advice/
     │   └── 01-asn-standard.json
-    └── invoice/
-        ├── 01-invoice-standard.json
-        └── 02-invoice-with-fiscal-control.json
+    ├── invoice/
+    │   ├── 01-invoice-standard.json
+    │   ├── 02-invoice-with-fiscal-control.json
+    │   ├── 03-credit-note.json             # v1.1 NEW
+    │   └── 04-debit-note.json              # v1.1 NEW
+    └── retention/                          # v1.1 NEW
+        ├── 01-retention-iva.json
+        └── 02-retention-islr.json
 ```
 
 ---
@@ -115,7 +122,7 @@ make validate-one FILE=examples/invoice/01-invoice-standard.json
 
 ### Explore the lifecycle
 
-Read [`docs/06-document-lifecycle.md`](docs/06-document-lifecycle.md) to understand the full Venezuelan B2B order-to-cash flow:
+Read [`docs/06-document-lifecycle.md`](docs/06-document-lifecycle.md) to understand the full Venezuelan B2B order-to-cash flow and [`docs/07-credit-debit-notes.md`](docs/07-credit-debit-notes.md) / [`docs/08-tax-retention.md`](docs/08-tax-retention.md) for the v1.1 fiscal correction documents:
 
 ```
 Buyer                         Vendor (Laboratorio)
@@ -129,6 +136,10 @@ Buyer                         Vendor (Laboratorio)
   │◄── DESPATCH_ADVICE (ASN) ──────│  Goods are shipped
   │                                │
   │◄── INVOICE (Factura) ──────────│  Fiscal document issued
+  │                                │
+  │◄── CREDIT/DEBIT NOTE ──────────│  Post-invoice correction (v1.1)
+  │                                │
+  │◄── RETENTION COMPROBANTE ──────│  Tax withholding receipt (v1.1)
   │                                │
 ```
 

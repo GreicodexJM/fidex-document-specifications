@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.fidex.io/v1/invoice/schema",
   "title": "GS1 Invoice",
-  "description": "Invoice document (Factura). Legal fiscal representation of the transaction. Includes the Three-Way Match correlation triangle (related_order + related_asn), multi-currency fiscal_totals_ves block for SENIAT compliance, and optional fiscal_control for Unidigital talonario digital. / Documento de factura. Representación fiscal legal de la transacción.",
+  "description": "Invoice document (Factura). Legal fiscal representation of the transaction. Covers three sub-types: INVOICE (standard factura), CREDIT_NOTE (Nota de Crédito — reduces a prior invoice), and DEBIT_NOTE (Nota de Débito — increases a prior invoice). Includes the Three-Way Match correlation triangle (related_order + related_asn), multi-currency fiscal_totals_ves block for SENIAT compliance, and optional fiscal_control for Unidigital talonario digital. Credit/Debit Notes require the related_documents array. / Documento de factura. Cubre tres subtipos: INVOICE (factura estándar), CREDIT_NOTE (reduce una factura previa) y DEBIT_NOTE (aumenta una factura previa). Las Notas de Crédito/Débito requieren el arreglo related_documents.",
   "type": "object",
   "required": ["kontext_routing", "payload"],
   "properties": {
@@ -28,16 +28,16 @@
             "doc_type": {
               "type": "string",
               "enum": ["INVOICE", "CREDIT_NOTE", "DEBIT_NOTE"],
-              "description": "INVOICE: standard fiscal invoice ('Factura'). CREDIT_NOTE: reduces a prior invoice amount. DEBIT_NOTE: increases a prior invoice amount. Credit/Debit Notes require related_documents array. / INVOICE: factura fiscal estándar. CREDIT_NOTE/DEBIT_NOTE requieren el arreglo related_documents."
+              "description": "INVOICE: standard fiscal invoice ('Factura'). CREDIT_NOTE: reduces a prior invoice amount — issued when goods are returned, price adjustments are granted, or billing errors are corrected. DEBIT_NOTE: increases a prior invoice amount — issued for missed charges, price corrections, or additional quantities. Both CREDIT_NOTE and DEBIT_NOTE require the related_documents array to be present. / INVOICE: factura fiscal estándar. CREDIT_NOTE: reduce una factura previa (devoluciones, ajustes de precio, correcciones). DEBIT_NOTE: aumenta una factura previa (cargos omitidos, correcciones de precio). Ambos requieren el arreglo related_documents."
             },
             "document_number": {
               "type": "string",
-              "description": "Unique invoice number. / Número único de factura.",
-              "examples": ["INV-2026-00145", "CN-2026-00023"]
+              "description": "Unique document number. Use prefix 'INV-' for invoices, 'CN-' for credit notes, 'DN-' for debit notes. / Número de documento único. Use prefijo 'INV-' para facturas, 'CN-' para notas de crédito, 'DN-' para notas de débito.",
+              "examples": ["INV-2026-00145", "CN-2026-00023", "DN-2026-00005"]
             },
             "related_order": {
               "type": "string",
-              "description": "References the ORDER_CONFIRMED document_number. Part of Three-Way Match triangle: Order = Receipt = Invoice. / Referencia al document_number de la ORDER_CONFIRMED. Parte del triángulo de Three-Way Match.",
+              "description": "References the ORDER_CONFIRMED document_number. Part of Three-Way Match triangle: Order = Receipt = Invoice. For Credit/Debit Notes, this references the same order as the original invoice. / Referencia al document_number de la ORDER_CONFIRMED. Parte del triángulo Three-Way Match. Para Notas de Crédito/Débito, referencia la misma orden que la factura original.",
               "examples": ["ORD-2026-9921"]
             },
             "related_asn": {
@@ -47,13 +47,14 @@
             },
             "related_documents": {
               "type": "array",
+              "minItems": 1,
               "items": { "$ref": "https://schemas.fidex.io/v1/common/related-documents" },
-              "description": "Required for CREDIT_NOTE and DEBIT_NOTE: array of affected invoices. Enables strict historical linking required by SENIAT. / Requerido para CREDIT_NOTE y DEBIT_NOTE: arreglo de facturas afectadas."
+              "description": "Required for CREDIT_NOTE and DEBIT_NOTE: array of the original invoices being corrected. Enforces strict historical linking required by SENIAT auditing and Unidigital talonario digital. Each entry must include the original invoice number, emission date, and total amount. / Requerido para CREDIT_NOTE y DEBIT_NOTE: arreglo de las facturas originales que se están corrigiendo. Garantiza el vínculo histórico exigido por el SENIAT y Unidigital."
             },
             "status": {
               "type": "string",
               "enum": ["DRAFT", "ISSUED", "DELIVERED", "PAID", "PARTIALLY_PAID", "OVERDUE", "CANCELLED", "VOIDED"],
-              "description": "Invoice status. ISSUED is the initial status when invoice is emitted. / Estado de la factura. ISSUED es el estado inicial al emitir."
+              "description": "Invoice status. ISSUED is the initial status when invoice is emitted. VOIDED is used for Credit/Debit Notes that are themselves subsequently corrected. / Estado de la factura. ISSUED es el estado inicial al emitir. VOIDED se usa para Notas que a su vez son corregidas."
             },
             "currency_base": {
               "type": "string",
@@ -115,7 +116,7 @@
         },
         "lines": {
           "type": "array",
-          "description": "Invoice line items. Each line must reference the corresponding ORDER_CONFIRMED line. / Líneas de la factura. Cada línea debe referenciar la línea correspondiente de la ORDER_CONFIRMED.",
+          "description": "Invoice line items. Each line must reference the corresponding ORDER_CONFIRMED line. For Credit/Debit Notes, line quantities represent the adjustment (not the full original qty). / Líneas de la factura. Para Notas de Crédito/Débito, las cantidades representan el ajuste, no la cantidad original completa.",
           "minItems": 1,
           "items": {
             "type": "object",
@@ -134,7 +135,7 @@
                   "invoiced": {
                     "type": "integer",
                     "minimum": 0,
-                    "description": "Quantity being invoiced. May differ from ordered/shipped if partial invoicing. / Cantidad facturada. Puede diferir de pedido/despachado en facturación parcial."
+                    "description": "Quantity being invoiced or adjusted. For Credit Notes this is the returned/credited quantity. For Debit Notes this is the additional quantity or charge quantity. / Cantidad facturada o ajustada. Para Notas de Crédito es la cantidad devuelta/acreditada. Para Notas de Débito es la cantidad adicional o de cargo."
                   }
                 }
               },
@@ -239,6 +240,23 @@
                 }
               }
             }
+          }
+        }
+      },
+      "if": {
+        "properties": {
+          "document_info": {
+            "properties": {
+              "doc_type": { "enum": ["CREDIT_NOTE", "DEBIT_NOTE"] }
+            },
+            "required": ["doc_type"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "document_info": {
+            "required": ["related_documents"]
           }
         }
       }

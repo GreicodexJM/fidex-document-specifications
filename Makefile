@@ -1,18 +1,17 @@
 # FideX Document Specifications — Makefile
 # Usage: make <target>
 
-SCHEMAS_COMMON := $(wildcard schemas/_common/*.schema.json)
-SCHEMA_CUSTOMER := schemas/customer-master/gs1-customer-master.schema.json
-SCHEMA_CATALOG   := schemas/catalog/gs1-catalog.schema.json
-SCHEMA_ORDER     := schemas/order/gs1-order.schema.json
-SCHEMA_DESPATCH  := schemas/despatch-advice/gs1-despatch-advice.schema.json
-SCHEMA_INVOICE   := schemas/invoice/gs1-invoice.schema.json
+# Glob pattern passed to ajv -r. Must remain a quoted glob string (not an expanded
+# Make variable) so that ajv-cli receives a single glob argument, not a
+# space-joined file list that it cannot parse as individual paths.
+SCHEMAS_COMMON_GLOB := schemas/_common/*.schema.json
 
-EXAMPLES_CUSTOMER := $(wildcard examples/customer-master/*.json)
-EXAMPLES_CATALOG  := $(wildcard examples/catalog/*.json)
-EXAMPLES_ORDER    := $(wildcard examples/order/*.json)
-EXAMPLES_DESPATCH := $(wildcard examples/despatch-advice/*.json)
-EXAMPLES_INVOICE  := $(wildcard examples/invoice/*.json)
+SCHEMA_CUSTOMER   := schemas/customer-master/gs1-customer-master.schema.json
+SCHEMA_CATALOG    := schemas/catalog/gs1-catalog.schema.json
+SCHEMA_ORDER      := schemas/order/gs1-order.schema.json
+SCHEMA_DESPATCH   := schemas/despatch-advice/gs1-despatch-advice.schema.json
+SCHEMA_INVOICE    := schemas/invoice/gs1-invoice.schema.json
+SCHEMA_RETENTION  := schemas/retention/gs1-retention.schema.json
 
 AJV := node_modules/.bin/ajv
 PRETTIER := node_modules/.bin/prettier
@@ -31,34 +30,45 @@ install: ## Install npm dependencies (ajv-cli, prettier)
 
 ##@ Validation
 
-validate: validate-customer validate-catalog validate-order validate-despatch validate-invoice ## Validate ALL examples against their schemas
+validate: validate-customer validate-catalog validate-order validate-despatch validate-invoice validate-retention ## Validate ALL examples against their schemas
 	@echo ""
 	@echo "✅  All examples validated successfully."
+
+# Common ajv flags used by all validate targets:
+#   --spec draft2020     JSON Schema 2020-12 (supported by ajv-cli v5 / ajv v8.x)
+#   --strict=false       allow properties without explicit type in allOf sub-schemas
+#   --validate-formats=false  skip format assertions (date-time) — no ajv-formats installed
+AJV_FLAGS := --spec draft2020 --strict=false --validate-formats=false --errors=text
 
 validate-customer: ## Validate customer master examples
 	@echo "→ Validating customer master..."
 	@$(AJV) validate -s $(SCHEMA_CUSTOMER) -d "examples/customer-master/*.json" \
-		--spec draft2020 -r "$(SCHEMAS_COMMON)" --errors=text
+		-r "$(SCHEMAS_COMMON_GLOB)" $(AJV_FLAGS)
 
 validate-catalog: ## Validate catalog examples
 	@echo "→ Validating catalog..."
 	@$(AJV) validate -s $(SCHEMA_CATALOG) -d "examples/catalog/*.json" \
-		--spec draft2020 -r "$(SCHEMAS_COMMON)" --errors=text
+		-r "$(SCHEMAS_COMMON_GLOB)" $(AJV_FLAGS)
 
 validate-order: ## Validate order examples
 	@echo "→ Validating orders..."
 	@$(AJV) validate -s $(SCHEMA_ORDER) -d "examples/order/*.json" \
-		--spec draft2020 -r "$(SCHEMAS_COMMON)" --errors=text
+		-r "$(SCHEMAS_COMMON_GLOB)" $(AJV_FLAGS)
 
 validate-despatch: ## Validate despatch advice examples
 	@echo "→ Validating despatch advice..."
 	@$(AJV) validate -s $(SCHEMA_DESPATCH) -d "examples/despatch-advice/*.json" \
-		--spec draft2020 -r "$(SCHEMAS_COMMON)" --errors=text
+		-r "$(SCHEMAS_COMMON_GLOB)" $(AJV_FLAGS)
 
 validate-invoice: ## Validate invoice examples
 	@echo "→ Validating invoices..."
 	@$(AJV) validate -s $(SCHEMA_INVOICE) -d "examples/invoice/*.json" \
-		--spec draft2020 -r "$(SCHEMAS_COMMON)" --errors=text
+		-r "$(SCHEMAS_COMMON_GLOB)" $(AJV_FLAGS)
+
+validate-retention: ## Validate retention examples (IVA and ISLR)
+	@echo "→ Validating retention documents..."
+	@$(AJV) validate -s $(SCHEMA_RETENTION) -d "examples/retention/*.json" \
+		-r "$(SCHEMAS_COMMON_GLOB)" $(AJV_FLAGS)
 
 validate-one: ## Validate a single file. Usage: make validate-one FILE=examples/order/01-purchase-order.json
 ifndef FILE
@@ -68,7 +78,7 @@ endif
 	$(eval DOMAIN := $(word 2, $(subst /, ,$(FILE))))
 	@echo "→ Validating $(FILE) against schemas/$(DOMAIN)/gs1-$(DOMAIN).schema.json..."
 	@$(AJV) validate -s schemas/$(DOMAIN)/gs1-$(DOMAIN).schema.json -d $(FILE) \
-		--spec draft2020 -r "$(SCHEMAS_COMMON)" --errors=text
+		-r "$(SCHEMAS_COMMON_GLOB)" $(AJV_FLAGS)
 
 ##@ Code Quality
 
@@ -94,4 +104,4 @@ check-deps: ## Check that required tools are installed
 	@$(AJV) --version || echo "❌ ajv-cli not found. Run: make install"
 	@$(PRETTIER) --version || echo "❌ prettier not found. Run: make install"
 
-.PHONY: help install validate validate-customer validate-catalog validate-order validate-despatch validate-invoice validate-one lint format list-schemas list-examples check-deps
+.PHONY: help install validate validate-customer validate-catalog validate-order validate-despatch validate-invoice validate-retention validate-one lint format list-schemas list-examples check-deps

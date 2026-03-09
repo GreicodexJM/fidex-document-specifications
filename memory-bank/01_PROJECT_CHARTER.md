@@ -5,7 +5,7 @@
 | Field | Value |
 |---|---|
 | **Repository** | `greicodex/fidex-document-specs` |
-| **Version** | v1.0.0 |
+| **Version** | v1.1.0 |
 | **Protocol** | AS5 / FideX |
 | **Industry** | Pharmaceutical — Venezuela & LATAM |
 | **Schema Standard** | JSON Schema 2020-12 |
@@ -46,11 +46,17 @@ A **canonical JSON payload specification** repository that:
 - Advance Ship Notice (`GS1_DESPATCH_ADVICE_JSON`)
 - Invoice / Factura (`GS1_INVOICE_JSON`)
 
-### Out of Scope (v1.1)
-- Credit/Debit Notes
-- Tax Retention documents (IVA / ISLR)
+### Added in v1.1
+- Credit Notes (`CREDIT_NOTE`) — post-invoice reduction document
+- Debit Notes (`DEBIT_NOTE`) — post-invoice increase document
+- IVA Tax Retention (`GS1_RETENTION_JSON` / `RETENTION_IVA`) — SENIAT Providencia 049/056
+- ISLR Tax Retention (`GS1_RETENTION_JSON` / `RETENTION_ISLR`) — Decreto 1808 Tabla 26
+
+### Out of Scope (v1.2+)
 - Transport Protocol (see `greicodex/fidex-protocol`)
 - ERP-specific adapters (see `greicodex/fidex-odoo`)
+- GitHub Actions CI/CD pipeline
+- `docs/erp-mapping/` Odoo field mapping guide
 
 ---
 
@@ -72,3 +78,5 @@ A **canonical JSON payload specification** repository that:
 2. Every field in every schema has a meaningful `description` (bilingual EN/ES)
 3. The lifecycle documented in `docs/06-document-lifecycle.md` is fully covered by examples
 4. A new trading partner integration can be completed using only this repo's docs + examples
+5. (v1.1) All Credit/Debit Note examples have `related_documents` and pass `make validate`
+6. (v1.1) All Retention examples pass `make validate-retention`

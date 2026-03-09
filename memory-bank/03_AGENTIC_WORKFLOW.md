@@ -1,16 +1,16 @@
 # Agentic Workflow — FideX Document Specifications
 
-## Current Status: v1.0.0 — COMPLETE
+## Current Status: v1.1.0 — COMPLETE
 
 ---
 
 ## Active Context
 
-**Last Action**: Initial repository scaffolding and v1.0.0 schema definitions created.
+**Last Action**: v1.1.0 implemented — Credit/Debit Notes and Tax Retention documents added.
 
-**Current Focus**: Core transaction cycle schemas and examples are in place. Repository is ready for community review and trading partner onboarding.
+**Current Focus**: Full fiscal correction cycle is now covered. Repository includes all post-invoice adjustment documents and Venezuelan tax withholding comprobantes.
 
-**Next Milestone**: v1.1.0 — Credit/Debit Notes + Tax Retention documents.
+**Next Milestone**: v1.2.0 — CI/CD (GitHub Actions), ERP mapping guide (`docs/erp-mapping/`), and Government Observer Node integration spec.
 
 ---
 
@@ -71,8 +71,10 @@ Open a Pull Request with all four artifacts (doc, schema, example, registry upda
 | Issue | Priority | Notes |
 |---|---|---|
 | `validate-one` Makefile target uses string split heuristic | Low | Works for standard path format `examples/{domain}/file.json` |
-| No CI/CD pipeline yet | Medium | Add GitHub Actions workflow in v1.1 |
-| `docs/erp-mapping/` placeholder not yet written | Low | Odoo field mapping guide needed for `res.partner` |
+| No CI/CD pipeline yet | Medium | Add GitHub Actions workflow in v1.2 |
+| `docs/erp-mapping/` placeholder not yet written | Low | Odoo field mapping guide needed for `res.partner` and retention journal entries |
+| `examples/invoice/02-invoice-with-fiscal-control.json` has `_comment` at root | Low | Root `unevaluatedProperties: false` may reject this — investigate ajv behavior |
+| ISLR retention rate rounding | Low | $157.50 × 1% = $1.575 rounded to $1.58 USD — consider specifying rounding rule in schema description |
 
 ---
 
@@ -86,3 +88,7 @@ Open a Pull Request with all four artifacts (doc, schema, example, registry upda
 | 2026-03-09 | Three order doc_types (PO/QUOTE/CONFIRMED) | Venezuelan workflow requires presupuesto step before confirmation |
 | 2026-03-09 | `fiscal_totals_ves` as optional nested object | Keeps core format internationally viable; SENIAT fields are extensions |
 | 2026-03-09 | URI-based $ref with ajv -r flag | DRY principle — common schemas defined once, loaded by ajv at validation time |
+| 2026-03-09 | Credit/Debit Notes reuse `GS1_INVOICE_JSON` document_type | AS5 Hub routing for invoice/notes is identical; `doc_type` differentiates at payload level |
+| 2026-03-09 | `if/then` in invoice schema for related_documents | Tier 2 (Schema) validation — structural enforcement over application-level checks |
+| 2026-03-09 | `GS1_RETENTION_JSON` separate document_type | Retention is a different routing concern: reversed direction (droguería→lab), different SENIAT hook |
+| 2026-03-09 | `retention_period` YYYY-MM as required field | Prevents cross-period consolidation errors; SENIAT requires period-accurate comprobanets |

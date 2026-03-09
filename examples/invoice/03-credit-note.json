@@ -1,0 +1,98 @@
+{
+  "kontext_routing": {
+    "tenant_id": "tenant-leti-01",
+    "receiver_id": "partner-drogueria-x",
+    "document_type": "GS1_INVOICE_JSON",
+    "correlation_id": "ORD-2026-9921"
+  },
+  "payload": {
+    "document_info": {
+      "version": "1.2",
+      "doc_type": "CREDIT_NOTE",
+      "document_number": "CN-2026-00023",
+      "related_order": "ORD-2026-9921",
+      "status": "ISSUED",
+      "currency_base": "USD",
+      "dates": {
+        "issued_at": "2026-03-14T09:00:00Z"
+      },
+      "related_documents": [
+        {
+          "doc_type": "INVOICE",
+          "document_number": "INV-2026-00145",
+          "emission_date": "2026-03-11T10:00:00Z",
+          "currency_base": "USD",
+          "total_amount": 157.50
+        }
+      ]
+    },
+    "parties": {
+      "biller": {
+        "name": "Laboratorios Leti",
+        "rif": "J-00000000-1",
+        "gln": "7590000000001"
+      },
+      "payer": {
+        "name": "Drogueria Distribuidora X",
+        "rif": "J-11111111-2"
+      }
+    },
+    "payment_terms": {
+      "term_type": "CONTADO",
+      "net_days": 0,
+      "exchange_rate_pegged": 45.00
+    },
+    "lines": [
+      {
+        "line_id": 1,
+        "related_order_line": 1,
+        "product": {
+          "gtin": "7591234567890",
+          "description": "Amoxicilina 500mg x 21 capsulas — 5 cajas devueltas por daño en transporte"
+        },
+        "qty": {
+          "uom": "Caja",
+          "invoiced": 5
+        },
+        "pricing": {
+          "unit_price": 2.50,
+          "currency": "USD"
+        },
+        "discounts_charges": [
+          {
+            "type": "DISCOUNT",
+            "description": "Descuento Comercial Leti (igual que en factura original INV-2026-00145)",
+            "applied_by": "LABORATORIO",
+            "percentage": 10.00,
+            "amount": 1.25
+          }
+        ],
+        "taxes": [
+          {
+            "type": "IVA",
+            "percentage": 0.00,
+            "is_exempt": true,
+            "amount_usd": 0.00,
+            "amount_ves": 0.00
+          }
+        ],
+        "line_total_net": 11.25
+      }
+    ],
+    "summary": {
+      "total_lines": 1,
+      "total_net_usd": 11.25,
+      "total_discounts_usd": 1.25,
+      "total_taxes_usd": 0.00,
+      "total_gross_usd": 11.25,
+      "fiscal_totals_ves": {
+        "exchange_rate_applied": 45.00,
+        "base_imponible_ves": 506.25,
+        "total_iva_ves": 0.00,
+        "total_igtf_ves": 0.00,
+        "total_exempt_ves": 506.25,
+        "total_gross_ves": 506.25
+      }
+    }
+  }
+}
