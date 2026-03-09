@@ -1,0 +1,219 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fidex.io/v1/customer-master/schema",
+  "title": "GS1 Customer Master",
+  "description": "Customer master data document (Ficha de Cliente). Synchronizes pharmacy and distributor profiles including SICM health permits, financial terms, and multi-currency credit limits. Maps to Odoo res.partner model. SICM permit status acts as a hard-block: INVALID or expired permits prevent order generation. / Documento de datos maestros de cliente. Sincroniza perfiles de farmacias y droguerías.",
+  "type": "object",
+  "required": ["kontext_routing", "payload"],
+  "properties": {
+    "kontext_routing": {
+      "allOf": [
+        { "$ref": "https://schemas.fidex.io/v1/common/kontext-routing" },
+        {
+          "properties": {
+            "document_type": { "const": "GS1_CUSTOMER_MASTER_JSON" }
+          }
+        }
+      ]
+    },
+    "payload": {
+      "type": "object",
+      "required": ["document_info", "customer_details"],
+      "properties": {
+        "document_info": {
+          "type": "object",
+          "required": ["version", "doc_type", "document_number", "status"],
+          "properties": {
+            "version": {
+              "type": "string",
+              "description": "Schema version of this document. / Versión del esquema de este documento.",
+              "examples": ["1.1"]
+            },
+            "doc_type": {
+              "type": "string",
+              "const": "CUSTOMER_MASTER",
+              "description": "Instructs the Hub's translation engine to upsert a res.partner record in the receiving ERP."
+            },
+            "document_number": {
+              "type": "string",
+              "description": "Internal customer record identifier. / Identificador interno del registro de cliente.",
+              "examples": ["C-10045"]
+            },
+            "status": {
+              "type": "string",
+              "enum": ["ACTIVE", "INACTIVE", "SUSPENDED", "BLOCKED"],
+              "description": "Current account status. BLOCKED means SICM permit has been revoked. / Estado actual de la cuenta."
+            },
+            "dates": {
+              "type": "object",
+              "properties": {
+                "created_at": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "updated_at": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          }
+        },
+        "customer_details": {
+          "type": "object",
+          "required": ["name", "tax_id", "customer_type"],
+          "properties": {
+            "internal_id": {
+              "type": "string",
+              "description": "Sender's internal customer code. / Código interno del cliente en el sistema emisor.",
+              "examples": ["C-10045"]
+            },
+            "name": {
+              "type": "string",
+              "description": "Full legal name. / Nombre legal completo.",
+              "examples": ["Farmacia El Pueblo, C.A."]
+            },
+            "commercial_name": {
+              "type": "string",
+              "description": "Trading name if different from legal name. / Nombre comercial si difiere del nombre legal.",
+              "examples": ["Farmacia El Pueblo"]
+            },
+            "tax_id": {
+              "type": "string",
+              "pattern": "^[JVEGPjvegp]-[0-9]{8}-[0-9]$",
+              "description": "Venezuelan RIF (Registro de Información Fiscal). / RIF venezolano.",
+              "examples": ["J-22222222-3"]
+            },
+            "gln": {
+              "type": "string",
+              "pattern": "^[0-9]{13}$",
+              "description": "GS1 Global Location Number. / Número Global de Localización GS1."
+            },
+            "customer_type": {
+              "type": "string",
+              "enum": [
+                "PHARMACY_INDEPENDENT",
+                "PHARMACY_CHAIN",
+                "DISTRIBUTOR",
+                "HOSPITAL",
+                "CLINIC",
+                "GOVERNMENT"
+              ],
+              "description": "Classification of the customer entity. Drives pricing tier selection and compliance rules. / Clasificación del cliente. Determina la selección de niveles de precio y reglas de cumplimiento."
+            },
+            "health_permit": {
+              "type": "object",
+              "required": ["sicm", "permit_status", "expiration_date"],
+              "properties": {
+                "sicm": {
+                  "type": "string",
+                  "pattern": "^S-[0-9]+$",
+                  "description": "SICM permit number from MPPS. / Número de permiso SICM del MPPS."
+                },
+                "permit_status": {
+                  "type": "string",
+                  "enum": ["VALID", "EXPIRED", "SUSPENDED", "PENDING_RENEWAL"],
+                  "description": "Current SICM permit status. Only VALID permits allow order processing. / Estado actual del permiso SICM. Solo permisos VALID permiten el procesamiento de pedidos."
+                },
+                "expiration_date": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "SICM permit expiration date. ERP systems must check this before generating any order. / Fecha de vencimiento del permiso SICM.",
+                  "examples": ["2027-12-31"]
+                }
+              }
+            }
+          }
+        },
+        "contact_info": {
+          "type": "object",
+          "properties": {
+            "primary_contact_name": { "type": "string" },
+            "email": { "type": "string", "format": "email" },
+            "phone": {
+              "type": "string",
+              "description": "Phone with country code. / Teléfono con código de país.",
+              "examples": ["+584141234567"]
+            }
+          }
+        },
+        "financial_profile": {
+          "type": "object",
+          "properties": {
+            "credit_status": {
+              "type": "string",
+              "enum": ["APPROVED", "ON_HOLD", "BLOCKED", "CASH_ONLY"],
+              "description": "Credit account status. / Estado de la cuenta de crédito."
+            },
+            "credit_limit": {
+              "type": "object",
+              "properties": {
+                "amount": { "type": "number", "minimum": 0 },
+                "currency": {
+                  "type": "string",
+                  "description": "Currency of the credit limit. Use USD for multi-currency environments. / Moneda del límite de crédito. Usar USD en entornos multi-moneda.",
+                  "examples": ["USD"]
+                }
+              }
+            },
+            "payment_terms": {
+              "type": "object",
+              "properties": {
+                "method": {
+                  "type": "string",
+                  "examples": ["Transferencia / PagoMovil"]
+                },
+                "term_type": {
+                  "type": "string",
+                  "enum": ["CONTADO", "NET_15", "NET_30", "NET_60"]
+                },
+                "net_days": { "type": "integer", "minimum": 0 }
+              }
+            },
+            "tax_profile": {
+              "type": "object",
+              "properties": {
+                "is_retention_agent_iva": {
+                  "type": "boolean",
+                  "description": "True if this customer is a SENIAT-designated Special Taxpayer (Agente de Retención IVA). They must withhold a percentage of IVA from invoices. / Verdadero si el cliente es Agente de Retención IVA designado por el SENIAT."
+                },
+                "retention_percentage": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 100,
+                  "description": "IVA retention percentage applied by this Special Taxpayer (typically 75%). / Porcentaje de retención de IVA aplicado por este Agente de Retención (típicamente 75%).",
+                  "examples": [75.00]
+                }
+              }
+            }
+          }
+        },
+        "sales_routing": {
+          "type": "object",
+          "description": "Sales territory assignment. Syncs to Kontext Pedidos offline app so agents see the right pharmacies. / Asignación de territorio de ventas. Se sincroniza con la app offline Kontext Pedidos.",
+          "properties": {
+            "assigned_agent": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "employee_id": { "type": "string", "examples": ["VEN-042"] }
+              }
+            },
+            "delivery_route": {
+              "type": "string",
+              "description": "Delivery route code for logistics providers. / Código de ruta de entrega para proveedores logísticos.",
+              "examples": ["CARACAS-ESTE-02"]
+            }
+          }
+        },
+        "addresses": {
+          "type": "array",
+          "items": { "$ref": "https://schemas.fidex.io/v1/common/address" },
+          "description": "Array of billing and shipping addresses. Pharmacy chains use one billing RIF but many shipping locations. / Arreglo de direcciones de facturación y envío.",
+          "minItems": 1
+        }
+      }
+    }
+  },
+  "unevaluatedProperties": false
+}

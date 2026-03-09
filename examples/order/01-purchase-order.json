@@ -1,0 +1,88 @@
+{
+  "kontext_routing": {
+    "tenant_id": "partner-drogueria-x",
+    "receiver_id": "tenant-leti-01",
+    "document_type": "GS1_ORDER_JSON",
+    "correlation_id": "ORD-2026-9921"
+  },
+  "payload": {
+    "document_info": {
+      "version": "1.1",
+      "doc_type": "PURCHASE_ORDER",
+      "document_number": "ORD-2026-9921",
+      "status": "PENDING",
+      "currency_base": "USD",
+      "dates": {
+        "created_at": "2026-03-09T10:00:00Z",
+        "delivery_requested": "2026-03-11T14:00:00Z"
+      }
+    },
+    "parties": {
+      "seller": {
+        "name": "Laboratorios Leti",
+        "rif": "J-00000000-1",
+        "gln": "7590000000001"
+      },
+      "buyer": {
+        "name": "Drogueria Distribuidora X",
+        "rif": "J-11111111-2",
+        "sicm": "S-12345"
+      },
+      "ship_to": {
+        "name": "Farmacia El Pueblo, C.A.",
+        "rif": "J-22222222-3",
+        "sicm": "S-98765",
+        "delivery_address": {
+          "street": "Calle 4, Local A, Sector Comercial",
+          "city": "Caracas",
+          "state": "Distrito Capital",
+          "zip": "1010",
+          "country_code": "VE"
+        }
+      },
+      "sales_agent": {
+        "name": "Juan Perez",
+        "employee_id": "VEN-042"
+      }
+    },
+    "logistics": {
+      "carrier": "Yummy",
+      "shipping_method": "Motorizado Express"
+    },
+    "lines": [
+      {
+        "line_id": 1,
+        "product": {
+          "gtin": "7591234567890",
+          "vendor_part": "LETI-AMOX-500",
+          "description": "Amoxicilina 500mg x 21 capsulas"
+        },
+        "qty": {
+          "uom": "Caja",
+          "ordered": 50,
+          "confirmed": null,
+          "delivered": null
+        }
+      },
+      {
+        "line_id": 2,
+        "product": {
+          "gtin": "7591234567904",
+          "vendor_part": "LETI-METF-850",
+          "description": "Metformina 850mg x 30 comprimidos"
+        },
+        "qty": {
+          "uom": "Caja",
+          "ordered": 30,
+          "confirmed": null,
+          "delivered": null
+        }
+      }
+    ],
+    "summary": {
+      "total_lines": 2,
+      "total_net_usd": 0.00,
+      "total_gross_usd": 0.00
+    }
+  }
+}

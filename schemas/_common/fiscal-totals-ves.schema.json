@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fidex.io/v1/common/fiscal-totals-ves",
+  "title": "Fiscal Totals VES",
+  "description": "Venezuelan Bolívares (VES) fiscal summary block. This is the ONLY block extracted by the FideX Government Observer Node for SENIAT reporting via the Targeted Tax Manifest. Line items, unit prices, and margins are NEVER transmitted to the government. / Bloque de totales fiscales en Bolívares. Es el ÚNICO bloque extraído por el nodo observador del gobierno para reportes al SENIAT.",
+  "type": "object",
+  "required": [
+    "exchange_rate_applied",
+    "base_imponible_ves",
+    "total_iva_ves",
+    "total_gross_ves"
+  ],
+  "properties": {
+    "exchange_rate_applied": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Official BCV (Banco Central de Venezuela) exchange rate used to convert USD amounts to VES at the moment of transaction. Must match the rate published by BCV on the transaction date. / Tasa de cambio oficial BCV usada para convertir montos USD a VES en el momento de la transacción.",
+      "examples": [45.00, 36.50]
+    },
+    "base_imponible_ves": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Taxable base in Bolívares (total net amount before taxes). Calculated as: total_net_usd × exchange_rate_applied. / Base imponible en Bolívares (monto neto total antes de impuestos). Calculado como: total_neto_usd × tasa_cambio_aplicada.",
+      "examples": [5062.50]
+    },
+    "total_iva_ves": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Total IVA (Impuesto al Valor Agregado) amount in Bolívares. Sum of all IVA tax lines multiplied by the exchange rate. / Total de IVA en Bolívares.",
+      "examples": [810.00]
+    },
+    "total_igtf_ves": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Total IGTF (Impuesto a las Grandes Transacciones Financieras) in Bolívares. Applies when payment is made in USD or other foreign currency (3%). Set to 0 if not applicable. / Total de IGTF en Bolívares. Aplica cuando el pago se realiza en USD u otra moneda extranjera.",
+      "default": 0,
+      "examples": [0.00, 151.87]
+    },
+    "total_exempt_ves": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Total amount of IVA-exempt line items in Bolívares (e.g., essential medicines under Decreto 3.111). Required by SENIAT for proper fiscal reporting. / Total de líneas exentas de IVA en Bolívares (medicamentos esenciales).",
+      "default": 0,
+      "examples": [0.00, 1800.00]
+    },
+    "total_gross_ves": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Grand total in Bolívares (base_imponible_ves + total_iva_ves + total_igtf_ves). This is the legally reportable total for Venezuelan fiscal purposes. / Total bruto en Bolívares. Es el total legalmente reportable para efectos fiscales venezolanos.",
+      "examples": [5872.50]
+    },
+    "previous_balance_ves": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Prior outstanding balance in VES to be added to the current invoice total (Deuda anterior). Optional. / Saldo previo pendiente en VES a agregar al total de la factura actual.",
+      "examples": [365.00]
+    },
+    "tip_ves": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Gratuity/tip amount in VES (Propina). Optional. Used in hospitality industry extensions. / Monto de propina en VES. Opcional.",
+      "examples": [182.50]
+    }
+  },
+  "unevaluatedProperties": false
+}

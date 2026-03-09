@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fidex.io/v1/common/party",
+  "title": "Trading Party",
+  "description": "Identifies a trading party (laboratory, distributor, pharmacy) with Venezuelan fiscal and pharmaceutical identifiers. / Identifica un participante comercial (laboratorio, droguería, farmacia) con identificadores fiscales y farmacéuticos venezolanos.",
+  "type": "object",
+  "required": ["name"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Legal or commercial name of the trading party. / Nombre legal o comercial del participante.",
+      "examples": ["Laboratorios Leti", "Drogueria Distribuidora X", "Farmacia El Pueblo, C.A."]
+    },
+    "rif": {
+      "type": "string",
+      "pattern": "^[JVEGPjvegp]-[0-9]{8}-[0-9]$",
+      "description": "Venezuelan Tax Registry ID (Registro de Información Fiscal). Required on all fiscal documents. Prefix: J=Empresa, V=Persona Natural, E=Extranjero, G=Gobierno, P=Pasaporte. / Registro de Información Fiscal venezolano. Obligatorio en todos los documentos fiscales.",
+      "examples": ["J-00000000-1", "J-11111111-2", "V-12345678-9"]
+    },
+    "gln": {
+      "type": "string",
+      "pattern": "^[0-9]{13}$",
+      "description": "GS1 Global Location Number — 13-digit identifier for physical locations (warehouses, stores, distribution centers). Venezuelan GTINs/GLNs use country prefix 759. / Número Global de Localización GS1 — identificador de 13 dígitos para ubicaciones físicas.",
+      "examples": ["7590000000001", "7590000000002"]
+    },
+    "sicm": {
+      "type": "string",
+      "pattern": "^S-[0-9]+$",
+      "description": "SICM health permit number (Sistema Integral de Control de Medicamentos). Issued by MPPS. Required for all pharmaceutical dispatch parties. Acts as a hard-block: expired or invalid permits prevent order processing. / Número de permiso sanitario SICM emitido por el MPPS. Obligatorio para despachos farmacéuticos.",
+      "examples": ["S-12345", "S-98765"]
+    },
+    "delivery_address": {
+      "$ref": "https://schemas.fidex.io/v1/common/address",
+      "description": "Optional inline delivery address for the ship_to party. / Dirección de entrega opcional para el destinatario."
+    }
+  },
+  "unevaluatedProperties": false
+}

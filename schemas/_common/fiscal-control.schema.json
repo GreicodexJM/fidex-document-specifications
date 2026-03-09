@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fidex.io/v1/common/fiscal-control",
+  "title": "Fiscal Control",
+  "description": "Venezuelan SENIAT talonario digital control block. Contains metadata required by the Unidigital digital receipt system for PDF generation and fiscal series tracking. This object is OPTIONAL — its absence produces a valid international B2B document. Its presence activates the SENIAT fiscal printing workflow. / Bloque de control del talonario digital SENIAT. Contiene metadatos requeridos por Unidigital para generación de PDF y trazabilidad de series fiscales.",
+  "type": "object",
+  "required": ["fiscal_series_id"],
+  "properties": {
+    "fiscal_series_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "UUID assigned by Unidigital's talonario digital system. Maps to SerieStrongId in the Unidigital API. Uniquely identifies the digital receipt book series for this document. / UUID asignado por el sistema de talonario digital de Unidigital. Mapea al campo SerieStrongId en la API de Unidigital.",
+      "examples": ["123e4567-e89b-12d3-a456-426614174000"]
+    },
+    "fiscal_series_letter": {
+      "type": "string",
+      "maxLength": 1,
+      "description": "Single letter fiscal series identifier (e.g., 'A', 'B'). Some legacy SENIAT systems use a letter prefix for invoice numbering. / Identificador de serie fiscal de una sola letra. Algunos sistemas legacy del SENIAT usan un prefijo de letra.",
+      "examples": ["A", "B"]
+    },
+    "control_number": {
+      "type": "string",
+      "description": "Sequential control number assigned by the fiscal printer or digital receipt system. / Número de control secuencial asignado por la impresora fiscal o sistema de recibo digital.",
+      "examples": ["00001234"]
+    },
+    "amount_in_letters_ves": {
+      "type": "string",
+      "description": "Total amount written out in Spanish words as required on Venezuelan fiscal receipts (e.g., 'Ciento sesenta y cuatro con 00/100'). / Monto total escrito en palabras en español, requerido en recibos fiscales venezolanos.",
+      "examples": ["Ciento sesenta y cuatro con 00/100", "Cinco mil ochocientos setenta y dos con 50/100"]
+    },
+    "bcv_message": {
+      "type": "string",
+      "description": "BCV exchange rate disclosure message printed on the fiscal receipt. Format typically: 'Tasa BCV: {rate}'. / Mensaje de divulgación de la tasa BCV impreso en el recibo fiscal.",
+      "examples": ["Tasa BCV: 45.00", "Tasa BCV: 36.50"]
+    },
+    "printable_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 4,
+      "description": "Array of up to 4 custom notes printed on the fiscal receipt (Notas 1–4 in Unidigital). Used for legal disclaimers, delivery conditions, etc. / Arreglo de hasta 4 notas personalizadas impresas en el recibo fiscal (Notas 1–4 en Unidigital).",
+      "examples": [
+        ["Mercancía revisada al momento de la entrega.", "Sin derecho a devolución sin factura original."]
+      ]
+    }
+  },
+  "unevaluatedProperties": false
+}

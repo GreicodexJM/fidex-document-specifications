@@ -1,0 +1,33 @@
+{
+  "name": "fidex-document-specs",
+  "version": "1.0.0",
+  "description": "FideX AS5 Pharmaceutical B2B Document Payload Specifications — Venezuelan & LATAM Edition",
+  "keywords": [
+    "fidex",
+    "as5",
+    "edi",
+    "gs1",
+    "pharmaceutical",
+    "venezuela",
+    "b2b",
+    "json-schema"
+  ],
+  "homepage": "https://github.com/greicodex/fidex-document-specs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/greicodex/fidex-document-specs.git"
+  },
+  "license": "MIT",
+  "scripts": {
+    "validate": "make validate",
+    "lint": "prettier --check \"schemas/**/*.json\" \"examples/**/*.json\"",
+    "format": "prettier --write \"schemas/**/*.json\" \"examples/**/*.json\""
+  },
+  "devDependencies": {
+    "ajv-cli": "^5.0.0",
+    "prettier": "^3.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

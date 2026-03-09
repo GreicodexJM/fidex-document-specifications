@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fidex.io/v1/common/related-documents",
+  "title": "Related Document Reference",
+  "description": "A back-reference to a prior document in the transaction chain. Used in Credit Notes and Debit Notes to link to the original Invoice they affect. Enables strict historical linking required by SENIAT for notes affecting pre-digital invoices. / Referencia a un documento previo en la cadena transaccional. Usado en Notas de Crédito y Débito para vincularlas a la Factura original que afectan.",
+  "type": "object",
+  "required": ["doc_type", "document_number", "emission_date", "total_amount"],
+  "properties": {
+    "doc_type": {
+      "type": "string",
+      "enum": ["INVOICE", "CREDIT_NOTE", "DEBIT_NOTE", "PURCHASE_ORDER"],
+      "description": "Type of the referenced document. / Tipo del documento referenciado."
+    },
+    "document_number": {
+      "type": "string",
+      "description": "Document number of the referenced document. / Número del documento referenciado.",
+      "examples": ["INV-2026-00145", "ORD-2026-9921"]
+    },
+    "fiscal_series": {
+      "type": "string",
+      "description": "Fiscal series letter of the referenced invoice (required by Unidigital for notes affecting pre-digital invoices). / Letra de la serie fiscal de la factura referenciada.",
+      "examples": ["A", "B"]
+    },
+    "currency_base": {
+      "type": "string",
+      "description": "Base currency of the referenced document. / Moneda base del documento referenciado.",
+      "examples": ["USD", "VES"]
+    },
+    "emission_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Emission date of the referenced document (AffectedDocumentDate). / Fecha de emisión del documento referenciado.",
+      "examples": ["2026-02-28T10:00:00Z"]
+    },
+    "total_amount": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Total amount of the referenced document in its base currency (AffectedDocumentAmount). / Monto total del documento referenciado en su moneda base.",
+      "examples": [130.50, 100.00]
+    }
+  },
+  "unevaluatedProperties": false
+}

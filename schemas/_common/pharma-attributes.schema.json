@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fidex.io/v1/common/pharma-attributes",
+  "title": "Pharmaceutical Attributes",
+  "description": "Pharmaceutical-specific product attributes required by Venezuelan regulatory bodies (MPPS/SICM) and pharmacies. Mandatory in catalog items; included in orders where traceability is required. / Atributos farmacéuticos específicos requeridos por organismos reguladores venezolanos.",
+  "type": "object",
+  "required": ["active_ingredient", "presentation", "requires_prescription"],
+  "properties": {
+    "active_ingredient": {
+      "type": "string",
+      "description": "INN (International Nonproprietary Name) of the active pharmaceutical ingredient. / DCI (Denominación Común Internacional) del ingrediente activo.",
+      "examples": ["Amoxicilina Trihidrato", "Ibuprofeno", "Metformina Clorhidrato"]
+    },
+    "therapeutic_class": {
+      "type": "string",
+      "description": "ATC (Anatomical Therapeutic Chemical) class or descriptive therapeutic category. / Clase ATC o categoría terapéutica descriptiva.",
+      "examples": ["Antibiotico de amplio espectro", "AINE / Analgesico", "Antidiabetico oral"]
+    },
+    "presentation": {
+      "type": "string",
+      "description": "Commercial packaging presentation (units, container type). / Presentación comercial (unidades, tipo de envase).",
+      "examples": [
+        "Caja x 21 Capsulas",
+        "Caja x 10 Tabletas",
+        "Frasco x 120 mL Jarabe"
+      ]
+    },
+    "requires_prescription": {
+      "type": "boolean",
+      "description": "Whether this product requires a physician's prescription for dispensing. Propagates to POS systems to enforce prescription capture. / Indica si el producto requiere receta médica para dispensar. Se propaga a sistemas POS."
+    },
+    "storage_conditions": {
+      "type": "string",
+      "enum": [
+        "ROOM_TEMPERATURE",
+        "REFRIGERATED",
+        "FROZEN",
+        "CONTROLLED_SUBSTANCE"
+      ],
+      "description": "Storage temperature requirement. Drives cold-chain logistics decisions. REFRIGERATED = 2–8°C, FROZEN = -20°C or below. / Requisito de temperatura de almacenamiento. Determina decisiones de cadena de frío.",
+      "examples": ["ROOM_TEMPERATURE", "REFRIGERATED"]
+    },
+    "concentration": {
+      "type": "string",
+      "description": "Active ingredient concentration (amount and unit). / Concentración del ingrediente activo (cantidad y unidad).",
+      "examples": ["500mg", "400mg", "10mg/5mL"]
+    }
+  },
+  "unevaluatedProperties": false
+}

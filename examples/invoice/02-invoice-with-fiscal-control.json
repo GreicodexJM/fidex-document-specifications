@@ -1,0 +1,105 @@
+{
+  "_comment": "This example shows an invoice with the optional fiscal_control block activated for SENIAT Unidigital talonario digital. The IVA-taxable product (Alcohol Antiseptico, 16% IVA) demonstrates non-exempt tax handling and the IGTF surcharge for USD payment.",
+  "kontext_routing": {
+    "tenant_id": "tenant-leti-01",
+    "receiver_id": "partner-drogueria-x",
+    "document_type": "GS1_INVOICE_JSON",
+    "correlation_id": "ORD-2026-9955"
+  },
+  "payload": {
+    "document_info": {
+      "version": "1.2",
+      "doc_type": "INVOICE",
+      "document_number": "INV-2026-00146",
+      "related_order": "ORD-2026-9955",
+      "related_asn": "ASN-88430",
+      "status": "ISSUED",
+      "currency_base": "USD",
+      "dates": {
+        "issued_at": "2026-03-11T11:00:00Z",
+        "due_date": "2026-03-26T23:59:59Z"
+      }
+    },
+    "parties": {
+      "biller": {
+        "name": "Laboratorios Leti",
+        "rif": "J-00000000-1",
+        "gln": "7590000000001"
+      },
+      "payer": {
+        "name": "Drogueria Distribuidora X",
+        "rif": "J-11111111-2"
+      }
+    },
+    "payment_terms": {
+      "method": "Transferencia",
+      "term_type": "NET_15",
+      "net_days": 15,
+      "exchange_rate_pegged": 45.00
+    },
+    "lines": [
+      {
+        "line_id": 1,
+        "related_order_line": 1,
+        "product": {
+          "gtin": "7591234560001",
+          "vendor_part": "LETI-ALCO-500",
+          "description": "Alcohol Antiseptico 96% x 500mL"
+        },
+        "qty": {
+          "uom": "Frasco",
+          "invoiced": 100
+        },
+        "pricing": {
+          "unit_price": 1.50,
+          "currency": "USD"
+        },
+        "taxes": [
+          {
+            "type": "IVA",
+            "percentage": 16.00,
+            "is_exempt": false,
+            "amount_usd": 24.00,
+            "amount_ves": 1080.00
+          },
+          {
+            "type": "IGTF",
+            "percentage": 3.00,
+            "is_exempt": false,
+            "amount_usd": 4.50,
+            "amount_ves": 202.50
+          }
+        ],
+        "line_total_net": 150.00
+      }
+    ],
+    "summary": {
+      "total_lines": 1,
+      "total_net_usd": 150.00,
+      "total_discounts_usd": 0.00,
+      "total_taxes_usd": 28.50,
+      "total_gross_usd": 178.50,
+      "fiscal_totals_ves": {
+        "exchange_rate_applied": 45.00,
+        "base_imponible_ves": 6750.00,
+        "total_iva_ves": 1080.00,
+        "total_igtf_ves": 202.50,
+        "total_exempt_ves": 0.00,
+        "total_gross_ves": 8032.50
+      }
+    },
+    "fiscal_control": {
+      "fiscal_series_id": "123e4567-e89b-12d3-a456-426614174000",
+      "fiscal_series_letter": "A",
+      "control_number": "00000146",
+      "amount_in_letters_ves": "Ocho mil treinta y dos con 50/100",
+      "bcv_message": "Tasa BCV: 45.00",
+      "printable_notes": [
+        "Mercancia revisada al momento de la entrega.",
+        "Sin derecho a devolucion sin factura original.",
+        "Esta factura es documento legal segun Art. 54 LIVA.",
+        "Gracias por su preferencia."
+      ]
+    }
+  }
+}

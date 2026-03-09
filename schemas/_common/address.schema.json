@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fidex.io/v1/common/address",
+  "title": "Address",
+  "description": "Physical address for billing or shipping. Supports multiple address types per party (e.g., one billing address, many shipping branches). / Dirección física para facturación o envío.",
+  "type": "object",
+  "required": ["street", "city", "country_code"],
+  "properties": {
+    "address_type": {
+      "type": "string",
+      "enum": ["BILLING", "SHIPPING"],
+      "description": "Address role. A single party can have one BILLING and multiple SHIPPING addresses. / Tipo de dirección. Un participante puede tener una dirección de facturación y múltiples de envío."
+    },
+    "location_id": {
+      "type": "string",
+      "description": "Internal location ID for multi-branch entities (e.g., pharmacy chain). / ID de ubicación interna para entidades con múltiples sucursales.",
+      "examples": ["LOC-01", "SUC-CARACAS-ESTE"]
+    },
+    "street": {
+      "type": "string",
+      "description": "Street address including building number, floor, local. / Dirección de calle incluyendo número, piso, local.",
+      "examples": ["Av. Principal, Edif. Central, Piso 1, Local 3"]
+    },
+    "city": {
+      "type": "string",
+      "description": "City or municipality. / Ciudad o municipio.",
+      "examples": ["Caracas", "Valencia", "Maracaibo"]
+    },
+    "state": {
+      "type": "string",
+      "description": "State or district. / Estado o distrito.",
+      "examples": ["Distrito Capital", "Carabobo", "Zulia"]
+    },
+    "zip": {
+      "type": "string",
+      "description": "Postal code. Venezuelan postal codes are 4 digits. / Código postal. Los códigos postales venezolanos son de 4 dígitos.",
+      "examples": ["1010", "2001", "4001"]
+    },
+    "country_code": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}$",
+      "description": "ISO 3166-1 alpha-2 country code. / Código de país ISO 3166-1 alfa-2.",
+      "examples": ["VE", "US", "CO"]
+    },
+    "is_default": {
+      "type": "boolean",
+      "description": "Whether this is the default address for its type. / Indica si esta es la dirección predeterminada para su tipo.",
+      "default": false
+    }
+  },
+  "unevaluatedProperties": false
+}

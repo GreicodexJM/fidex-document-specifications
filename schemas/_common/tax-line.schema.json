@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fidex.io/v1/common/tax-line",
+  "title": "Tax Line",
+  "description": "Single tax entry at the line-item level. Multiple taxes can apply to one line (e.g., IVA + IGTF for USD transactions). VES amounts are computed using the BCV rate at time of transaction. / Entrada de impuesto a nivel de línea. Múltiples impuestos pueden aplicar a una línea.",
+  "type": "object",
+  "required": ["type", "percentage"],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["IVA", "IGTF", "ISLR"],
+      "description": "Venezuelan tax type. IVA = Impuesto al Valor Agregado (16% standard, 0% exempt). IGTF = Impuesto a las Grandes Transacciones Financieras (3%, applies to USD/foreign currency payments). ISLR = Impuesto Sobre la Renta (income tax withholding, see v1.1). / Tipo de impuesto venezolano."
+    },
+    "percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Tax rate as a percentage. IVA standard = 16.00, IVA reduced = 8.00, IVA exempt = 0.00, IGTF = 3.00. / Tasa impositiva como porcentaje.",
+      "examples": [16.00, 8.00, 3.00, 0.00]
+    },
+    "is_exempt": {
+      "type": "boolean",
+      "description": "Explicit exemption flag. When true, percentage must be 0.00. Many essential medicines are IVA-exempt under Decreto 3.111. / Flag explícito de exención. Cuando es true, el porcentaje debe ser 0.00.",
+      "default": false
+    },
+    "amount_usd": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Tax amount in USD (commercial base currency). / Monto del impuesto en USD (moneda base comercial).",
+      "examples": [18.00, 3.37]
+    },
+    "amount_ves": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Tax amount in Venezuelan Bolívares (VES). Computed as: amount_usd × exchange_rate_applied. Transmitted explicitly to ensure identical fiscal records across both ERPs. / Monto del impuesto en Bolívares. Calculado como: monto_usd × tasa_cambio_aplicada.",
+      "examples": [810.00, 135.00]
+    }
+  },
+  "unevaluatedProperties": false
+}

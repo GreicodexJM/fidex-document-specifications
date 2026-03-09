@@ -1,0 +1,79 @@
+{
+  "kontext_routing": {
+    "tenant_id": "tenant-leti-01",
+    "receiver_id": "partner-drogueria-x",
+    "document_type": "GS1_CATALOG_JSON",
+    "correlation_id": "SYNC-FULL-1043"
+  },
+  "payload": {
+    "document_info": {
+      "version": "1.3",
+      "doc_type": "CATALOG",
+      "document_number": "SYNC-FULL-1043",
+      "status": "PUBLISHED",
+      "currency_base": "USD"
+    },
+    "parties": {
+      "publisher": {
+        "name": "Laboratorios Leti",
+        "rif": "J-00000000-1",
+        "gln": "7590000000001"
+      }
+    },
+    "catalog_metadata": {
+      "catalog_name": "Re-Sincronizacion Maestra de Inventario - Leti",
+      "catalog_type": "FULL_SYNC",
+      "includes_inventory": true,
+      "sync_state": {
+        "sequence_id": 1043,
+        "previous_merkle_root": null,
+        "current_merkle_root": "m5n6o7p8q9r0s1t2u3v4",
+        "total_active_skus": 2
+      }
+    },
+    "items": [
+      {
+        "action": "UPSERT",
+        "product": {
+          "vendor_part": "LETI-AMOX-500",
+          "gtin": "7591234567890",
+          "brand_name": "Leti",
+          "description": "Amoxicilina 500mg x 21 capsulas"
+        },
+        "pricing_tiers": [
+          {
+            "tier_code": "WHOLESALE_STD",
+            "currency": "USD",
+            "unit_price_net": 2.50
+          }
+        ],
+        "inventory": {
+          "status": "IN_STOCK",
+          "available_qty": 14950,
+          "last_updated": "2026-03-01T11:50:00Z"
+        }
+      },
+      {
+        "action": "UPSERT",
+        "product": {
+          "vendor_part": "LETI-IBUP-400",
+          "gtin": "7590987654321",
+          "brand_name": "Leti",
+          "description": "Ibuprofeno 400mg x 10 tabletas"
+        },
+        "pricing_tiers": [
+          {
+            "tier_code": "WHOLESALE_STD",
+            "currency": "USD",
+            "unit_price_net": 1.20
+          }
+        ],
+        "inventory": {
+          "status": "OUT_OF_STOCK",
+          "available_qty": 0,
+          "last_updated": "2026-03-01T11:50:00Z"
+        }
+      }
+    ]
+  }
+}

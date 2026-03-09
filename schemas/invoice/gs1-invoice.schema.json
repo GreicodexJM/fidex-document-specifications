@@ -1,0 +1,248 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fidex.io/v1/invoice/schema",
+  "title": "GS1 Invoice",
+  "description": "Invoice document (Factura). Legal fiscal representation of the transaction. Includes the Three-Way Match correlation triangle (related_order + related_asn), multi-currency fiscal_totals_ves block for SENIAT compliance, and optional fiscal_control for Unidigital talonario digital. / Documento de factura. Representación fiscal legal de la transacción.",
+  "type": "object",
+  "required": ["kontext_routing", "payload"],
+  "properties": {
+    "kontext_routing": {
+      "allOf": [
+        { "$ref": "https://schemas.fidex.io/v1/common/kontext-routing" },
+        {
+          "properties": {
+            "document_type": { "const": "GS1_INVOICE_JSON" }
+          }
+        }
+      ]
+    },
+    "payload": {
+      "type": "object",
+      "required": ["document_info", "parties", "lines", "summary"],
+      "properties": {
+        "document_info": {
+          "type": "object",
+          "required": ["version", "doc_type", "document_number", "related_order", "status", "currency_base"],
+          "properties": {
+            "version": { "type": "string", "examples": ["1.2"] },
+            "doc_type": {
+              "type": "string",
+              "enum": ["INVOICE", "CREDIT_NOTE", "DEBIT_NOTE"],
+              "description": "INVOICE: standard fiscal invoice ('Factura'). CREDIT_NOTE: reduces a prior invoice amount. DEBIT_NOTE: increases a prior invoice amount. Credit/Debit Notes require related_documents array. / INVOICE: factura fiscal estándar. CREDIT_NOTE/DEBIT_NOTE requieren el arreglo related_documents."
+            },
+            "document_number": {
+              "type": "string",
+              "description": "Unique invoice number. / Número único de factura.",
+              "examples": ["INV-2026-00145", "CN-2026-00023"]
+            },
+            "related_order": {
+              "type": "string",
+              "description": "References the ORDER_CONFIRMED document_number. Part of Three-Way Match triangle: Order = Receipt = Invoice. / Referencia al document_number de la ORDER_CONFIRMED. Parte del triángulo de Three-Way Match.",
+              "examples": ["ORD-2026-9921"]
+            },
+            "related_asn": {
+              "type": "string",
+              "description": "References the DESPATCH_ADVICE document_number. Completes the Three-Way Match triangle. / Referencia al document_number del DESPATCH_ADVICE. Completa el triángulo Three-Way Match.",
+              "examples": ["ASN-88421"]
+            },
+            "related_documents": {
+              "type": "array",
+              "items": { "$ref": "https://schemas.fidex.io/v1/common/related-documents" },
+              "description": "Required for CREDIT_NOTE and DEBIT_NOTE: array of affected invoices. Enables strict historical linking required by SENIAT. / Requerido para CREDIT_NOTE y DEBIT_NOTE: arreglo de facturas afectadas."
+            },
+            "status": {
+              "type": "string",
+              "enum": ["DRAFT", "ISSUED", "DELIVERED", "PAID", "PARTIALLY_PAID", "OVERDUE", "CANCELLED", "VOIDED"],
+              "description": "Invoice status. ISSUED is the initial status when invoice is emitted. / Estado de la factura. ISSUED es el estado inicial al emitir."
+            },
+            "currency_base": {
+              "type": "string",
+              "description": "Base currency for all commercial line items. / Moneda base para todas las líneas comerciales.",
+              "examples": ["USD"]
+            },
+            "dates": {
+              "type": "object",
+              "required": ["issued_at"],
+              "properties": {
+                "issued_at": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Invoice issue date/time. / Fecha/hora de emisión de la factura."
+                },
+                "due_date": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Payment due date. Calculated as issued_at + net_days. / Fecha de vencimiento del pago."
+                }
+              }
+            }
+          }
+        },
+        "parties": {
+          "type": "object",
+          "required": ["biller", "payer"],
+          "properties": {
+            "biller": {
+              "$ref": "https://schemas.fidex.io/v1/common/party",
+              "description": "The party issuing the invoice (typically the laboratory). RIF is mandatory on all fiscal documents. / El participante que emite la factura (típicamente el laboratorio)."
+            },
+            "payer": {
+              "$ref": "https://schemas.fidex.io/v1/common/party",
+              "description": "The party responsible for payment (buyer/distributor). / El participante responsable del pago (comprador/distribuidor)."
+            },
+            "ship_to": {
+              "$ref": "https://schemas.fidex.io/v1/common/party",
+              "description": "Final delivery destination (may differ from payer for drop-ship scenarios). / Destino final de entrega (puede diferir del pagador en escenarios de drop-ship)."
+            }
+          }
+        },
+        "payment_terms": {
+          "type": "object",
+          "description": "Invoice payment terms. Should match the ORDER_CONFIRMED payment_terms. / Condiciones de pago de la factura.",
+          "properties": {
+            "method": { "type": "string", "examples": ["Transferencia", "PagoMovil"] },
+            "term_type": {
+              "type": "string",
+              "enum": ["CONTADO", "NET_15", "NET_30", "NET_60"]
+            },
+            "net_days": { "type": "integer", "minimum": 0 },
+            "exchange_rate_pegged": {
+              "type": "number",
+              "description": "BCV exchange rate at time of invoicing. Used as the denominator for all VES conversions in fiscal_totals_ves. / Tasa BCV al momento de facturar. Usada como denominador para todas las conversiones VES.",
+              "examples": [45.00]
+            }
+          }
+        },
+        "lines": {
+          "type": "array",
+          "description": "Invoice line items. Each line must reference the corresponding ORDER_CONFIRMED line. / Líneas de la factura. Cada línea debe referenciar la línea correspondiente de la ORDER_CONFIRMED.",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["line_id", "product", "qty", "pricing"],
+            "properties": {
+              "line_id": { "type": "integer", "minimum": 1 },
+              "related_order_line": { "type": "integer" },
+              "product": {
+                "$ref": "https://schemas.fidex.io/v1/common/product-identity"
+              },
+              "qty": {
+                "type": "object",
+                "required": ["uom", "invoiced"],
+                "properties": {
+                  "uom": { "type": "string", "examples": ["Caja"] },
+                  "invoiced": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "Quantity being invoiced. May differ from ordered/shipped if partial invoicing. / Cantidad facturada. Puede diferir de pedido/despachado en facturación parcial."
+                  }
+                }
+              },
+              "pricing": {
+                "type": "object",
+                "required": ["unit_price", "currency"],
+                "properties": {
+                  "unit_price": {
+                    "type": "number",
+                    "minimum": 0,
+                    "description": "Final agreed unit price (from ORDER_CONFIRMED). / Precio unitario final acordado (de la ORDER_CONFIRMED)."
+                  },
+                  "currency": { "type": "string", "examples": ["USD"] }
+                }
+              },
+              "discounts_charges": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "type": { "type": "string", "enum": ["DISCOUNT", "SURCHARGE"] },
+                    "description": { "type": "string" },
+                    "applied_by": {
+                      "type": "string",
+                      "enum": ["LABORATORIO", "DISTRIBUIDOR"]
+                    },
+                    "percentage": { "type": "number", "minimum": 0, "maximum": 100 },
+                    "amount": { "type": "number", "minimum": 0 }
+                  }
+                }
+              },
+              "taxes": {
+                "type": "array",
+                "items": { "$ref": "https://schemas.fidex.io/v1/common/tax-line" },
+                "description": "Tax lines for this invoice line. IVA-exempt medicines must have is_exempt=true to prevent incorrect VES tax calculations. / Líneas de impuesto para esta línea de factura."
+              },
+              "line_total_net": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Net line total in base currency (unit_price × invoiced_qty - discounts). / Total neto de línea en moneda base."
+              }
+            }
+          }
+        },
+        "summary": {
+          "type": "object",
+          "required": ["total_lines", "total_net_usd", "total_gross_usd"],
+          "description": "Invoice totals. fiscal_totals_ves is extracted by the Government Observer Node for SENIAT Targeted Tax Manifest. / Totales de la factura. fiscal_totals_ves es extraído por el nodo observador del gobierno para el Manifiesto Fiscal Objetivo del SENIAT.",
+          "properties": {
+            "total_lines": { "type": "integer", "minimum": 1 },
+            "total_net_usd": { "type": "number", "minimum": 0 },
+            "total_discounts_usd": { "type": "number", "minimum": 0 },
+            "total_taxes_usd": { "type": "number", "minimum": 0 },
+            "total_gross_usd": { "type": "number", "minimum": 0 },
+            "fiscal_totals_ves": {
+              "$ref": "https://schemas.fidex.io/v1/common/fiscal-totals-ves",
+              "description": "SENIAT reporting block. ONLY this object is sent to the Government Observer Node — never the line items. / Bloque de reporte SENIAT. SOLO este objeto se envía al nodo observador del gobierno, nunca las líneas de detalle."
+            }
+          }
+        },
+        "fiscal_control": {
+          "$ref": "https://schemas.fidex.io/v1/common/fiscal-control",
+          "description": "Optional SENIAT talonario digital control block. Include to activate Unidigital fiscal printing workflow. Omit for international/non-fiscal B2B transactions. / Bloque opcional de control del talonario digital SENIAT. Incluir para activar flujo de impresión fiscal Unidigital."
+        },
+        "applied_payments": {
+          "type": "array",
+          "description": "Payments captured at time of invoicing (if not already captured in ORDER_CONFIRMED). Same structure as order applied_payments. / Pagos capturados al momento de facturar (si no se capturaron en la ORDER_CONFIRMED).",
+          "items": {
+            "type": "object",
+            "properties": {
+              "payment_id": { "type": "string" },
+              "method": {
+                "type": "string",
+                "enum": [
+                  "PAGO_MOVIL", "ZELLE", "TRANSFERENCIA",
+                  "TARJETA_DEBITO", "TARJETA_CREDITO",
+                  "EFECTIVO_USD", "EFECTIVO_VES"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": ["PENDING", "COMPLETED", "REJECTED", "REFUNDED"]
+              },
+              "amounts": {
+                "type": "object",
+                "properties": {
+                  "paid_currency": { "type": "string" },
+                  "amount_paid": { "type": "number", "minimum": 0 },
+                  "exchange_rate_usd": { "type": "number" },
+                  "amount_usd_equivalent": { "type": "number", "minimum": 0 }
+                }
+              },
+              "reference_data": {
+                "type": "object",
+                "properties": {
+                  "confirmation_number": { "type": "string" },
+                  "bank_code": { "type": "string" },
+                  "payer_id": { "type": "string" },
+                  "payer_phone": { "type": "string" },
+                  "sender_email": { "type": "string", "format": "email" },
+                  "pos_terminal_id": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "unevaluatedProperties": false
+}

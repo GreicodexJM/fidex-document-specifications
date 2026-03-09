@@ -1,0 +1,125 @@
+{
+  "kontext_routing": {
+    "tenant_id": "tenant-leti-01",
+    "receiver_id": "partner-drogueria-x",
+    "document_type": "GS1_ORDER_JSON",
+    "correlation_id": "ORD-2026-9921"
+  },
+  "payload": {
+    "document_info": {
+      "version": "1.1",
+      "doc_type": "QUOTE",
+      "document_number": "QUO-2026-0155",
+      "related_order": "ORD-2026-9921",
+      "status": "SENT",
+      "currency_base": "USD",
+      "dates": {
+        "created_at": "2026-03-09T11:30:00Z",
+        "delivery_requested": "2026-03-11T14:00:00Z",
+        "expiration": "2026-03-12T23:59:59Z"
+      }
+    },
+    "parties": {
+      "seller": {
+        "name": "Laboratorios Leti",
+        "rif": "J-00000000-1",
+        "gln": "7590000000001"
+      },
+      "buyer": {
+        "name": "Drogueria Distribuidora X",
+        "rif": "J-11111111-2",
+        "sicm": "S-12345"
+      },
+      "ship_to": {
+        "name": "Farmacia El Pueblo, C.A.",
+        "rif": "J-22222222-3",
+        "sicm": "S-98765"
+      }
+    },
+    "payment_terms": {
+      "method": "Multi-Pago",
+      "term_type": "CONTADO",
+      "net_days": 0,
+      "currency": "USD",
+      "exchange_rate_pegged": 45.00
+    },
+    "lines": [
+      {
+        "line_id": 1,
+        "related_order_line": 1,
+        "product": {
+          "gtin": "7591234567890",
+          "vendor_part": "LETI-AMOX-500",
+          "description": "Amoxicilina 500mg x 21 capsulas"
+        },
+        "pharma_tracking": {
+          "lot_number": "L-202509A",
+          "expiry_date": "2028-09-01"
+        },
+        "qty": {
+          "uom": "Caja",
+          "ordered": 50,
+          "confirmed": 50
+        },
+        "pricing": {
+          "unit_price": 2.50,
+          "currency": "USD"
+        },
+        "discounts_charges": [
+          {
+            "type": "DISCOUNT",
+            "description": "Descuento Comercial Leti",
+            "applied_by": "LABORATORIO",
+            "percentage": 10.00,
+            "amount": 12.50
+          }
+        ],
+        "taxes": [
+          {
+            "type": "IVA",
+            "percentage": 0.00,
+            "is_exempt": true
+          }
+        ],
+        "line_total_net": 112.50
+      },
+      {
+        "line_id": 2,
+        "related_order_line": 2,
+        "product": {
+          "gtin": "7591234567904",
+          "vendor_part": "LETI-METF-850",
+          "description": "Metformina 850mg x 30 comprimidos"
+        },
+        "pharma_tracking": {
+          "lot_number": "L-202508B",
+          "expiry_date": "2028-08-15"
+        },
+        "qty": {
+          "uom": "Caja",
+          "ordered": 30,
+          "confirmed": 25
+        },
+        "pricing": {
+          "unit_price": 1.80,
+          "currency": "USD"
+        },
+        "taxes": [
+          {
+            "type": "IVA",
+            "percentage": 0.00,
+            "is_exempt": true
+          }
+        ],
+        "line_total_net": 45.00
+      }
+    ],
+    "summary": {
+      "total_lines": 2,
+      "total_net_usd": 157.50,
+      "total_discounts_usd": 12.50,
+      "total_taxes_usd": 0.00,
+      "total_gross_usd": 157.50
+    }
+  }
+}

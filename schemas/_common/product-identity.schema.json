@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fidex.io/v1/common/product-identity",
+  "title": "Product Identity",
+  "description": "Core product identification block used in all line items. GTIN is the universal identifier that eliminates ambiguity between similar products (e.g., Amoxicilina 250mg vs 500mg). / Bloque de identificación de producto usado en todas las líneas. El GTIN es el identificador universal.",
+  "type": "object",
+  "required": ["gtin", "description"],
+  "properties": {
+    "gtin": {
+      "type": "string",
+      "pattern": "^[0-9]{13,14}$",
+      "description": "GS1 Global Trade Item Number — 13 or 14 digit EAN/UCC code. Venezuelan GTINs use country prefix 759. Mandatory for pharmaceutical traceability and SICM compliance. / Número Global de Artículo Comercial GS1. Los GTINs venezolanos usan el prefijo 759.",
+      "examples": ["7591234567890", "7590987654321"]
+    },
+    "vendor_part": {
+      "type": "string",
+      "description": "Vendor's internal SKU code. Used for ERP matching on the sender's side. Not universally unique — use GTIN for cross-ERP identification. / Código SKU interno del vendedor. Usado para conciliación en el ERP del emisor.",
+      "examples": ["LETI-AMOX-500", "LETI-IBUP-400"]
+    },
+    "brand_name": {
+      "type": "string",
+      "description": "Commercial brand name of the product. / Nombre de marca comercial del producto.",
+      "examples": ["Leti", "Bayer", "Pfizer"]
+    },
+    "description": {
+      "type": "string",
+      "description": "Human-readable product description including active ingredient, concentration, and presentation. / Descripción legible del producto incluyendo ingrediente activo, concentración y presentación.",
+      "examples": [
+        "Amoxicilina 500mg x 21 capsulas",
+        "Ibuprofeno 400mg x 10 tabletas",
+        "Metformina 850mg x 30 comprimidos"
+      ]
+    }
+  },
+  "unevaluatedProperties": false
+}

@@ -1,0 +1,194 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fidex.io/v1/despatch-advice/schema",
+  "title": "GS1 Despatch Advice (ASN)",
+  "description": "Advance Ship Notice — Nota de Entrega. Sent when goods leave the vendor's warehouse. Provides driver/carrier details, SSCC pallet barcode for one-scan receiving, and pharmaceutical lot/expiry tracking. Must be issued before or simultaneously with the Invoice. / Aviso de Embarque. Enviado cuando la mercancía sale del almacén del vendedor.",
+  "type": "object",
+  "required": ["kontext_routing", "payload"],
+  "properties": {
+    "kontext_routing": {
+      "allOf": [
+        { "$ref": "https://schemas.fidex.io/v1/common/kontext-routing" },
+        {
+          "properties": {
+            "document_type": { "const": "GS1_DESPATCH_ADVICE_JSON" }
+          }
+        }
+      ]
+    },
+    "payload": {
+      "type": "object",
+      "required": ["document_info", "parties", "logistics", "lines"],
+      "properties": {
+        "document_info": {
+          "type": "object",
+          "required": ["version", "doc_type", "document_number", "related_order", "status"],
+          "properties": {
+            "version": { "type": "string", "examples": ["1.2"] },
+            "doc_type": { "type": "string", "const": "DESPATCH_ADVICE" },
+            "document_number": {
+              "type": "string",
+              "description": "ASN document number. / Número del ASN.",
+              "examples": ["ASN-88421"]
+            },
+            "related_order": {
+              "type": "string",
+              "description": "References the ORDER_CONFIRMED document_number that triggered this shipment. Part of the Three-Way Match correlation triangle. / Referencia al document_number de la ORDER_CONFIRMED que disparó este despacho.",
+              "examples": ["ORD-2026-9921"]
+            },
+            "status": {
+              "type": "string",
+              "enum": ["PREPARED", "SHIPPED", "IN_TRANSIT", "DELIVERED", "PARTIALLY_DELIVERED", "RETURNED"],
+              "description": "Shipment status. SHIPPED is the initial status when ASN is issued. / Estado del despacho. SHIPPED es el estado inicial al emitir el ASN."
+            },
+            "dates": {
+              "type": "object",
+              "properties": {
+                "issued_at": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "When the ASN was issued (goods leave warehouse). / Cuando se emitió el ASN (mercancía sale del almacén)."
+                },
+                "estimated_delivery": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Estimated arrival time at ship_to location. / Hora estimada de llegada al destino."
+                }
+              }
+            }
+          }
+        },
+        "parties": {
+          "type": "object",
+          "required": ["shipper", "ship_to"],
+          "properties": {
+            "shipper": {
+              "$ref": "https://schemas.fidex.io/v1/common/party",
+              "description": "The party dispatching the goods (vendor's warehouse). GLN identifies the specific warehouse location. / El participante que despacha la mercancía. El GLN identifica la ubicación específica del almacén."
+            },
+            "ship_to": {
+              "$ref": "https://schemas.fidex.io/v1/common/party",
+              "description": "The party receiving the goods. SICM is validated here before the truck is dispatched. / El participante que recibe la mercancía. El SICM se valida aquí antes de despachar."
+            }
+          }
+        },
+        "logistics": {
+          "type": "object",
+          "required": ["packaging"],
+          "properties": {
+            "carrier": {
+              "type": "object",
+              "description": "Carrier/logistics provider details. / Detalles del transportista.",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "examples": ["Logistica Yummy Fleet", "LTL Transportes"]
+                },
+                "tracking_reference": {
+                  "type": "string",
+                  "description": "Carrier's tracking number or waybill. / Número de seguimiento del transportista.",
+                  "examples": ["YUM-8821-XX"]
+                }
+              }
+            },
+            "driver": {
+              "type": "object",
+              "description": "Driver identification. Required for SENIAT and MPPS spot checks at delivery point. / Identificación del conductor. Requerida para inspecciones SENIAT y MPPS en punto de entrega.",
+              "properties": {
+                "name": { "type": "string", "examples": ["Pedro Perez"] },
+                "national_id": {
+                  "type": "string",
+                  "description": "Driver's Venezuelan national ID. / Cédula venezolana del conductor.",
+                  "examples": ["V-12345678"]
+                },
+                "vehicle_plate": {
+                  "type": "string",
+                  "description": "Vehicle license plate. / Placa del vehículo.",
+                  "examples": ["A12-BCD"]
+                }
+              }
+            },
+            "packaging": {
+              "type": "object",
+              "required": ["total_packages"],
+              "description": "Shipment packaging summary. The SSCC is the key GS1 identifier enabling one-scan pallet receiving. / Resumen del embalaje del despacho. El SSCC es el identificador GS1 clave para recepción con un solo escaneo.",
+              "properties": {
+                "total_packages": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "description": "Total number of physical packages in this shipment. / Número total de paquetes físicos en este despacho."
+                },
+                "sscc": {
+                  "type": "string",
+                  "pattern": "^[0-9]{18}$",
+                  "description": "GS1 Serial Shipping Container Code (18 digits). When the receiving warehouse scans this barcode, their ERP expands all GTINs, lots, and quantities inside the pallet without opening boxes. / Código SSCC GS1 (18 dígitos). Al escanear este código, el ERP del receptor expande todos los GTINs, lotes y cantidades del palé sin abrir cajas.",
+                  "examples": ["175912345678901234"]
+                }
+              }
+            }
+          }
+        },
+        "lines": {
+          "type": "array",
+          "description": "Shipment line items. Each line matches a line from the ORDER_CONFIRMED. / Líneas del despacho. Cada línea corresponde a una línea de la ORDER_CONFIRMED.",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["line_id", "product", "pharma_tracking", "qty"],
+            "properties": {
+              "line_id": { "type": "integer", "minimum": 1 },
+              "related_order_line": {
+                "type": "integer",
+                "description": "References the line_id in the ORDER_CONFIRMED. / Referencia el line_id en la ORDER_CONFIRMED."
+              },
+              "product": {
+                "$ref": "https://schemas.fidex.io/v1/common/product-identity"
+              },
+              "pharma_tracking": {
+                "type": "object",
+                "required": ["lot_number", "expiry_date"],
+                "description": "Mandatory pharmaceutical traceability fields. Required for product recall management (farmacovigilancia). / Campos obligatorios de trazabilidad farmacéutica. Requeridos para gestión de alertas sanitarias.",
+                "properties": {
+                  "lot_number": {
+                    "type": "string",
+                    "description": "Manufacturing lot/batch number. / Número de lote de fabricación.",
+                    "examples": ["L-202509A", "LOT-20260101"]
+                  },
+                  "expiry_date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Product expiration date. ERP rejects items expiring within the configured threshold. / Fecha de vencimiento del producto.",
+                    "examples": ["2028-09-01"]
+                  },
+                  "manufacture_date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Manufacturing date (optional but recommended). / Fecha de fabricación (opcional pero recomendada)."
+                  }
+                }
+              },
+              "qty": {
+                "type": "object",
+                "required": ["uom", "shipped", "ordered"],
+                "properties": {
+                  "uom": { "type": "string", "examples": ["Caja"] },
+                  "shipped": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "Quantity actually shipped in this delivery. / Cantidad efectivamente despachada."
+                  },
+                  "ordered": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Quantity originally ordered (for variance comparison). / Cantidad originalmente pedida (para comparación de varianza)."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "unevaluatedProperties": false
+}

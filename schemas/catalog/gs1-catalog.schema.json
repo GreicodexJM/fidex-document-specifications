@@ -1,0 +1,219 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fidex.io/v1/catalog/schema",
+  "title": "GS1 Catalog",
+  "description": "Product catalog document (Lista de Precios / Catálogo). Supports DELTA_UPDATE (changed SKUs only) and FULL_SYNC (baseline reset using Merkle Root state vector). Embeds real-time inventory for offline sales apps (Kontext Pedidos). / Documento de catálogo de productos. Soporta DELTA_UPDATE y FULL_SYNC con vector de estado Merkle Root.",
+  "type": "object",
+  "required": ["kontext_routing", "payload"],
+  "properties": {
+    "kontext_routing": {
+      "allOf": [
+        { "$ref": "https://schemas.fidex.io/v1/common/kontext-routing" },
+        {
+          "properties": {
+            "document_type": { "const": "GS1_CATALOG_JSON" }
+          }
+        }
+      ]
+    },
+    "payload": {
+      "type": "object",
+      "required": ["document_info", "parties", "catalog_metadata", "items"],
+      "properties": {
+        "document_info": {
+          "type": "object",
+          "required": ["version", "doc_type", "document_number", "status", "currency_base"],
+          "properties": {
+            "version": { "type": "string", "examples": ["1.2"] },
+            "doc_type": { "type": "string", "const": "CATALOG" },
+            "document_number": {
+              "type": "string",
+              "examples": ["CAT-2026-03-VE", "SYNC-FULL-1043"]
+            },
+            "status": {
+              "type": "string",
+              "enum": ["DRAFT", "PUBLISHED", "SUPERSEDED"],
+              "description": "PUBLISHED catalogs are active. SUPERSEDED means a newer catalog has replaced this one. / Catálogos PUBLISHED están activos. SUPERSEDED indica que un catálogo más reciente lo ha reemplazado."
+            },
+            "currency_base": {
+              "type": "string",
+              "description": "Base currency for all pricing in this catalog. / Moneda base para todos los precios en este catálogo.",
+              "examples": ["USD"]
+            },
+            "dates": {
+              "type": "object",
+              "properties": {
+                "published_at": { "type": "string", "format": "date-time" },
+                "valid_from": { "type": "string", "format": "date-time" },
+                "valid_to": { "type": "string", "format": "date-time" }
+              }
+            }
+          }
+        },
+        "parties": {
+          "type": "object",
+          "required": ["publisher"],
+          "properties": {
+            "publisher": { "$ref": "https://schemas.fidex.io/v1/common/party" },
+            "target_recipient": { "$ref": "https://schemas.fidex.io/v1/common/party" }
+          }
+        },
+        "catalog_metadata": {
+          "type": "object",
+          "required": ["catalog_type", "includes_inventory"],
+          "properties": {
+            "catalog_name": {
+              "type": "string",
+              "description": "Human-readable catalog name. / Nombre legible del catálogo.",
+              "examples": ["Lista de Precios Mayorista - Marzo 2026"]
+            },
+            "catalog_type": {
+              "type": "string",
+              "enum": ["DELTA_UPDATE", "FULL_SYNC", "MASTER_UPDATE"],
+              "description": "DELTA_UPDATE: only changed SKUs sent (efficient). FULL_SYNC: complete baseline reset, triggered automatically when receiver Merkle Root mismatches. MASTER_UPDATE: full product data without inventory. / DELTA_UPDATE: solo SKUs modificados. FULL_SYNC: restablecimiento completo del baseline."
+            },
+            "includes_inventory": {
+              "type": "boolean",
+              "description": "Whether this catalog includes real-time inventory quantities. Required for offline sales app (Kontext Pedidos). / Indica si el catálogo incluye cantidades de inventario en tiempo real."
+            },
+            "sync_state": {
+              "type": "object",
+              "description": "Merkle Root state vector for inventory synchronization. Enables 'Rsync-style' self-healing sync. Only present in DELTA_UPDATE and FULL_SYNC catalogs. / Vector de estado Merkle Root para sincronización de inventario.",
+              "required": ["sequence_id", "current_merkle_root"],
+              "properties": {
+                "sequence_id": {
+                  "type": "integer",
+                  "description": "Monotonically increasing sequence number. Receiver uses this to detect dropped deltas. / Número de secuencia monotónicamente creciente. El receptor lo usa para detectar deltas perdidos.",
+                  "examples": [1043, 1044]
+                },
+                "previous_merkle_root": {
+                  "type": ["string", "null"],
+                  "description": "Hash of the receiver's expected current state. If receiver's local hash != previous_merkle_root, trigger FULL_SYNC. Set to null for FULL_SYNC documents. / Hash del estado actual esperado del receptor. Si no coincide, disparar FULL_SYNC.",
+                  "examples": ["a1b2c3d4e5f6", null]
+                },
+                "current_merkle_root": {
+                  "type": "string",
+                  "description": "SHA-256 hash of the complete inventory state after applying this update. Receiver must verify their local hash matches this value after processing. / Hash SHA-256 del estado completo del inventario después de aplicar esta actualización.",
+                  "examples": ["m5n6o7p8q9r0s1t2u3v4"]
+                },
+                "total_active_skus": {
+                  "type": "integer",
+                  "description": "Total number of active SKUs in this catalog (for FULL_SYNC validation). / Número total de SKUs activos en este catálogo (para validación FULL_SYNC).",
+                  "examples": [1450]
+                }
+              }
+            }
+          }
+        },
+        "items": {
+          "type": "array",
+          "description": "Array of catalog items. In DELTA_UPDATE, only changed items. In FULL_SYNC, all 1,450+ active SKUs. / Arreglo de ítems del catálogo.",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["action", "product"],
+            "properties": {
+              "action": {
+                "type": "string",
+                "enum": ["INSERT", "UPDATE", "DELETE", "UPSERT"],
+                "description": "INSERT: new SKU. UPDATE: changed price/inventory. DELETE: discontinued. UPSERT: used in FULL_SYNC (insert if not exists, update if exists). / INSERT: nuevo SKU. UPDATE: precio/inventario modificado. DELETE: descontinuado. UPSERT: usado en FULL_SYNC."
+              },
+              "product": {
+                "$ref": "https://schemas.fidex.io/v1/common/product-identity"
+              },
+              "pharma_attributes": {
+                "$ref": "https://schemas.fidex.io/v1/common/pharma-attributes"
+              },
+              "logistics": {
+                "type": "object",
+                "description": "Packaging and logistics details for this SKU. / Detalles de empaque y logística para este SKU.",
+                "properties": {
+                  "uom_sales": {
+                    "type": "string",
+                    "description": "Unit of measure for sales (Caja, Unidad, Blister). / Unidad de medida para ventas.",
+                    "examples": ["Caja", "Unidad", "Blister"]
+                  },
+                  "units_per_box": { "type": "integer", "minimum": 1 },
+                  "master_carton_qty": {
+                    "type": "integer",
+                    "description": "Number of sales units in a master carton (for bulk ordering). / Cantidad de unidades de venta en un cartón maestro.",
+                    "minimum": 1
+                  },
+                  "weight_kg": { "type": "number", "minimum": 0 }
+                }
+              },
+              "tax_profile": {
+                "type": "object",
+                "description": "Tax profile for this SKU. IVA exemptions must be set here to propagate correctly to orders and invoices. / Perfil fiscal de este SKU. Las exenciones de IVA deben definirse aquí para propagarse correctamente.",
+                "properties": {
+                  "is_exempt": { "type": "boolean" },
+                  "tax_type": { "type": "string", "enum": ["IVA", "IGTF"] },
+                  "percentage": { "type": "number", "minimum": 0, "maximum": 100 }
+                }
+              },
+              "pricing_tiers": {
+                "type": "array",
+                "description": "Multi-tier pricing array. Supports volume discounts (min order qty), date-bound promotions, and multi-currency pricing (USD + VES). / Arreglo de niveles de precio multi-tier.",
+                "items": {
+                  "type": "object",
+                  "required": ["tier_code", "currency", "unit_price_net"],
+                  "properties": {
+                    "tier_code": {
+                      "type": "string",
+                      "description": "Pricing tier identifier. / Identificador del nivel de precio.",
+                      "examples": ["WHOLESALE_VIP", "WHOLESALE_STD", "RETAIL_VES"]
+                    },
+                    "description": { "type": "string" },
+                    "currency": { "type": "string", "examples": ["USD", "VES"] },
+                    "unit_price_net": {
+                      "type": "number",
+                      "minimum": 0,
+                      "description": "Net unit price after distributor discounts, before taxes. / Precio unitario neto después de descuentos del distribuidor, antes de impuestos."
+                    },
+                    "msrp_usd": {
+                      "type": "number",
+                      "minimum": 0,
+                      "description": "Manufacturer's Suggested Retail Price in USD. Helps pharmacy POS suggest the correct end-consumer price. / Precio de Venta Sugerido al Público en USD."
+                    },
+                    "msrp_ves": {
+                      "type": "number",
+                      "minimum": 0,
+                      "description": "Manufacturer's Suggested Retail Price in VES. / Precio de Venta Sugerido al Público en VES."
+                    },
+                    "conditions": {
+                      "type": "object",
+                      "properties": {
+                        "minimum_order_qty": { "type": "integer", "minimum": 1 },
+                        "valid_from": { "type": "string", "format": "date-time" },
+                        "valid_to": { "type": "string", "format": "date-time" },
+                        "exchange_rate_pegged": {
+                          "type": "number",
+                          "description": "BCV exchange rate used to fix VES prices. Only for RETAIL_VES tiers. / Tasa BCV usada para fijar precios en VES. Solo para niveles RETAIL_VES."
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "inventory": {
+                "type": "object",
+                "description": "Real-time inventory snapshot. Embedded in catalog for offline sales enablement (Kontext Pedidos). / Instantánea del inventario en tiempo real. Incluida en el catálogo para habilitación de ventas offline.",
+                "required": ["status", "available_qty", "last_updated"],
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": ["IN_STOCK", "LOW_STOCK", "OUT_OF_STOCK", "DISCONTINUED"],
+                    "description": "Inventory availability status. Offline apps use this to prevent stockout orders. / Estado de disponibilidad de inventario."
+                  },
+                  "available_qty": { "type": "integer", "minimum": 0 },
+                  "last_updated": { "type": "string", "format": "date-time" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "unevaluatedProperties": false
+}
