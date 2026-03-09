@@ -21,7 +21,9 @@
   "scripts": {
     "validate": "make validate",
     "lint": "prettier --check \"schemas/**/*.json\" \"examples/**/*.json\"",
-    "format": "prettier --write \"schemas/**/*.json\" \"examples/**/*.json\""
+    "format": "prettier --write \"schemas/**/*.json\" \"examples/**/*.json\"",
+    "test": "make validate-all",
+    "validate:all": "make validate-all"
   },
   "devDependencies": {
     "ajv-cli": "^5.0.0",

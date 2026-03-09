@@ -1,0 +1,147 @@
+{
+  "kontext_routing": {
+    "tenant_id": "tenant-leti-01",
+    "receiver_id": "partner-drogueria-x",
+    "document_type": "GS1_CATALOG_JSON",
+    "correlation_id": "CAT-2026-03-VE"
+  },
+  "payload": {
+    "document_info": {
+      "version": "1.2",
+      "doc_type": "CATALOG",
+      "document_number": "CAT-2026-03-VE",
+      "status": "PUBLISHED",
+      "currency_base": "USD",
+      "dates": {
+        "published_at": "2026-03-01T08:00:00Z",
+        "valid_from": "2026-03-01T00:00:00Z",
+        "valid_to": "2026-03-31T23:59:59Z"
+      }
+    },
+    "parties": {
+      "publisher": {
+        "name": "Laboratorios Leti",
+        "rif": "J-00000000-1",
+        "gln": "7590000000001"
+      },
+      "target_recipient": {
+        "name": "Drogueria Distribuidora X",
+        "rif": "J-11111111-2",
+        "sicm": "S-12345"
+      }
+    },
+    "catalog_metadata": {
+      "catalog_name": "Lista de Precios y Stock - Marzo 2026",
+      "catalog_type": "BOGUS_SYNC",
+      "includes_inventory": true,
+      "sync_state": {
+        "sequence_id": 1044,
+        "previous_merkle_root": "a1b2c3d4e5f6g7h8i9j0",
+        "current_merkle_root": "k1l2m3n4o5p6q7r8s9t0",
+        "total_active_skus": 1452
+      }
+    },
+    "items": [
+      {
+        "action": "UPDATE",
+        "product": {
+          "vendor_part": "LETI-AMOX-500",
+          "gtin": "7591234567890",
+          "brand_name": "Leti",
+          "description": "Amoxicilina 500mg x 21 capsulas"
+        },
+        "pharma_attributes": {
+          "active_ingredient": "Amoxicilina Trihidrato",
+          "therapeutic_class": "Antibiotico de amplio espectro",
+          "presentation": "Caja x 21 Capsulas",
+          "requires_prescription": true,
+          "storage_conditions": "ROOM_TEMPERATURE"
+        },
+        "logistics": {
+          "uom_sales": "Caja",
+          "units_per_box": 1,
+          "master_carton_qty": 50,
+          "weight_kg": 0.05
+        },
+        "tax_profile": {
+          "is_exempt": true,
+          "tax_type": "IVA",
+          "percentage": 0.0
+        },
+        "pricing_tiers": [
+          {
+            "tier_code": "WHOLESALE_VIP",
+            "description": "Distribuidor Exclusivo (>100 unidades)",
+            "currency": "USD",
+            "unit_price_net": 2.1,
+            "msrp_usd": 4.0,
+            "conditions": {
+              "minimum_order_qty": 100,
+              "valid_from": "2026-03-01T00:00:00Z",
+              "valid_to": "2026-12-31T23:59:59Z"
+            }
+          },
+          {
+            "tier_code": "WHOLESALE_STD",
+            "description": "Distribuidor Estandar",
+            "currency": "USD",
+            "unit_price_net": 2.5,
+            "msrp_usd": 4.0,
+            "conditions": {
+              "minimum_order_qty": 1
+            }
+          }
+        ],
+        "inventory": {
+          "status": "IN_STOCK",
+          "available_qty": 14950,
+          "last_updated": "2026-03-01T07:55:00Z"
+        }
+      },
+      {
+        "action": "INSERT",
+        "product": {
+          "vendor_part": "LETI-METF-850",
+          "gtin": "7591234567904",
+          "brand_name": "Leti",
+          "description": "Metformina 850mg x 30 comprimidos"
+        },
+        "pharma_attributes": {
+          "active_ingredient": "Metformina Clorhidrato",
+          "therapeutic_class": "Antidiabetico oral",
+          "presentation": "Caja x 30 Comprimidos",
+          "requires_prescription": true,
+          "storage_conditions": "ROOM_TEMPERATURE"
+        },
+        "logistics": {
+          "uom_sales": "Caja",
+          "units_per_box": 1,
+          "master_carton_qty": 60,
+          "weight_kg": 0.06
+        },
+        "tax_profile": {
+          "is_exempt": true,
+          "tax_type": "IVA",
+          "percentage": 0.0
+        },
+        "pricing_tiers": [
+          {
+            "tier_code": "WHOLESALE_STD",
+            "description": "Distribuidor Estandar",
+            "currency": "USD",
+            "unit_price_net": 1.8,
+            "msrp_usd": 3.2,
+            "conditions": {
+              "minimum_order_qty": 1
+            }
+          }
+        ],
+        "inventory": {
+          "status": "IN_STOCK",
+          "available_qty": 8000,
+          "last_updated": "2026-03-01T07:55:00Z"
+        }
+      }
+    ]
+  }
+}

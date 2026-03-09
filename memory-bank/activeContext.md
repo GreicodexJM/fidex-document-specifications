@@ -1,17 +1,17 @@
 # Active Context — FideX Document Specifications
 
-## Current Version: v1.5.0
+## Current Version: v1.6.0
 
 ---
 
 ## Current Focus
 
-**Last completed**: v1.5.0 — Government Observer Node spec, DLT/Merkle anchoring protocol spec, JSONata transformation maps reference, negative test suite (`examples/_invalid/`), `make validate-negative` + `make validate-all` Makefile targets, `if/then` enforcement on order schema for QUOTE/ORDER_CONFIRMED.
+**Last completed**: v1.6.0 — J-MDN schema (`gs1-jmdn.schema.json`), Spanish translations docs 10–12, expanded negative test suite (8 fixtures, all 7 domains), `docs/00-quick-reference.md`, FideX + Greicodex logos in READMEs, GLN pattern normalization, `npm test` script.
 
-**In progress (v1.6.0)**:
-- J-MDN schema (`schemas/jmdn/gs1-jmdn.schema.json`) — machine-readable contract for Technical + Fiscal receipts
-- Spanish translations for docs 10–12
-- README structure tree sync
+**Next (v1.7.0 candidates)**:
+- `schemas/_common/patterns.schema.json` — `$defs` for shared patterns (RIF, GLN, SICM, SHA-256, SSCC)
+- Logo optimization (`pngquant` — 766K → ~80K)
+- `docs/es/00-referencia-rapida.md` — Spanish quick-reference translation
 
 ---
 
@@ -19,6 +19,7 @@
 
 | Version | Date | Change |
 |---|---|---|
+| v1.6.0 | 2026-03-09 | J-MDN schema, Spanish docs 10–12, 8 negative fixtures, quick-reference, logos |
 | v1.5.0 | 2026-03-09 | Observer Node spec, DLT anchoring, JSONata maps, negative test suite |
 | v1.4.0 | 2026-03-09 | GitHub Actions CI/CD, `ajv-formats`, Spanish docs 01–04, Memory Bank completion |
 | v1.3.0 | 2026-03-09 | Spanish documentation layer added (`docs/es/05–09`, `README.es.md`) |
@@ -30,16 +31,19 @@
 
 ## Active Decisions & Considerations
 
-### Next: J-MDN Schema (v1.6)
-- `NETWORK_DELIVERED` (Technical J-MDN) and `FISCAL_CLEARED` (Fiscal J-MDN) are specified in `docs/03` and `docs/11` but have no JSON Schema
-- Implementors need a machine-readable contract for the receipt format
-- Suggest: `schemas/jmdn/gs1-jmdn.schema.json` with `if/then` enforcement (Fiscal J-MDN requires `merkle_proof`)
+### Resolved in v1.6 ✅
+- `schemas/jmdn/gs1-jmdn.schema.json` with `if/then/else` stage enforcement
+- Spanish translations docs 10–12 (EN/ES parity restored)
+- 8 negative test fixtures across all 7 schema domains
+- `docs/00-quick-reference.md` implementor cheat sheet
+- FideX + Greicodex logos in README headers
+- GLN pattern normalized to `^[0-9]{13}$` across all schemas
+- `npm test` added to `package.json`
 
-### Next: Spanish Docs 10–12 (v1.6)
-- `docs/es/10-nodo-observador-gubernamental.md`
-- `docs/es/11-anclaje-dlt-merkle.md`
-- `docs/es/12-mapas-jsonata.md`
-- EN/ES parity is a project invariant — broken by v1.5.0 additions
+### Next (v1.7 candidates)
+- `schemas/_common/patterns.schema.json` — centralize RIF/GLN/SSCC/SHA-256 `$defs`
+- `docs/es/00-referencia-rapida.md` — Spanish quick-reference translation
+- Logo optimization (766K PNG → WebP ~80K)
 
 ### Resolved in v1.5 ✅
 - `gs1-order.schema.json` `if/then` enforcement for QUOTE/ORDER_CONFIRMED

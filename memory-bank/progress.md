@@ -53,11 +53,26 @@
 - [x] `make validate-all` — full suite (positive + negative)
 - [x] GitHub Actions CI — added separate `validate-negative` step
 
+
+### J-MDN, Quick Reference & Hardening (v1.6.0)
+- [x] `schemas/jmdn/gs1-jmdn.schema.json` — J-MDN receipt schema with `if/then/else`
+- [x] `examples/jmdn/01-technical-receipt.json` + `02-fiscal-receipt.json`
+- [x] `docs/es/10-nodo-observador-gubernamental.md` — Spanish Observer Node
+- [x] `docs/es/11-anclaje-dlt-merkle.md` — Spanish DLT/Merkle anchoring
+- [x] `docs/es/12-mapas-jsonata.md` — Spanish JSONata maps reference
+- [x] `docs/00-quick-reference.md` — implementor cheat sheet
+- [x] `docs/assets/fidex-as5-logo.png` + README hero headers (FideX + Greicodex)
+- [x] Negative test suite expanded to 8 fixtures (customer-master + catalog added)
+- [x] `examples/_invalid/README.md` test matrix updated (all 8 fixtures, domain coverage table)
+- [x] `package.json` — `npm test` script added (`make validate-all`)
+- [x] GLN pattern normalized to `^[0-9]{13}$` in J-MDN schema
+- [x] `make validate-all` passes: 15 positive ✅ + 8 negative ✅
+
 ### Toolchain
 - [x] `Makefile` with `validate`, `validate-one`, `validate-negative`, `validate-all`, `lint`, `format`, `check-deps`
 - [x] `package.json` with `ajv-cli` + `prettier` + `ajv-formats`
 - [x] `.prettierrc` formatting rules
-- [x] `make validate-all` passes: 13 positive ✅ + 3 negative ✅
+- [x] `make validate-all` passes: 15 positive ✅ + 8 negative ✅
 
 ---
 

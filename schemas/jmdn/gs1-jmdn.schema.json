@@ -41,7 +41,7 @@
     },
     "receiver_gln": {
       "type": "string",
-      "pattern": "^\\d{13}$",
+      "pattern": "^[0-9]{13}$",
       "description": "GLN (13 digits) of the receiving party issuing this J-MDN. / GLN (13 dígitos) de la parte receptora que emite este J-MDN."
     },
     "jws_signature": {
