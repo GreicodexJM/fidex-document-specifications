@@ -11,6 +11,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.6.1] — 2026-03-09
+
+### Added
+- `AGENTS.md` — universal AI agent entry point: repo orientation, DO/DON'T rules, 5-step
+  contribution recipe, validation mechanics.
+- `llms.txt` — machine-readable repository index (schema map, example map, key relationships)
+  for LLM consumption.
+- `GLOSSARY.md` — Venezuelan pharmaceutical and fiscal term definitions (RIF, GTIN, GLN, IVA,
+  IGTF, ISLR, SICM, BCV, talonario, etc.).
+- `.clinerules` — project-level agent rules: schema authoring conventions, file layout,
+  architecture constraints, validation mechanics.
+- `docs/13-agent-cookbook.md` — 7 task recipes for AI agents (new document type, new field,
+  negative test, debug failure, ERP mapping, version release, examples audit).
+- `docs/00-quick-reference.md` — implementor cheat sheet: doc types, schema IDs, regex
+  patterns, envelope structure, make commands, J-MDN flow, lifecycle states, design rules,
+  bilingual doc index.
+- `docs/assets/fidex-as5-logo.png` — official FideX AS5 logo, added to the README hero headers
+  alongside the Greicodex avatar.
+- `examples/_invalid/customer-master/01-missing-tax-id.json` — negative fixture: missing
+  required tax id field.
+- `examples/_invalid/catalog/01-invalid-sync-type.json` — negative fixture: invalid `sync_type`
+  enum value.
+- `examples` arrays added to all 12 schemas (5 `_common`: kontext-routing, address, tax-line,
+  related-documents, pharma-attributes; 7 domain: order, invoice, customer-master, catalog,
+  despatch-advice, retention, jmdn) — enables IDE autocomplete and AI-assisted generation.
+
+### Changed
+- `README.md`, `README.es.md` — centered hero header with FideX + Greicodex logos; updated
+  file trees.
+- `schemas/jmdn/gs1-jmdn.schema.json` — GLN pattern normalized `^\d{13}$` → `^[0-9]{13}$`.
+- `examples/_invalid/README.md` — test matrix and domain coverage table updated for the full
+  8-fixture negative suite (all 7 domains covered).
+- `package.json` — added `test` / `validate:all` npm scripts; version bumped `1.6.0` → `1.6.1`.
+
 ## [1.6.0] — 2026-03-09
 
 ### Added
