@@ -82,14 +82,12 @@
               "examples": ["Farmacia El Pueblo"]
             },
             "tax_id": {
-              "type": "string",
-              "pattern": "^[JVEGPjvegp]-[0-9]{8}-[0-9]$",
+              "$ref": "https://schemas.fidex.io/v1/common/patterns#/$defs/rif",
               "description": "Venezuelan RIF (Registro de Información Fiscal). / RIF venezolano.",
               "examples": ["J-22222222-3"]
             },
             "gln": {
-              "type": "string",
-              "pattern": "^[0-9]{13}$",
+              "$ref": "https://schemas.fidex.io/v1/common/patterns#/$defs/gln",
               "description": "GS1 Global Location Number. / Número Global de Localización GS1."
             },
             "customer_type": {
@@ -110,8 +108,7 @@
               "required": ["sicm", "permit_status", "expiration_date"],
               "properties": {
                 "sicm": {
-                  "type": "string",
-                  "pattern": "^S-[0-9]+$",
+                  "$ref": "https://schemas.fidex.io/v1/common/patterns#/$defs/sicm",
                   "description": "SICM permit number from MPPS. / Número de permiso SICM del MPPS.",
                   "examples": ["S-98765", "S-12345"]
                 },

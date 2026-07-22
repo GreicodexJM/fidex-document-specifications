@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fidex.io/v1/common/patterns",
+  "title": "Shared Identifier Patterns",
+  "description": "Reusable, standalone identifier definitions (RIF, GLN, GTIN, SICM, …) extracted verbatim from the schemas that use them. Each $def has no closing keyword of its own, so downstream consumers can $ref an individual definition — e.g. `{ \"$ref\": \".../patterns#/$defs/rif\" }` — without inheriting `unevaluatedProperties: false` from any object schema. This file defines no top-level `type`; it exists solely to host `$defs`. / Definiciones de identificadores reutilizables y autónomas, extraídas tal cual de los schemas que las usan. Ningún $def tiene su propia cláusula de cierre, de modo que quien consuma este archivo puede referenciar una definición individual sin heredar el `unevaluatedProperties: false` de ningún schema de objeto. Este archivo no define un `type` de nivel superior; existe únicamente para alojar `$defs`.",
+  "$defs": {
+    "rif": {
+      "type": "string",
+      "pattern": "^[JVEGPjvegp]-[0-9]{8}-[0-9]$",
+      "description": "Venezuelan Tax Registry ID (Registro de Información Fiscal). Required on all fiscal documents. Prefix: J=Empresa, V=Persona Natural, E=Extranjero, G=Gobierno, P=Pasaporte. / Registro de Información Fiscal venezolano. Obligatorio en todos los documentos fiscales.",
+      "examples": ["J-00000000-1", "J-11111111-2", "V-12345678-9"]
+    },
+    "gln": {
+      "type": "string",
+      "pattern": "^[0-9]{13}$",
+      "description": "GS1 Global Location Number — 13-digit identifier for physical locations (warehouses, stores, distribution centers). Venezuelan GTINs/GLNs use country prefix 759. / Número Global de Localización GS1 — identificador de 13 dígitos para ubicaciones físicas.",
+      "examples": ["7590000000001", "7590000000002"]
+    },
+    "gtin": {
+      "type": "string",
+      "pattern": "^[0-9]{13,14}$",
+      "description": "GS1 Global Trade Item Number — 13 or 14 digit EAN/UCC code. Venezuelan GTINs use country prefix 759. Mandatory for pharmaceutical traceability and SICM compliance. / Número Global de Artículo Comercial GS1. Los GTINs venezolanos usan el prefijo 759.",
+      "examples": ["7591234567890", "7590987654321"]
+    },
+    "sicm": {
+      "type": "string",
+      "pattern": "^S-[0-9]+$",
+      "description": "SICM health permit number (Sistema Integral de Control de Medicamentos). Issued by MPPS. Required for all pharmaceutical dispatch parties. Acts as a hard-block: expired or invalid permits prevent order processing. / Número de permiso sanitario SICM emitido por el MPPS. Obligatorio para despachos farmacéuticos.",
+      "examples": ["S-12345", "S-98765"]
+    }
+  }
+}

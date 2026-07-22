@@ -1,17 +1,28 @@
 # Active Context — FideX Document Specifications
 
-## Current Version: v1.6.1
+## Current Version: v1.7.0
 
 ---
 
 ## Current Focus
 
-**Last completed**: v1.6.1 — AI agent tooling pass: `AGENTS.md` (agent entry point), `llms.txt` (machine-readable index), `GLOSSARY.md` (Venezuelan pharma terms), `.clinerules` (project-level agent rules), `docs/13-agent-cookbook.md` (7 task recipes), `examples` arrays added to all 12 schemas (5 _common + 7 domain) for IDE autocomplete and AI generation. `make validate-all` stays green: 15 positive ✅ + 8 negative ✅.
+**Last completed**: v1.7.0 — `schemas/_common/patterns.schema.json` added (`$id`
+`https://schemas.fidex.io/v1/common/patterns`), hosting reusable `$defs` for `rif`, `gln`,
+`gtin`, `sicm` extracted verbatim from `party.schema.json`, `product-identity.schema.json`,
+`customer-master`, and `jmdn` schemas. Downstream repos can now `$ref` a single `$def` without
+inheriting `unevaluatedProperties: false` — the 2020-12 closed-schema extension gap is closed.
+`party.schema.json`, `product-identity.schema.json`, `gs1-customer-master.schema.json`, and
+`gs1-jmdn.schema.json` refactored to `$ref` the shared defs (pure refactor, no validation
+behavior change). `Makefile`'s `validate-jmdn` target updated to load `_common` schemas since
+J-MDN now depends on `patterns.schema.json`. SSCC and SHA-256 were investigated but not
+extracted — neither pattern is duplicated *across* schema files (SSCC appears once; SHA-256
+appears twice but both occurrences are within the single `jmdn` schema). `make validate-all`
+stays green: 15 positive ✅ + 8 negative ✅ (unchanged from baseline).
 
-**Next (v1.7.0 candidates)**:
-- `schemas/_common/patterns.schema.json` — `$defs` for shared patterns (RIF, GLN, SICM, SHA-256, SSCC)
+**Next (v1.8.0 candidates)**:
 - Logo optimization (`pngquant` — 766K → ~80K)
 - `docs/es/00-referencia-rapida.md` — Spanish quick-reference translation
+- Revisit SSCC/SHA-256 `$defs` if/when a second schema needs to duplicate those patterns
 
 ---
 
@@ -19,6 +30,7 @@
 
 | Version | Date | Change |
 |---|---|---|
+| v1.7.0 | 2026-07-22 | `schemas/_common/patterns.schema.json` — shared `$defs` (RIF, GLN, GTIN, SICM); refactored `party`, `product-identity`, `customer-master`, `jmdn` schemas to `$ref` them |
 | v1.6.1 | 2026-03-09 | AI agent tooling: AGENTS.md, llms.txt, GLOSSARY.md, .clinerules, agent cookbook, `examples` on all schemas |
 | v1.6.0 | 2026-03-09 | J-MDN schema, Spanish docs 10–12, 8 negative fixtures, quick-reference, logos |
 | v1.5.0 | 2026-03-09 | Observer Node spec, DLT anchoring, JSONata maps, negative test suite |
@@ -41,8 +53,14 @@
 - GLN pattern normalized to `^[0-9]{13}$` across all schemas
 - `npm test` added to `package.json`
 
-### Next (v1.7 candidates)
-- `schemas/_common/patterns.schema.json` — centralize RIF/GLN/SSCC/SHA-256 `$defs`
+### Resolved in v1.7 ✅
+- `schemas/_common/patterns.schema.json` — centralized RIF/GLN/GTIN/SICM `$defs`; SSCC/SHA-256
+  investigated but left inline (not duplicated across schema files)
+- `party`, `product-identity`, `customer-master`, `jmdn` schemas refactored to `$ref` the
+  shared `$defs`
+- `Makefile` `validate-jmdn` target updated to load `_common` schemas
+
+### Next (v1.8 candidates)
 - `docs/es/00-referencia-rapida.md` — Spanish quick-reference translation
 - Logo optimization (766K PNG → WebP ~80K)
 

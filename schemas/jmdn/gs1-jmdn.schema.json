@@ -44,8 +44,7 @@
       "examples": ["a3f1b9c8d2e4f6a1b3c5d7e9f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8"]
     },
     "receiver_gln": {
-      "type": "string",
-      "pattern": "^[0-9]{13}$",
+      "$ref": "https://schemas.fidex.io/v1/common/patterns#/$defs/gln",
       "description": "GLN (13 digits) of the receiving party issuing this J-MDN. / GLN (13 dígitos) de la parte receptora que emite este J-MDN.",
       "examples": ["7590000000001", "7590000000002"]
     },

@@ -11,6 +11,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.7.0] — 2026-07-22
+
+### Added
+- `schemas/_common/patterns.schema.json` — new `$id`
+  `https://schemas.fidex.io/v1/common/patterns`, hosting reusable `$defs` for shared
+  identifier patterns extracted verbatim from existing schemas: `rif`, `gln`, `gtin`, `sicm`.
+  Each `$def` carries no closing keyword of its own, so downstream consumers can `$ref` a
+  single definition (e.g. `.../patterns#/$defs/rif`) without inheriting the
+  `unevaluatedProperties: false` closure of any object schema — closing that gap in JSON
+  Schema 2020-12, where a closed schema cannot be extended with sibling properties via
+  `allOf` + `$ref`.
+
+### Changed
+- `schemas/_common/party.schema.json` — `rif`, `gln`, `sicm` now `$ref` the shared `$defs` in
+  `patterns.schema.json` instead of repeating the pattern/type inline. Sibling `description`
+  preserved per-field. Pure refactor — no validation behavior change.
+- `schemas/_common/product-identity.schema.json` — `gtin` now `$ref`s the shared `$def`.
+- `schemas/customer-master/gs1-customer-master.schema.json` — `tax_id` (RIF), `gln`, and
+  `health_permit.sicm` now `$ref` the shared `$defs`.
+- `schemas/jmdn/gs1-jmdn.schema.json` — `receiver_gln` now `$ref`s the shared `gln` `$def`.
+- `Makefile` — `validate-jmdn` target now passes `-r "$(SCHEMAS_COMMON_GLOB)"` so ajv can
+  resolve the new cross-schema `$ref` to `patterns.schema.json` (J-MDN previously validated
+  standalone with no `_common` dependency).
+- `package.json` — version bumped `1.6.1` → `1.7.0`.
+
+### Notes
+- SSCC (`^[0-9]{18}$`) and the SHA-256 hex pattern (`^[0-9a-f]{64}$`) were investigated as
+  candidates (per `memory-bank/activeContext.md`) but **not** extracted: SSCC appears only
+  once, in `schemas/despatch-advice/gs1-despatch-advice.schema.json`; the SHA-256 pattern
+  appears twice (`payload_hash_sha256`, `merkle_proof.leaf_hash`) but both occurrences live in
+  the single `schemas/jmdn/gs1-jmdn.schema.json` file. Neither is duplicated *across* schema
+  files, so neither met the bar for extraction this round.
+- No pattern discrepancies were found — every duplicated identifier (RIF, GLN, SICM) used the
+  exact same regex in every schema it appeared in, so no unification judgment call was needed.
+- `make validate-all` results unchanged: 15/15 positive examples pass, 8/8 negative examples
+  correctly rejected.
+
 ## [1.6.1] — 2026-03-09
 
 ### Added

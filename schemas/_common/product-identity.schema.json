@@ -7,10 +7,8 @@
   "required": ["gtin", "description"],
   "properties": {
     "gtin": {
-      "type": "string",
-      "pattern": "^[0-9]{13,14}$",
-      "description": "GS1 Global Trade Item Number — 13 or 14 digit EAN/UCC code. Venezuelan GTINs use country prefix 759. Mandatory for pharmaceutical traceability and SICM compliance. / Número Global de Artículo Comercial GS1. Los GTINs venezolanos usan el prefijo 759.",
-      "examples": ["7591234567890", "7590987654321"]
+      "$ref": "https://schemas.fidex.io/v1/common/patterns#/$defs/gtin",
+      "description": "GS1 Global Trade Item Number — 13 or 14 digit EAN/UCC code. Venezuelan GTINs use country prefix 759. Mandatory for pharmaceutical traceability and SICM compliance. / Número Global de Artículo Comercial GS1. Los GTINs venezolanos usan el prefijo 759."
     },
     "vendor_part": {
       "type": "string",

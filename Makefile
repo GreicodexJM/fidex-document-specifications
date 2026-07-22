@@ -73,7 +73,8 @@ validate-retention: ## Validate retention examples (IVA and ISLR)
 
 validate-jmdn: ## Validate J-MDN receipt examples (Technical and Fiscal)
 	@echo "→ Validating J-MDN receipts..."
-	@$(AJV) validate -s $(SCHEMA_JMDN) -d "examples/jmdn/*.json" $(AJV_FLAGS)
+	@$(AJV) validate -s $(SCHEMA_JMDN) -d "examples/jmdn/*.json" \
+		-r "$(SCHEMAS_COMMON_GLOB)" $(AJV_FLAGS)
 
 validate-negative: ## Negative tests — each _invalid example MUST fail validation (exit 1)
 	@echo "→ Running negative validation tests..."
