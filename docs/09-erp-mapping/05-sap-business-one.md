@@ -111,6 +111,7 @@ Cookie: B1SESSION=...
 |---|---|---|---|---|
 | `item.gtin` | string | `CodeBars` | `OITM` | GS1 GTIN-14 |
 | `item.vendor_part` | string | `ItemCode` | `OITM` | Internal item code; max 20 chars |
+| `item.buyer_part` | string | `ItemCode` | `OITM` | The buyer's own code. Lookup key for inbound purchase orders; max 20 chars |
 | `item.description` | string | `ItemName` | `OITM` | |
 | `item.uom` | string | `SalesUnit` / `PurchaseUnit` | `OITM` | UoM name string |
 | `item.pharma.active_ingredient` | string | `U_ACTIVE_ING` | `OITM` | UDF |

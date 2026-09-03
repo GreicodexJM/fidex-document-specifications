@@ -13,7 +13,7 @@
 
 <br/><br/>
 
-[![Versión del Esquema](https://img.shields.io/badge/versión--esquema-v1.6.0-blue)](CHANGELOG.md)
+[![Versión del Esquema](https://img.shields.io/badge/versión--esquema-v1.8.0-blue)](CHANGELOG.md)
 [![JSON Schema](https://img.shields.io/badge/JSON%20Schema-2020--12-green)](https://json-schema.org/draft/2020-12/schema)
 [![Cumplimiento GS1](https://img.shields.io/badge/GS1-LATAM%20Compliant-orange)](docs/es/05-fiscal-venezolano.md)
 

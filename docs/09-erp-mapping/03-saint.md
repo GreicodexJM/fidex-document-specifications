@@ -96,6 +96,7 @@ Authorization: Bearer {token}
 |---|---|---|---|---|
 | `item.gtin` | string | `CodBarra` | `InArticulo` | GS1 GTIN-14 |
 | `item.vendor_part` | string | `CodArticulo` | `InArticulo` | Internal code |
+| `item.buyer_part` | string | `CodArticulo` | `InArticulo` | The buyer's own code. Lookup key for inbound purchase orders |
 | `item.description` | string | `Descripcion` | `InArticulo` | |
 | `item.uom` | string | `Unidad` | `InArticulo` | FK to `InUnidad` |
 | `item.pharma.active_ingredient` | string | `CampoLibre1` | `InArticulo` | Custom free field |

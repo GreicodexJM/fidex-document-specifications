@@ -68,6 +68,7 @@ WHEN NOT MATCHED THEN
 |---|---|---|---|
 | `item.gtin` | texto | `articulos.cod_barra` | GTIN-14 GS1 como código de barras |
 | `item.vendor_part` | texto | `articulos.cod_art` | Código interno |
+| `item.buyer_part` | texto | `articulos.cod_art` | El código propio del comprador. En una orden de compra entrante es la clave de búsqueda, no `vendor_part` |
 | `item.description` | texto | `articulos.descripcion` | Máx. 80 caracteres |
 | `item.pharma.lot_tracking` | booleano | `articulos.maneja_lote` | `1`=Sí |
 | `item.pricing.unit_price` | número | `articulos.precio1` | Lista de precios 1 (principal) |

@@ -11,6 +11,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.8.0] — 2026-09-03
+
+### Changed
+- **BREAKING for producers that relied on the guarantee, not for existing documents** —
+  `schemas/_common/product-identity.schema.json`: `gtin` is no longer unconditionally
+  `required`. `required` is now `["description"]` plus an `anyOf` demanding **at least one**
+  identifier among `gtin`, `buyer_part` and `vendor_part`.
+
+  Rationale: FideX could only express a line whose product carries a GS1 GTIN. That covers
+  pharmaceutical trade, which is what the standard was built for, but it makes a whole class
+  of legitimate purchase orders **inexpressible** — goods bought against an internal item
+  code and a technical datasheet rather than a commercial article: fabric by the metre,
+  made-to-measure work, and generic institutional supplies where the buyer specifies "2-ply
+  institutional toilet paper" and is indifferent to the brand. A public-sector buyer does not
+  purchase a SKU.
+
+  Every document valid under 1.7.0 remains valid under 1.8.0: relaxing a `required` never
+  invalidates an existing instance. What is lost is the *unconditional* guarantee that any
+  line carries a GTIN — consumers that depended on it (SICM traceability, pharma flows) must
+  now assert it themselves, per document profile.
+
+### Added
+- `schemas/_common/product-identity.schema.json` — `buyer_part`: the buyer's internal ERP item
+  code. `vendor_part` was the only code field and is explicitly the *sender's* SKU, so the
+  buyer's key had nowhere to live. That key matters: procurement is published against it and
+  the purchase order has to post back against it in the buyer's administrative system.
+- `examples/order/04-purchase-order-no-gtin.json` — a public-sector purchase order with no
+  GTIN on either line, identified by `buyer_part`.
+- `examples/_invalid/order/02-line-without-any-identifier.json` — negative test: a line
+  carrying only `description` is rejected. This guards the hole opened by relaxing `gtin`;
+  without it, an anonymous line would validate.
+
+### Documentation
+- `docs/04-gs1-identifiers.md` and `docs/es/04-identificadores-gs1.md` — the line stating that
+  GTIN is *"required in all product line items"* was left false by this change and has been
+  corrected. New section **At least one identifier** contrasts the three code fields by whose
+  code each one is, and states plainly what the relaxation costs.
+- `docs/09-erp-mapping/*` and `docs/es/09-integracion-erp/*` (Odoo, Profit, Saint, SAP B1) —
+  each mapping table gains a `buyer_part` row. On an **inbound** purchase order the buyer's own
+  code is the lookup key, not `vendor_part`: the tables previously mapped only the sender's code,
+  which is the wrong key in that direction.
+
+---
+
 ## [1.7.0] — 2026-07-22
 
 ### Added

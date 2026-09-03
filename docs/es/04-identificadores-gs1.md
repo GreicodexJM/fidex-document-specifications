@@ -17,19 +17,44 @@ GS1 es el estándar global para la identificación en la cadena de suministro. E
 
 **Nombre del campo en schemas**: `gtin`
 **Formato**: Cadena numérica de 13 dígitos (EAN-13)
-**Requerido en**: Todas las líneas de productos en Orden, ASN, Factura, Catálogo
+**Requerido en**: el comercio farmacéutico, donde la trazabilidad SICM depende de él. Desde **1.8.0**
+el esquema ya no lo exige incondicionalmente — ver *Al menos un identificador* más abajo.
 
 ```json
 "product": {
   "gtin": "7591234567890",
   "vendor_part": "LETI-AMOX-500",
+  "buyer_part": "AMOX500C21",
   "description": "Amoxicilina 500mg x 21 capsulas"
 }
 ```
 
-### ¿Por qué GTIN y no solo vendor_part?
+### Al menos un identificador
 
-Los códigos `vendor_part` son internos de cada empresa. `LETI-AMOX-500` no tiene significado para el ERP de Droguería BLV, que llama al mismo producto `AMOX500C21`. El GTIN es el identificador universal que ambos ERPs pueden consultar independientemente:
+Existen tres campos de código y responden a tres preguntas distintas:
+
+| Campo | De quién es el código | Responde a |
+|---|---|---|
+| `gtin` | De nadie — es global | «¿Es este el mismo artículo del que habla la otra parte?» |
+| `vendor_part` | Del ERP del vendedor | «¿Cómo lo llama el vendedor?» |
+| `buyer_part` | Del ERP del comprador | «¿Cómo lo llama el comprador, y con qué código vuelve la orden a su sistema?» |
+
+Una línea **debe llevar al menos uno de los tres**, y `description` es siempre obligatoria. El esquema
+lo impone con un `anyOf`: una línea que solo trae descripción se rechaza.
+
+Hasta 1.8.0 el esquema exigía un GTIN en cada línea. Eso es correcto para el comercio farmacéutico y
+equivocado para todo lo demás: la tela por metro, lo fabricado a medida y los suministros
+institucionales genéricos no son artículos comerciales y no llevan GTIN. Una gobernación que compra
+«papel higiénico institucional de 2 capas» especifica una hoja técnica, no un SKU, y le da igual la
+marca mientras cumpla — así que esa orden sencillamente no se podía expresar.
+
+**Lo que cuesta.** La garantía de que toda línea lleva GTIN deja de ser incondicional. Quien dependía
+de ella —la trazabilidad SICM, cualquier flujo farmacéutico— ahora tiene que afirmarla por su cuenta,
+por perfil de documento, en vez de heredarla del esquema.
+
+### ¿Por qué GTIN y no solo el código propio de cada parte?
+
+Los códigos `vendor_part` y `buyer_part` son internos de una sola empresa cada uno. `LETI-AMOX-500` no tiene significado para el ERP de Droguería BLV, que llama al mismo producto `AMOX500C21`. El GTIN es el identificador universal que ambos ERPs pueden consultar independientemente:
 
 ```
 ERP Leti          → GTIN 7591234567890 → "Amoxicilina 500mg Caja 21 caps"

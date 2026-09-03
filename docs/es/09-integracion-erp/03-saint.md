@@ -63,6 +63,7 @@ Todas las peticiones posteriores: `Authorization: Bearer {access_token}`
 |---|---|---|---|
 | `item.gtin` | texto | `CodBarra` | GTIN-14 GS1 |
 | `item.vendor_part` | texto | `CodArticulo` | Código interno |
+| `item.buyer_part` | texto | `CodArticulo` | El código propio del comprador. Clave de búsqueda en órdenes de compra entrantes |
 | `item.description` | texto | `Descripcion` | |
 | `item.pharma.lot_tracking` | booleano | `ManejaLote` | `S`/`N` |
 | `item.pharma.active_ingredient` | texto | `CampoLibre1` | Campo libre para principio activo |

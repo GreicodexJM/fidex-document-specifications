@@ -79,6 +79,7 @@ WHEN NOT MATCHED THEN
 |---|---|---|---|
 | `item.gtin` | string | `articulos.cod_barra` | GS1 GTIN-14 stored as barcode |
 | `item.vendor_part` | string | `articulos.cod_art` | Also used as internal code |
+| `item.buyer_part` | string | `articulos.cod_art` | The buyer's own code. On an inbound purchase order this is the lookup key, not `vendor_part` |
 | `item.description` | string | `articulos.descripcion` | Max 80 chars |
 | `item.uom` | string | `articulos.unidad` | FK to `unidad.cod_uni` |
 | `item.pharma.active_ingredient` | string | `articulos.modelo` | Repurpose or use `art_ext` custom table |

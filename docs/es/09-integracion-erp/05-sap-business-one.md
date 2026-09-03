@@ -79,6 +79,7 @@ GET /b1s/v1/BusinessPartners?$filter=FederalTaxID eq 'J222222223'&$select=CardCo
 |---|---|---|---|---|
 | `item.gtin` | texto | `CodeBars` | `OITM` | GTIN-14 GS1 |
 | `item.vendor_part` | texto | `ItemCode` | `OITM` | Código interno; máx. 20 caracteres |
+| `item.buyer_part` | texto | `ItemCode` | `OITM` | El código propio del comprador. Clave de búsqueda en órdenes entrantes; máx. 20 caracteres |
 | `item.description` | texto | `ItemName` | `OITM` | |
 | `item.pharma.lot_tracking` | booleano | `ManSerNum` | `OITM` | `L`=Lote (usar para farmacéuticos) |
 | `item.pharma.requires_refrigeration` | booleano | `U_COLD_CHAIN` | `OITM` | UDF |

@@ -13,19 +13,44 @@ GS1 is the global standard for supply chain identification. In the Venezuelan ph
 
 **Field name in schemas**: `gtin`
 **Format**: 13-digit numeric string (EAN-13)
-**Required in**: All product line items in Order, ASN, Invoice, Catalog
+**Required in**: pharmaceutical trade, where SICM traceability depends on it. Since **1.8.0** it is no
+longer unconditionally required by the schema — see *At least one identifier* below.
 
 ```json
 "product": {
   "gtin": "7591234567890",
   "vendor_part": "LETI-AMOX-500",
+  "buyer_part": "AMOX500C21",
   "description": "Amoxicilina 500mg x 21 capsulas"
 }
 ```
 
-### Why GTIN and not just vendor_part?
+### At least one identifier
 
-`vendor_part` codes are internal to each company. `LETI-AMOX-500` is meaningless to Droguería BLV's ERP, which calls the same product `AMOX500C21`. The GTIN is the universal identifier that both ERPs can look up independently:
+Three code fields exist and they answer three different questions:
+
+| Field | Whose code | Answers |
+|---|---|---|
+| `gtin` | Nobody's — it is global | "Is this the same article the other party means?" |
+| `vendor_part` | The seller's ERP | "What does the seller call it?" |
+| `buyer_part` | The buyer's ERP | "What does the buyer call it, and what code does the order post back against?" |
+
+A line **must carry at least one of the three**, and `description` is always required. The schema
+enforces this with an `anyOf`; a line carrying only a description is rejected.
+
+Until 1.8.0 the schema demanded a GTIN on every line. That is correct for pharmaceutical trade and
+wrong for everything else: fabric by the metre, made-to-measure work and generic institutional
+supplies are not commercial articles and have no GTIN. A public-sector buyer purchasing "2-ply
+institutional toilet paper" specifies a datasheet, not a SKU, and is indifferent to the brand — so
+the order could not be expressed at all.
+
+**What this costs.** The guarantee that any line carries a GTIN is no longer unconditional. A
+consumer that relied on it — SICM traceability, any pharmaceutical flow — must now assert it for
+itself, per document profile, instead of inheriting it from the schema.
+
+### Why GTIN and not just a party's own code?
+
+`vendor_part` and `buyer_part` codes are internal to one company each. `LETI-AMOX-500` is meaningless to Droguería BLV's ERP, which calls the same product `AMOX500C21`. The GTIN is the universal identifier that both ERPs can look up independently:
 
 ```
 Leti ERP       → GTIN 7591234567890 → "Amoxicilina 500mg Caja 21 caps"

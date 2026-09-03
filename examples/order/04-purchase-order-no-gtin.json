@@ -1,0 +1,76 @@
+{
+  "kontext_routing": {
+    "tenant_id": "tenant-gobernacion-01",
+    "receiver_id": "partner-papelera-andina",
+    "document_type": "GS1_ORDER_JSON",
+    "correlation_id": "OC-2026-0417-01"
+  },
+  "payload": {
+    "document_info": {
+      "version": "1.1",
+      "doc_type": "PURCHASE_ORDER",
+      "document_number": "OC-2026-0417-01",
+      "status": "PENDING",
+      "currency_base": "USD",
+      "dates": {
+        "created_at": "2026-09-03T14:20:00Z",
+        "delivery_requested": "2026-09-17T12:00:00Z"
+      }
+    },
+    "parties": {
+      "seller": {
+        "name": "Papelera Andina, C.A.",
+        "rif": "J-30111222-4"
+      },
+      "buyer": {
+        "name": "Gobernacion del Estado Miranda",
+        "rif": "G-20000111-0"
+      },
+      "ship_to": {
+        "name": "Almacen Central de Suministros",
+        "rif": "G-20000111-0",
+        "delivery_address": {
+          "street": "Av. Bolivar, Galpon 3, Zona Industrial",
+          "city": "Los Teques",
+          "state": "Miranda",
+          "zip": "1201",
+          "country_code": "VE"
+        }
+      }
+    },
+    "lines": [
+      {
+        "line_id": 1,
+        "product": {
+          "buyer_part": "PAP-HIG-2C",
+          "description": "Papel higienico institucional, 2 capas, rollo de 250 m, hoja doble"
+        },
+        "qty": {
+          "uom": "Caja",
+          "ordered": 40,
+          "confirmed": null,
+          "delivered": null
+        }
+      },
+      {
+        "line_id": 2,
+        "product": {
+          "buyer_part": "INS-GUANTE-M",
+          "vendor_part": "PA-GLV-M-100",
+          "description": "Guante de nitrilo, talla M, caja x 100 unidades"
+        },
+        "qty": {
+          "uom": "Caja",
+          "ordered": 4,
+          "confirmed": null,
+          "delivered": null
+        }
+      }
+    ],
+    "summary": {
+      "total_lines": 2,
+      "total_net_usd": 0.0,
+      "total_gross_usd": 0.0
+    }
+  }
+}

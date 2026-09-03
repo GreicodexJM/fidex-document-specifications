@@ -2,9 +2,9 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.fidex.io/v1/common/product-identity",
   "title": "Product Identity",
-  "description": "Core product identification block used in all line items. GTIN is the universal identifier that eliminates ambiguity between similar products (e.g., Amoxicilina 250mg vs 500mg). / Bloque de identificación de producto usado en todas las líneas. El GTIN es el identificador universal.",
+  "description": "Core product identification block used in all line items. A line MUST carry at least one identifier: GTIN (universal, required for pharmaceutical traceability and SICM), the buyer's ERP code, or the vendor's SKU. GTIN alone eliminates ambiguity between similar products (e.g. Amoxicilina 250mg vs 500mg); the other two are only unique within one party's ERP. / Bloque de identificacion de producto usado en todas las lineas. Una linea DEBE llevar al menos un identificador: GTIN, el codigo de ERP del comprador, o el SKU del vendedor.",
   "type": "object",
-  "required": ["gtin", "description"],
+  "required": ["description"],
   "properties": {
     "gtin": {
       "$ref": "https://schemas.fidex.io/v1/common/patterns#/$defs/gtin",
@@ -14,6 +14,11 @@
       "type": "string",
       "description": "Vendor's internal SKU code. Used for ERP matching on the sender's side. Not universally unique — use GTIN for cross-ERP identification. / Código SKU interno del vendedor. Usado para conciliación en el ERP del emisor.",
       "examples": ["LETI-AMOX-500", "LETI-IBUP-400"]
+    },
+    "buyer_part": {
+      "type": "string",
+      "description": "Buyer's internal ERP item code. Used for ERP matching on the RECEIVER's side, and it is the key a purchase order must return by: procurement is published against this code and the order posts back against it. Not universally unique — use GTIN for cross-ERP identification. / Codigo de ERP del comprador. Es la clave por la que la orden vuelve a su sistema administrativo.",
+      "examples": ["MAT-00417", "INS-GUANTE-M", "PAP-HIG-2C"]
     },
     "brand_name": {
       "type": "string",
@@ -31,5 +36,16 @@
       ]
     }
   },
-  "unevaluatedProperties": false
+  "unevaluatedProperties": false,
+  "anyOf": [
+    {
+      "required": ["gtin"]
+    },
+    {
+      "required": ["buyer_part"]
+    },
+    {
+      "required": ["vendor_part"]
+    }
+  ]
 }

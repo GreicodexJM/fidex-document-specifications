@@ -1,6 +1,6 @@
 # FideX AS5 — Quick Reference Card
 
-> One-page implementor cheat sheet. Version **v1.6.0**.  
+> One-page implementor cheat sheet. Version **v1.8.0**.  
 > 🇪🇸 [Versión en español](es/00-referencia-rapida.md)
 
 ---
